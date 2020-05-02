@@ -22,7 +22,7 @@ dependencies:
   http: ^0.12.0+4
   flutter_rating_bar: ^3.0.0
   flutter_star_rating: ^0.0.2
-  # smooth_star_rating: 1.0.4+2
+  smooth_star_rating: 1.0.4+2
   geolocator: ^5.3.1
   sweetalert: any
   google_maps_flutter: ^0.5.27
