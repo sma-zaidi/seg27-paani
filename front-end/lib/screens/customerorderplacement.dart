@@ -3,17 +3,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:paani/screens/Classes/package.dart';
 import 'package:http/http.dart' as http;
-import 'package:sweetalert/sweetalert.dart';
-
-// class MyApp extends StatelessWidget {
-//   // This widget is the root of your application.
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       home: Place_Order_Screen(),
-//     );
-//   }
-// }
+// import 'package:sweetalert/sweetalert.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:paani/screens/G_Map.dart';
+import 'package:paani/main.dart';
 
 class Place_Order_Screen extends StatefulWidget {
   @override
@@ -114,7 +107,15 @@ class _Place_Order_ScreenState extends State<Place_Order_Screen> {
             child: Card(
               color: Colors.teal,
               child: FlatButton(
-                onPressed: null,
+                onPressed: () async {
+                  final position = await Geolocator().getCurrentPosition(
+                      desiredAccuracy: LocationAccuracy.high);
+                  dynamic result = await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              G_Map(position.latitude, position.longitude)));
+                },
                 child: ListTile(
                   title: Center(
                     child: Text(
@@ -202,7 +203,7 @@ class _Place_Order_ScreenState extends State<Place_Order_Screen> {
                       "Content-Type": "application/json",
                     },
                   );
-                  SweetAlert.show(context, style: SweetAlertStyle.success);
+                  Navigator.pushNamed(context, '/order_confirmation');
                 },
               ),
             ),

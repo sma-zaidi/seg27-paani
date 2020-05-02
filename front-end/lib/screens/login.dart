@@ -33,7 +33,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Future<bool> _logUserIn() async {
-    var result = await http.post('http://10.0.2.2:7777/users/login',
+    var result = await http.post('http://192.168.10.10:7777/users/login',
         body: {'email_address': _email, 'password': _password});
     var credentials = json.decode(result.body);
     print(credentials);

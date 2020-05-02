@@ -3,6 +3,8 @@ import 'package:paani/screens/index.dart';
 import 'package:paani/screens/login.dart';
 import 'package:paani/screens/signup_customer.dart';
 import 'package:paani/screens/signup_company.dart';
+import 'package:paani/screens/order_confirmation.dart';
+import 'package:paani/screens/order_receipt.dart';
 
 void main() => runApp(MyApp());
 
@@ -11,6 +13,8 @@ final routes = {
   '/login': (BuildContext context) => LoginScreen(),
   '/customer_signup': (BuildContext context) => CustomerSignupScreen(),
   '/company_signup': (BuildContext context) => CompanySignupScreen(),
+  '/order_confirmation': (BuildContext context) => Order_Confirmation(),
+  '/order_receipt': (BuildContext context) => Order_Receipt(),
 };
 
 class MyApp extends StatelessWidget {
