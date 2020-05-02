@@ -106,6 +106,7 @@ class _CompanySignupScreenState extends State<CompanySignupScreen> {
   }
 
   Widget build(BuildContext context) {
+    
     Widget progressStep(stepNumber) {
       return Container(
         alignment: Alignment.center,
