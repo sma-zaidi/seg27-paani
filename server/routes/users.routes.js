@@ -6,8 +6,8 @@ const Company = require('../models/Company')
 const router = express.Router();
 
 /*
-    Routes and controller are implemented here.
-    Don't forget to import your routes in server.js!!
+    Routes for '/users' and relevant controllers are implemented here.
+    Don't forget to import your routes in server.js if you define them in another file!!
 */
 
 // user registration
