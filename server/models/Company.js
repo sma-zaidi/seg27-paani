@@ -11,9 +11,9 @@ Company = {
         } catch (error) { throw new Error(error); }
     },
 
-    getById: async (id) => {
+    getById: async (companyid) => { // returns JSON with a row from the companies table in the database.
         try {
-            result = await query(`SELECT * FROM \`seg27-paani\`.companies WHERE id = ?`, [id]);
+            result = await query(`SELECT * FROM \`seg27-paani\`.companies WHERE id = ?`, [companyid]);
             return result[0];
 
         } catch (error) { throw new Error(error) }

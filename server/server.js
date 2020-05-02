@@ -10,6 +10,10 @@ app.use(bodyparser.urlencoded({ extended: true }))
 // setting up routes
 app.use('/users', require('./routes/users.routes'));
 
+/* import your routes here like so:
+    app.use('/packages', require('./routes/packages.routes));
+*/
+
 // start the server
 port = process.env.PORT || 7777
 app.listen(port, () => {

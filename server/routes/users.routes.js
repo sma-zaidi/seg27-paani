@@ -5,6 +5,11 @@ const Company = require('../models/Company')
 
 const router = express.Router();
 
+/*
+    Routes and controller are implemented here.
+    Don't forget to import your routes in server.js!!
+*/
+
 // user registration
 router.post('/register', async (req, res, next) => {
 

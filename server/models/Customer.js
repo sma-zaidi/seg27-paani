@@ -11,9 +11,9 @@ Customer = {
         } catch (error) { throw new Error(error); }
     },
 
-    getById: async (id) => {
+    getById: async (customerid) => { // returns JSON with a row from the customers table in the database.
         try {
-            result = await query(`SELECT * FROM \`seg27-paani\`.customers WHERE id = ?`, [id]);
+            result = await query(`SELECT * FROM \`seg27-paani\`.customers WHERE id = ?`, [customerid]);
             return result[0];
 
         } catch (error) { throw new Error(error) }
@@ -21,14 +21,3 @@ Customer = {
 }
 
 module.exports = Customer
-
-// yeet = async (id) => {
-//     try {
-//         result = await Customer.getById(id);
-//         console.log(result);
-//     } catch (error) {
-//         console.log(error);
-//     }
-// }
-
-// yeet(13)
