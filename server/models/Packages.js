@@ -24,6 +24,12 @@ Package = {
         } catch (error) { throw new Error(error) }
     },
 
+    destroy: async (packageid) => { // delete by id
+        try {
+            result = await query(`DELETE FROM \`seg27-paani\`.packages WHERE id = ?`, [packageid]);
+        } catch (error) { throw new Error(error) }
+    },
+
     getPackages: async (companyid) => {
         try {
             result = await query(`SELECT * FROM \`seg27-paani\`.packages WHERE company_id = ?`, [companyid])
