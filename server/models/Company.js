@@ -25,7 +25,10 @@ Company = {
             return result;
 
         } catch (error) {throw new Error(error)}
-    }
+    },
+
+    
+
 }
 
 module.exports = Company
