@@ -9,7 +9,7 @@ router.get('/', async (req, res, next) => {
         if (companies.length == 0){
             return res.json({msg:"No Company Records Available!"})
         }
-        return res.json({msg:companies})
+        return res.json({error:'false', msg:companies})
         
     } catch (error) {
         return res.json({error: error});

@@ -8,7 +8,7 @@ router.get('/:companyid', async (req, res, next) => {
         companyid = req.params.companyid
         result = await Package.getPackages(companyid)
         if (result.length === 0){
-            return res.json({msg:"No Packages Found!"})
+            return res.json({error: 'false', msg:"No Packages Found!"})
         }
         return res.json({msg:result})
     } catch (error) {
