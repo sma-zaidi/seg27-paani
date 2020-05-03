@@ -1,7 +1,7 @@
 library paani.globals;
 
-String id;
-String name;
-String ntnnumber;
-String contactnumber;
-String address;
+String id = 's';
+String name = 's';
+String ntnnumber = 's';
+String contactnumber = 's';
+String address = 's';

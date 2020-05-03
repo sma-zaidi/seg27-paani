@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'RegisterDriver.dart';
-import 'package:paani/main.dart';
+import 'package:paani/screens/signup/account_created.dart';
 
 class Optional extends StatelessWidget {
   @override
@@ -81,31 +81,11 @@ class _OptionalScreenState extends State<OptionalScreen> {
                               ),
                               color: Colors.teal,
                               onPressed: () {
-                                Navigator.of(context).pop();
-                                showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return AlertDialog(
-                                        title: Text(
-                                          'Sign Up Completed!',
-                                          style: TextStyle(color: Colors.teal),
-                                        ),
-                                        actions: <Widget>[
-                                          FlatButton(
-                                            color: Colors.teal,
-                                            child: Text(
-                                              'OK',
-                                              style: TextStyle(
-                                                  color: Colors.white),
-                                            ),
-                                            onPressed: () {
-                                              Navigator.of(context).pop();
-                                              //TODO: Navigate to Company HomePage
-                                            },
-                                          ),
-                                        ],
-                                      );
-                                    });
+                                Navigator.pushAndRemoveUntil(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => Accountcreated()),
+                                    ModalRoute.withName('/'));
                               },
                             ),
                             FlatButton(

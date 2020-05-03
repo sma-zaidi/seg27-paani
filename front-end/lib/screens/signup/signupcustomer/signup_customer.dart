@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:wc_form_validators/wc_form_validators.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:paani/screens/signup/account_created.dart';
+import 'package:email_validator/email_validator.dart';
 
 class CustomerSignupScreen extends StatefulWidget {
   @override
@@ -12,8 +12,7 @@ class CustomerSignupScreen extends StatefulWidget {
 
 class _CustomerSignupScreenState extends State<CustomerSignupScreen> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  final formKey = GlobalKey<FormState>();
-
+  final _formKey = GlobalKey<FormState>();
   var _loading = false;
 
   String _email, _password;
@@ -23,12 +22,13 @@ class _CustomerSignupScreenState extends State<CustomerSignupScreen> {
   Future<bool> _verifyEmail() async {
     try {
       var response =
-          await http.post('http://10.0.2.2:7777/users/register/', body: {
+          await http.post('http://192.168.10.7:7777/users/register/', body: {
         'email': _email,
         'password': _password,
         'name': _name,
         'contact_number': _contact,
         'address': _address,
+        'account_type': "CUSTOMER",
       });
       print(response.body);
       if (json.decode(response.body)["message"] == true) {
@@ -43,52 +43,51 @@ class _CustomerSignupScreenState extends State<CustomerSignupScreen> {
   }
 
   void _submit() async {
-    final form = formKey.currentState;
-
+    final form = _formKey.currentState;
     _loading = true;
-
+    form.save();
     if (form.validate()) {
-      form.save();
+      print(_cpassword);
+      print(_password);
       if (await _verifyEmail()) {
         Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(builder: (context) => Accountcreated()),
-            (_) => false);
+            ModalRoute.withName("/"));
       }
       _loading = false;
+    } else {
+      print("ads");
     }
   }
 
   bool _obscurePassword = true;
 
-  void _showSnackBar(String text) {
-    scaffoldKey.currentState.hideCurrentSnackBar();
-    scaffoldKey.currentState.showSnackBar(SnackBar(
-      content: Text(text),
-      action: SnackBarAction(
-        label: 'Dismiss',
-        onPressed: () {
-          scaffoldKey.currentState.hideCurrentSnackBar();
-        },
-      ),
-    ));
-  }
-
   Widget build(BuildContext context) {
     Widget DetailsForm = Form(
+      key: _formKey,
       child: Column(children: <Widget>[
         TextFormField(
-          validator: Validators.required("Enter your name"),
+          validator: (text) {
+            if (text == null || text.isEmpty) {
+              return 'Name is required';
+            }
+            return null;
+          },
           onSaved: (text) => _name = text,
           cursorColor: Theme.of(context).primaryColor,
           decoration: InputDecoration(
-            border: InputBorder.none,
             labelText: 'Name',
             prefixIcon: Icon(Icons.person),
           ),
         ),
         TextFormField(
-          validator: Validators.email("Invalid Email address"),
+          validator: (text) {
+            if (EmailValidator.validate(text) == false) {
+              return 'invalid Email-address';
+            }
+            return null;
+          },
           onSaved: (text) => _email = text,
           cursorColor: Theme.of(context).primaryColor,
           decoration: InputDecoration(
@@ -97,7 +96,12 @@ class _CustomerSignupScreenState extends State<CustomerSignupScreen> {
           ),
         ),
         TextFormField(
-          validator: Validators.required("Enter your contact number"),
+          validator: (text) {
+            if (text == null || text.isEmpty) {
+              return 'Contact address is required';
+            }
+            return null;
+          },
           inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
           onSaved: (text) => _contact = text,
           cursorColor: Theme.of(context).primaryColor,
@@ -124,7 +128,7 @@ class _CustomerSignupScreenState extends State<CustomerSignupScreen> {
                 r'^(?=.*[0-9]+.*)(?=.*[a-zA-Z]+.*)[0-9a-zA-Z]{6,}$';
             RegExp regex = new RegExp(pattern);
             if (!regex.hasMatch(text))
-              return 'Invalid password. Password must has atleast 1 letter, 1 number and must be 6 characters long';
+              return 'Invalid password. Password must has atleast 1 letter,\n 1 number and must be 6 characters long';
             else
               return null;
           },
@@ -147,8 +151,11 @@ class _CustomerSignupScreenState extends State<CustomerSignupScreen> {
         ),
         TextFormField(
           validator: (text) {
-            if (_cpassword != _password) return 'Passwords do not match';
-            return null;
+            if (_cpassword != _password) {
+              return 'Passwords do not match';
+            } else {
+              return null;
+            }
           },
           onSaved: (text) => _cpassword = text,
           cursorColor: Theme.of(context).primaryColor,
@@ -178,15 +185,6 @@ class _CustomerSignupScreenState extends State<CustomerSignupScreen> {
             icon: Icon(Icons.info),
             color: Colors.white,
           ),
-          FlatButton(
-            onPressed: _submit,
-            child: Text(
-              'Next',
-              style: TextStyle(
-                color: Colors.white,
-              ),
-            ),
-          )
         ],
       ),
       body: SingleChildScrollView(
@@ -198,7 +196,7 @@ class _CustomerSignupScreenState extends State<CustomerSignupScreen> {
                 Padding(
                   padding: EdgeInsets.only(top: 20),
                   child: Text(
-                    'Almost done',
+                    'Welcome',
                     style: TextStyle(
                         color: Color(0xFF002626),
                         fontSize: 30.0,
@@ -222,6 +220,20 @@ class _CustomerSignupScreenState extends State<CustomerSignupScreen> {
                   child: Column(
                     children: <Widget>[
                       DetailsForm,
+                      SizedBox(height: 20.0),
+                      ButtonTheme(
+                        minWidth: 170.0,
+                        child: RaisedButton(
+                          color: Colors.teal,
+                          onPressed: _submit,
+                          child: Text(
+                            'Sign Up',
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      )
                     ],
                   ),
                 ),

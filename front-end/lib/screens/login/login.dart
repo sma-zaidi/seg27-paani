@@ -32,8 +32,8 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Future<String> _logUserIn() async {
-    var result = await http.post('http://192.168.10.10:7777/users/login',
-        body: {'email_address': _email, 'password': _password});
+    var result = await http.post('http://192.168.10.7:7777/users/login',
+        body: {'email': _email, 'password': _password});
     var credentials = json.decode(result.body);
     print(credentials);
     if (credentials['error'] == false) {
@@ -67,7 +67,7 @@ class _LoginScreenState extends State<LoginScreen> {
         Navigator.pushNamedAndRemoveUntil(
             context, '/companyhomescreen', (_) => false);
       } else {
-        _showSnackBar("Incorrect email credentials");
+        _showSnackBar("Incorrect credentials");
       }
     }
     _loading = false;
