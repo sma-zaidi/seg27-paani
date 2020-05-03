@@ -792,10 +792,10 @@ class _CompanySignupScreenState extends State<CompanySignupScreen> {
         'accounttype': "COMPANY",
       });
       print(response.body);
-      if (json.decode(response.body)["message"] == true) {
-        return false;
-      } else {
+      if (json.decode(response.body)["error"] == false) {
         return true;
+      } else {
+        return false;
       }
     } catch (e) {
       print(e);

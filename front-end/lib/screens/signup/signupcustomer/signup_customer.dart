@@ -31,10 +31,10 @@ class _CustomerSignupScreenState extends State<CustomerSignupScreen> {
         'account_type': "CUSTOMER",
       });
       print(response.body);
-      if (json.decode(response.body)["message"] == true) {
-        return false;
-      } else {
+      if (json.decode(response.body)["error"] == false) {
         return true;
+      } else {
+        return false;
       }
     } catch (e) {
       print(e);
