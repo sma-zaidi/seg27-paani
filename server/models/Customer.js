@@ -17,7 +17,8 @@ Customer = {
             return result[0];
 
         } catch (error) { throw new Error(error) }
-    }
+    },
+
 }
 
 module.exports = Customer
