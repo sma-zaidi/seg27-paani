@@ -10,9 +10,10 @@ Order = {
         }catch (error) {throw new Error(error)}
     },
 
+
     getlatestOrder: async (customerid) => {
         try {
-        	//Returns all the details for the order history page - customer side
+        	
             result = await query(`SELECT DISTINCT name, status, bowser_capacity, delivery_time, cost FROM \`seg27-paani\`.orders 
         		    				INNER JOIN \`seg27-paani\`.packages ON \`seg27-paani\`.orders.package_id = \`seg27-paani\`.packages.id
        			    				INNER JOIN \`seg27-paani\`.companies ON \`seg27-paani\`.packages.company_id = \`seg27-paani\`.companies.id
@@ -23,6 +24,36 @@ Order = {
     },
 
     
+
+    getByCompanyAndStatus: async (companyid, status) => {
+        try {
+            result = await query(`SELECT * FROM \`seg27-paani\`.orders
+                                  INNER JOIN \`seg27-paani\`.packages ON \`seg27-paani\`.orders.package_id = \`seg27-paani\`.packages.id                     
+                                  WHERE company_id = ? AND status = ?`, [companyid, status]);
+            return result;
+        } catch (error) { throw new Error(error) }
+    },
+
+    getCompanyHistory: async (companyid) => {
+        try {
+            result = await query(`SELECT * FROM \`seg27-paani\`.orders
+                                  INNER JOIN \`seg27-paani\`.packages ON \`seg27-paani\`.orders.package_id = \`seg27-paani\`.packages.id
+                                  WHERE company_id = ?`, [companyid]);
+            return result;
+        } catch (error) {throw new Error(error)}
+    },
+
+    updateStatus: async (orderid, status) => {
+        try {
+            result = await query(`UPDATE \`seg27-paani\`.orders
+                                  SET status = ?
+                                  WHERE id = ?`, [status, orderid]);
+            return result;
+
+        } catch (error) { throw new Error(error) }
+    },
+
+
 }
 
 module.exports = Order

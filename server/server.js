@@ -9,6 +9,7 @@ app.use(bodyparser.urlencoded({ extended: true }))
 
 // setting up routes
 app.use('/users', require('./routes/users.routes'));
+
 app.use('/companies', require('./routes/companies.routes'));
 app.use('/drivers', require('./routes/drivers.routes'));
 app.use('/packages', require('./routes/packages.routes'));
