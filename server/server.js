@@ -1,5 +1,5 @@
 const express = require('express');
-const morgan = require('morgan');
+const morgan = require('morgan'); // logging
 const bodyparser = require('body-parser');
 
 const app = express();
