@@ -9,11 +9,16 @@ import 'package:paani/screens/G_Map.dart';
 import 'package:paani/main.dart';
 
 class Place_Order_Screen extends StatefulWidget {
+  var data;
+  Place_Order_Screen({this.data});
   @override
-  _Place_Order_ScreenState createState() => _Place_Order_ScreenState();
+  _Place_Order_ScreenState createState() =>
+      _Place_Order_ScreenState(data: data);
 }
 
 class _Place_Order_ScreenState extends State<Place_Order_Screen> {
+  var data;
+  _Place_Order_ScreenState({this.data});
   static Package pkg1 = Package.forPractice(1, 1001, 50, 3500, 3.5);
   static Package pkg2 = Package.forPractice(2, 1001, 25, 2000, 3.3);
   static Package pkg3 = Package.forPractice(3, 1001, 30, 2300, 3.6);
@@ -38,10 +43,11 @@ class _Place_Order_ScreenState extends State<Place_Order_Screen> {
     }
   }
 
-  String companyName = 'Good Company';
+  String companyName;
 
   @override
   void initState() {
+    companyName = data;
     // TODO: implement initState
     super.initState();
     // you can have different listner functions if you wish
@@ -213,3 +219,4 @@ class _Place_Order_ScreenState extends State<Place_Order_Screen> {
     );
   }
 }
+
