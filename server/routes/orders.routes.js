@@ -16,4 +16,18 @@ router.get('/history/:customerid', async (req, res, next) => {
     }
 })
 
+router.get('/:customerid',async (req, res, next) => {
+    try {
+        customerid = req.params.customerid
+        result = await Order.getLatestOrders(customerid)
+        if (result.length === 0){
+            return res.json({msg:"No Order History Found!"})
+        }
+        return res.json({msg:result})
+    } catch (error) {
+        res.json({error: error})
+    }
+}
+)
+
 module.exports = router
