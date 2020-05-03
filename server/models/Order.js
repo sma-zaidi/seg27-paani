@@ -17,6 +17,27 @@ Order = {
             return result;
         } catch (error) { throw new Error(error) }
     },
+
+    getCompanyHistory: async (companyid) => {
+        try {
+            result = await query(`SELECT * FROM \`seg27-paani\`.orders
+                                  INNER JOIN \`seg27-paani\`.packages ON \`seg27-paani\`.orders.package_id = \`seg27-paani\`.packages.id
+                                  WHERE company_id = ?`, [companyid]);
+            return result;
+        } catch (error) {throw new Error(error)}
+    },
+
+    updateStatus: async (orderid, status) => {
+        try {
+            result = await query(`UPDATE \`seg27-paani\`.orders
+                                  SET status = ?
+                                  WHERE id = ?`, [status, orderid]);
+            return result;
+
+        } catch (error) { throw new Error(error) }
+    },
+
+
 }
 
 module.exports = Order
