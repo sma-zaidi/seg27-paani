@@ -1,12 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:paani/screens/signup_customer.dart';
-import 'package:paani/screens/signup_company.dart';
-
-void main() => runApp(MaterialApp(
-      home: SignupAsScreen(),
-      theme: ThemeData(primaryColor: Colors.white),
-    ));
+import 'package:paani/main.dart';
 
 class SignupAsScreen extends StatelessWidget {
   @override
@@ -41,14 +35,14 @@ class SignupAsScreen extends StatelessWidget {
                             height: 200.0,
                             fit: BoxFit.fill,
                           ))),
-                  customButton('Customer', 20.0, context),
-                  customButton('Company', 60.0, context),
+                  customButton('Customer', context),
+                  customButton('Company', context),
                 ])),
             decoration: BoxDecoration(color: Colors.white)));
   }
 }
 
-Widget customButton(String text, double bottomMargin, BuildContext context) {
+Widget customButton(String text, BuildContext context) {
   return ButtonTheme(
     // buttonColor: Colors.white,
     padding: EdgeInsets.only(bottom: 1),
@@ -56,11 +50,9 @@ Widget customButton(String text, double bottomMargin, BuildContext context) {
     child: RaisedButton(
       onPressed: () {
         if (text == 'Customer') {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => CustomerSignupScreen()));
+          Navigator.pushNamed(context, '/customer_signup');
         } else if (text == 'Company') {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => CompanySignupScreen()));
+          Navigator.pushNamed(context, '/company_signup');
         }
       },
       child: Text(
@@ -70,10 +62,6 @@ Widget customButton(String text, double bottomMargin, BuildContext context) {
           letterSpacing: 1.5,
         ),
       ),
-      // color: Theme.of(context).primaryColor,
-      // shape: RoundedRectangleBorder(
-      //   borderRadius: BorderRadius.circular(18.0),
-      // ),
     ),
   );
 }

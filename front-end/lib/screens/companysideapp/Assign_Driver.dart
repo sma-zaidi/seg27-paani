@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sweetalert/sweetalert.dart';
 
-void main() => runApp(AssignDriver());
-
 var drivers = [
   {
     "name": "Muhammad Asghar",

@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:sweetalert/sweetalert.dart';
-import 'main.dart';
+import 'package:paani/screens/companysideapp/CompanyHomeScreen.dart';
 
 //final List<int> ordersID = <int>[1584, 2459, 3842, 4443, 5042, 6213, 7456];
 //final List<String> address = <String>[

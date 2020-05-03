@@ -1,4 +1,4 @@
-import 'package:driverscreen/EditDriverScreen.dart';
+import 'package:paani/screens/companysideapp/EditDriverScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:sweetalert/sweetalert.dart';
 import 'AddDriver.dart';

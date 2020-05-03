@@ -1,12 +1,11 @@
 import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:paani/screens/Classes/package.dart';
 import 'package:http/http.dart' as http;
-// import 'package:sweetalert/sweetalert.dart';
+import 'package:paani/screens/customersideapp/orderplacementpackage.dart';
+import 'package:paani/screens/customersideapp/order_confirmation.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:paani/screens/G_Map.dart';
-import 'package:paani/main.dart';
+import 'package:paani/screens/customersideapp/googlemaps/G_Map.dart';
 
 class Place_Order_Screen extends StatefulWidget {
   var data;
@@ -209,7 +208,10 @@ class _Place_Order_ScreenState extends State<Place_Order_Screen> {
                       "Content-Type": "application/json",
                     },
                   );
-                  Navigator.pushNamed(context, '/order_confirmation');
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => Order_Confirmation()));
                 },
               ),
             ),
@@ -219,4 +221,3 @@ class _Place_Order_ScreenState extends State<Place_Order_Screen> {
     );
   }
 }
-

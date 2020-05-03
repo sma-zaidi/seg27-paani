@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:paani/screens/home_screen.dart';
+import 'package:paani/screens/customersideapp/customer_home_screen.dart';
 // import 'package:paani/screens/home_screen.dart';
 // import 'package:http/http.dart' as http;
 
@@ -51,7 +51,7 @@ class DrawerDetailsState extends State<DrawerDetails> {
             onTap: () {
               Navigator.pushAndRemoveUntil(
                   context,
-                  MaterialPageRoute(builder: (context) => HomeScreen()),
+                  MaterialPageRoute(builder: (context) => CustomerHomeScreen()),
                   (_) => false);
             },
           ),

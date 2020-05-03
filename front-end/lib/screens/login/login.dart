@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-
-import 'package:paani/screens/home_screen.dart';
+import 'package:paani/globals.dart' as globals;
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -32,24 +31,25 @@ class _LoginScreenState extends State<LoginScreen> {
     ));
   }
 
-  Future<bool> _logUserIn() async {
+  Future<String> _logUserIn() async {
     var result = await http.post('http://192.168.10.10:7777/users/login',
         body: {'email_address': _email, 'password': _password});
     var credentials = json.decode(result.body);
     print(credentials);
-    if (credentials['message'] == "OK") {
-      return true;
+    if (credentials['error'] == false) {
+      globals.name = credentials['msg']['name'];
+      globals.id = credentials['id'];
+      if (credentials['msg'].containskey('ntn')) {
+        globals.address = credentials['msg']['address'];
+        globals.contactnumber = credentials['msg']['contact_number'];
+        globals.ntnnumber = credentials['msg']['ntn'];
+        return 'company';
+      } else {
+        return 'customer';
+      }
     } else {
-      return false;
+      return 'invalid login';
     }
-    // credentials['message'].map((user) {
-    //    if (user['email_address'] == _email &&
-    //     credentials['password_password'] == _password) {
-    //       return true;
-    //     }
-    //     return false;
-    // });
-    // return false;
   }
 
   void _submit() async {
@@ -60,13 +60,14 @@ class _LoginScreenState extends State<LoginScreen> {
     if (form.validate()) {
       form.save();
 
-      if (await _logUserIn()) {
-        Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(builder: (context) => HomeScreen()),
-            (_) => false);
+      if (await _logUserIn() == 'customer') {
+        Navigator.pushNamedAndRemoveUntil(
+            context, '/customerhomescreen', (_) => false);
+      } else if (await _logUserIn() == 'company') {
+        Navigator.pushNamedAndRemoveUntil(
+            context, '/companyhomescreen', (_) => false);
       } else {
-        _showSnackBar("Incorrect email address or password");
+        _showSnackBar("Incorrect email credentials");
       }
     }
     _loading = false;

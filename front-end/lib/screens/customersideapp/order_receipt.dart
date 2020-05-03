@@ -70,7 +70,10 @@ class Order_Receipt extends StatelessWidget {
                   buttonColor: Colors.blue,
                   child: RaisedButton.icon(
                     icon: Icon(Icons.home),
-                    onPressed: null,
+                    onPressed: () {
+                      Navigator.popUntil(
+                          context, ModalRoute.withName('/costumerhomescreen'));
+                    },
                     label: Text("Home",
                         textAlign: TextAlign.center,
                         style: TextStyle(

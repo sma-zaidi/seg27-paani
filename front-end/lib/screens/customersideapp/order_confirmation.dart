@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:paani/screens/customersideapp/order_receipt.dart';
 import 'package:paani/main.dart';
 
 class Order_Confirmation extends StatelessWidget {
@@ -92,7 +93,10 @@ class Order_Confirmation_scaff extends StatelessWidget {
                 buttonColor: Colors.blue,
                 child: RaisedButton(
                   onPressed: () {
-                    Navigator.pushNamed(context, '/order_receipt');
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => Order_Receipt()));
                   },
                   child: Text("Confirm Order",
                       textAlign: TextAlign.center,

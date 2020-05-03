@@ -35,15 +35,6 @@ Future<void> getOrders() async {
   }
 }
 
-void main() => runApp(MyApp());
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return new MaterialApp(home: new HomePage());
-  }
-}
-
 Badge getBadge(int a, int b) {
   // a is number that badge will show
   // b is the icon type. 0 = playlist_add and 1 = access_time
@@ -100,12 +91,12 @@ Badge getBadge(int a, int b) {
   }
 }
 
-class HomePage extends StatefulWidget {
+class CompanyHomeScreen extends StatefulWidget {
   @override
-  _HomePageState createState() => _HomePageState();
+  _CompanyHomeScreenState createState() => _CompanyHomeScreenState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _CompanyHomeScreenState extends State<CompanyHomeScreen> {
   @override
   initState() {
     super.initState();

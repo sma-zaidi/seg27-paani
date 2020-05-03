@@ -1,20 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:paani/screens/index.dart';
-import 'package:paani/screens/login.dart';
-import 'package:paani/screens/signup_customer.dart';
-import 'package:paani/screens/signup_company.dart';
-import 'package:paani/screens/order_confirmation.dart';
-import 'package:paani/screens/order_receipt.dart';
+import 'package:paani/screens/login/login.dart';
+import 'package:paani/screens/signup/signup_as.dart';
+import 'package:paani/screens/signup/signupcustomer/signup_customer.dart';
+import 'package:paani/screens/signup/signupcompany/signup_company.dart';
+import 'package:paani/screens/customersideapp/customer_home_screen.dart';
+import 'package:paani/screens/customersideapp/order_confirmation.dart';
+import 'package:paani/screens/customersideapp/order_receipt.dart';
+import 'package:paani/screens/signup/signupcompany/RegisterDriver.dart';
+import 'package:paani/screens/signup/signupcompany/RegisterTanker.dart';
+import 'package:paani/screens/companysideapp/CompanyHomeScreen.dart';
 
 void main() => runApp(MyApp());
 
 final routes = {
   '/': (BuildContext context) => IndexScreen(),
   '/login': (BuildContext context) => LoginScreen(),
+  '/signup_as': (BuildContext context) => SignupAsScreen(),
   '/customer_signup': (BuildContext context) => CustomerSignupScreen(),
   '/company_signup': (BuildContext context) => CompanySignupScreen(),
-  '/order_confirmation': (BuildContext context) => Order_Confirmation(),
-  '/order_receipt': (BuildContext context) => Order_Receipt(),
+  '/RegisterDriver': (BuildContext context) => RegisterDriver(),
+  '/RegisterTanker': (BuildContext context) => RegisterTanker(),
+  '/companyhomescreen': (BuildContext context) => CompanyHomeScreen(),
+  '/customerhomescreen': (BuildContext context) => CustomerHomeScreen(),
 };
 
 class MyApp extends StatelessWidget {

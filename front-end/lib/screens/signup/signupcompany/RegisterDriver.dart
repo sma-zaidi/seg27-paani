@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-
-import 'main.dart';
+import 'package:paani/screens/signup/account_created.dart';
+import 'package:paani/main.dart';
 
 class RegisterDriver extends StatelessWidget {
   @override
@@ -168,29 +168,10 @@ class _RegisterDriverScreenState extends State<RegisterDriverScreen> {
                   ),
                 ),
                 onPressed: () {
-                  showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          title: Text(
-                            'Sign Up Completed!',
-                            style: TextStyle(color: Colors.teal),
-                          ),
-                          actions: <Widget>[
-                            FlatButton(
-                              color: Colors.teal,
-                              child: Text(
-                                'OK',
-                                style: TextStyle(color: Colors.white),
-                              ),
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                                //TODO: Navigate to Company HomePage
-                              },
-                            ),
-                          ],
-                        );
-                      });
+                  Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(builder: (context) => Accountcreated()),
+                      (_) => false);
                 },
               ),
             ),
