@@ -27,7 +27,8 @@ router.post('/', async (req, res, next) => { // create an order
     }
     //No incomplete order
     try { 
-        if(await Order.ongoing(customerid) == true) {
+        result=await Order.getlatestOrder(customerid);
+        if(result.status != 'completed') {
             return res.json({error: 'Another order is in progress.'});
         }
     } catch (error) {
