@@ -213,6 +213,7 @@ class _NewReqsState extends State<NewReqs> {
           child: Text('New Requests'),
         ),
         leading: FlatButton(
+          onPressed: () {},
           child: Icon(Icons.menu),
         ),
       ),

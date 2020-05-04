@@ -111,6 +111,7 @@ class _CompanyHomeScreenState extends State<CompanyHomeScreen> {
       appBar: AppBar(
         backgroundColor: Colors.teal,
         leading: FlatButton(
+          onPressed: () {},
           child: Icon(
             Icons.menu,
           ),
