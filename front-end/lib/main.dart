@@ -8,6 +8,7 @@ import 'package:paani/screens/customersideapp/customer_home_screen.dart';
 import 'package:paani/screens/signup/signupcompany/RegisterDriver.dart';
 import 'package:paani/screens/signup/signupcompany/RegisterTanker.dart';
 import 'package:paani/screens/companysideapp/CompanyHomeScreen.dart';
+import 'package:paani/screens/customersideapp/order_history_customer.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 Future<void> main() async {
@@ -31,6 +32,7 @@ Future<void> main() async {
         '/RegisterTanker': (BuildContext context) => RegisterTanker(),
         '/companyhomescreen': (BuildContext context) => CompanyHomeScreen(),
         '/customerhomescreen': (BuildContext context) => CustomerHomeScreen(),
+        '/orderhistory': (BuildContext context) => OrderHistoryScreen(),
       },
       home: email == null
           ? IndexScreen()
