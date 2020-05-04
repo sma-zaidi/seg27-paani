@@ -28,10 +28,11 @@ router.post('/', async (req, res, next) => {
 })
 
 router.get('/:companyid', async (req, res, next) => {
-    company_id = req.params.company_id
+    company_id = req.params.companyid
+    console.log("comp ", company_id)
 
     try{
-        result = await Driver.getDrivers();
+        result = await Driver.getDrivers(company_id);
         return res.json({error:"false", msg:result})
     }catch (error){
         return res.json({error:error})
