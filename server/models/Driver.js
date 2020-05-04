@@ -39,6 +39,12 @@ Driver = {
 
         } catch (error) { throw new Error(error) }
     },
+    
+    destroy: async (driverid) => { // delete by id
+        try {
+            result = await query(`DELETE FROM \`seg27-paani\`.drivers WHERE id = ?`, [driverid]);
+        } catch (error) { throw new Error(error) }
+    },
 }
 
 module.exports = Driver
