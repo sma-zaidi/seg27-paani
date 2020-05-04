@@ -25,7 +25,20 @@ Driver = {
             result = await query(`SELECT * FROM \`seg27-paani\`.drivers WHERE company_id = ?`, [companyid]);
             return result;
         } catch (error) { throw new Error(error) }
-    }
+    },
+
+    update: async (id, name, cnic, contact_number) => {
+        try {
+            result = await query(`UPDATE \`seg27-paani\`.drivers
+                                  SET
+                                    name = ?,
+                                    cnic = ?,
+                                    contact_number = ?
+                                  WHERE id = ?`, [name, cnic, contact_number, id]);
+            return result;
+
+        } catch (error) { throw new Error(error) }
+    },
 }
 
 module.exports = Driver

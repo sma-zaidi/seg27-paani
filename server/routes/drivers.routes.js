@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.post('/', async (req, res, next) => {
     var {company_id, name, cnic, contact_number} = req.body;
-    
+
 
     if (!company_id || !name || !cnic || !contact_number) {
         return res.json({error: 'Atleast one of the required fields: company_id, name, cnic, or contact_number is missing.'});
@@ -37,6 +37,19 @@ router.get('/:companyid', async (req, res, next) => {
     }catch (error){
         return res.json({error:error})
     }
+})
+
+router.put('/', async (req, res, next) => { // create a package
+    var {id, name, cnic, contact_number} = req.body
+    console.log(req.body)
+    if (!id || !name || !cnic || !contact_number) {
+        return res.json({error: 'Atleast one of the required fields: id, name, cnic, or contact_number is missing.'});
+    }
+
+    try {
+        await Driver.update(id, name, cnic, contact_number);
+        return res.json({error: false, msg: 'Driver details has been updated.'});
+    } catch (error) { console.log(error) ; return res.json({error: error}) };
 })
 
 module.exports = router
