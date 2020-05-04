@@ -25,7 +25,7 @@ class HomeScreenState extends State<CustomerHomeScreen> {
         headers: {"Accept": "application/json"});
     //print(response.body);
     Map<String, dynamic> mapCompanies = json.decode(responseCompanies.body);
-    companies = map["msg"];
+    companies = mapCompanies["msg"];
     for (int i = 0; i < companies.length; i++) {
       var responsePackages = await http.get(
           "https://seg27-paani-backend.herokuapp.com/packages/${companies[i]['id']}",
