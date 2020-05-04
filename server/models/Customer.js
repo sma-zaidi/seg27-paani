@@ -19,6 +19,20 @@ Customer = {
         } catch (error) { throw new Error(error) }
     },
 
+    editDetails: async (id, name, contact_number, address, location) => {
+        try {
+            result = await query(`UPDATE \`seg27-paani\`.companies
+                                  SET
+                                    name = ?,
+                                    contact_number = ?,
+                                    address = ?,
+                                    location=?,
+                                  WHERE id = ?`, [name, contact_number,address, location, id]);
+            return result;
+
+        } catch (error) { throw new Error(error) }
+    },
+
 }
 
 module.exports = Customer

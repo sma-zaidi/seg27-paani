@@ -14,7 +14,8 @@ app.use('/companies', require('./routes/companies.routes'));
 app.use('/drivers', require('./routes/drivers.routes'));
 app.use('/packages', require('./routes/packages.routes'));
 app.use('/orders', require('./routes/orders.routes'));
-
+app.use('/customers', require('./routes/customers.routes'));
+app.use('/reviews', require('./routes/reviews.routes'));
 /* import your routes here like so:
     app.use('/packages', require('./routes/packages.routes));
 */

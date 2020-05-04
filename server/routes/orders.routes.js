@@ -32,7 +32,7 @@ router.get('/history/:customerid', async (req, res, next) => {
 router.get('/:customerid',async (req, res, next) => {
     try {
         customerid = req.params.customerid
-        result = await Order.getLatestOrders(customerid)
+        result = await Order.getlatestOrder(customerid)
         if (result.length === 0){
             return res.json({msg:"None Found!"})
         }
