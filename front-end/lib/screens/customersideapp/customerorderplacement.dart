@@ -136,8 +136,6 @@ class _Place_Order_ScreenState extends State<Place_Order_Screen> {
                   //   // user manually enable it in the system settings.
                   //   openAppSettings();
                   // }
-                  var ans = await Permission.location.request();
-                  print(ans);
                   // if (result.isGranted ||
                   //     await Permission
                   //         .locationWhenInUse.serviceStatus.isEnabled) {
