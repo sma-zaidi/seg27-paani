@@ -17,6 +17,7 @@ class Place_Order_Screen extends StatefulWidget {
 
 class _Place_Order_ScreenState extends State<Place_Order_Screen> {
   var data;
+  String delDate;
   _Place_Order_ScreenState({this.data});
   final ctrl1 = TextEditingController();
   final ctrl2 = TextEditingController();
@@ -105,6 +106,7 @@ class _Place_Order_ScreenState extends State<Place_Order_Screen> {
               child: TextField(
                 decoration: InputDecoration(
                   hintText: 'Address',
+                  border: InputBorder.none,
                 ),
                 controller: ctrl1,
               ),
@@ -153,6 +155,7 @@ class _Place_Order_ScreenState extends State<Place_Order_Screen> {
               child: TextField(
                 decoration: InputDecoration(
                   hintText: '03001234567',
+                  border: InputBorder.none,
                 ),
                 controller: ctrl2,
               ),
@@ -166,11 +169,40 @@ class _Place_Order_ScreenState extends State<Place_Order_Screen> {
             padding: const EdgeInsets.only(left: 20, right: 20),
             child: Card(
               margin: EdgeInsets.symmetric(vertical: 12.0),
-              child: TextField(
-                decoration: InputDecoration(
-                  hintText: 'DD/MM/YYYY',
+              child: ListTile(
+                title: TextField(
+                  decoration: InputDecoration(
+                    hintText: 'DD-MM-YYYY',
+                    border: InputBorder.none,
+                  ),
+                  controller: ctrl3,
                 ),
-                controller: ctrl3,
+                trailing: FlatButton(
+                  child: Icon(
+                    Icons.calendar_today,
+                    color: Colors.teal,
+                  ),
+                  onPressed: () {
+                    showDatePicker(
+                            context: context,
+                            initialDate: DateTime.now(),
+                            firstDate: DateTime(2020),
+                            lastDate: DateTime(2021))
+                        .then((date) {
+                      if (date != null) {
+                        String dateString = date.toString().substring(0, 10);
+                        String day = dateString.substring(8, 10);
+                        String month = dateString.substring(5, 7);
+                        String year = dateString.substring(0, 4);
+                        delDate = day + "-" + month + "-" + year;
+                        print(delDate);
+                        setState(() {
+                          ctrl3.text = delDate;
+                        });
+                      }
+                    });
+                  },
+                ),
               ),
             ),
           ),
