@@ -789,7 +789,7 @@ class _CompanySignupScreenState extends State<CompanySignupScreen> {
         'contact_number': _contact,
         'address': _address,
         'ntn': _ntnnumber,
-        'accounttype': "COMPANY",
+        'account_type': "COMPANY",
       });
       print(response.body);
       if (json.decode(response.body)["error"] == false) {
@@ -812,9 +812,10 @@ class _CompanySignupScreenState extends State<CompanySignupScreen> {
         Navigator.pushNamedAndRemoveUntil(
             context, '/RegisterTanker', ModalRoute.withName('/'));
       }
-    } else {
-      _showSnackBar("Sorry Cound't store your information");
     }
+    // } else {
+    //   _showSnackBar("Sorry Cound't store your information");
+    // }
     _loading = false;
   }
 

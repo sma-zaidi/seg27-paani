@@ -6,7 +6,6 @@ import 'package:paani/screens/customersideapp/orderplacementpackage.dart';
 import 'package:paani/screens/customersideapp/order_confirmation.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:paani/screens/customersideapp/googlemaps/G_Map.dart';
-import 'package:paani/globals.dart' as globals;
 
 class Place_Order_Screen extends StatefulWidget {
   var data;
@@ -153,17 +152,44 @@ class _Place_Order_ScreenState extends State<Place_Order_Screen> {
                       ),
                     ),
                   ),
-                  locationset
-                      ? Padding(
-                          padding:
-                              const EdgeInsets.fromLTRB(20.0, 8.0, 20.0, 8.0),
-                          child: Text("Your location has been set"),
-                        )
-                      : null,
                 ],
               ),
             ),
           ),
+          locationset
+              ? Padding(
+                  padding: const EdgeInsets.fromLTRB(15.0, 0.0, 15.0, 0.0),
+                  child: Container(
+                    color: Colors.grey[400],
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        Padding(
+                          padding:
+                              const EdgeInsets.fromLTRB(20.0, 8.0, 20.0, 8.0),
+                          child: Text(
+                            "Your location has been set",
+                          ),
+                        ),
+                        SizedBox(width: 10.0),
+                        RaisedButton.icon(
+                            label: Text('remove',
+                                style: TextStyle(color: Colors.white)),
+                            color: Colors.teal,
+                            icon: Icon(
+                              Icons.remove,
+                              color: Colors.white,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                locationset = false;
+                              });
+                            })
+                      ],
+                    ),
+                  ),
+                )
+              : SizedBox(height: 0.0),
           Padding(
             padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
             child: Text('Contact Number'),

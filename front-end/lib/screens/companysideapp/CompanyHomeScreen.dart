@@ -3,6 +3,7 @@ import 'package:badges/badges.dart';
 import 'new_requests_screen.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
+import 'package:paani/screens/companysideapp/drawer.dart';
 
 class Order {
   int order_id;
@@ -110,17 +111,12 @@ class _CompanyHomeScreenState extends State<CompanyHomeScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.teal,
-        leading: FlatButton(
-          onPressed: () {},
-          child: Icon(
-            Icons.menu,
-          ),
-        ),
       ),
+      drawer: DrawerDetails(),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Image.asset('images/logo_transparentbg.png'),
+          Image.asset('assets/logo_transparentbg.png'),
           FlatButton(
             onPressed: () {
               setState(() {

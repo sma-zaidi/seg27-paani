@@ -25,7 +25,7 @@ class HomeScreenState extends State<CustomerHomeScreen> {
         headers: {"Accept": "application/json"});
     //print(response.body);
     Map<String, dynamic> mapCompanies = json.decode(responseCompanies.body);
-    companies = map["msg"];
+    companies = mapCompanies["msg"];
     for (int i = 0; i < companies.length; i++) {
       var responsePackages = await http.get(
           "https://seg27-paani-backend.herokuapp.com/packages/${companies[i]['id']}",
@@ -35,7 +35,7 @@ class HomeScreenState extends State<CustomerHomeScreen> {
     }
     setState(() {
       searchCompanies = companies;
-    });  
+    });
     //String name=data[0]["name"];
     //List<dynamic> data= jsonDecode(response.body);
     //print(data[1]["company_id"]);
@@ -51,7 +51,7 @@ class HomeScreenState extends State<CustomerHomeScreen> {
           .toList();
     });
   }
-  
+
   String getPackageCapacities(Map<String, dynamic> company) {
     // Returns all bowser capacities of packages
     String returnString = "Services: ";
@@ -93,7 +93,7 @@ class HomeScreenState extends State<CustomerHomeScreen> {
         prices.substring(0, prices.length - 2); //To remove comma at the end
     return returnString;
   }
-  
+
   @override
   //this functions is called before anything gets rendered to the screen
   // ignore: must_call_super
