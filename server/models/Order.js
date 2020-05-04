@@ -32,15 +32,7 @@ Order = {
             return result;
         }catch (error) {throw new Error(error)}
     },
-
-    ongoing: async(customerid) => {
-        try {
-
-            result = await Order.getlatestOrder(customerid);
-            return result.length ? true : false;
-
-        } catch (error) { throw new Error(error) }
-    },    
+  
 
     getByCompanyAndStatus: async (companyid, status) => {
         try {
