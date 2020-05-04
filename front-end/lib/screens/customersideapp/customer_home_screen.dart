@@ -25,7 +25,7 @@ class HomeScreenState extends State<CustomerHomeScreen> {
     //print(response.body);
     this.setState(() {
       Map<String, dynamic> map = json.decode(response.body);
-      companies = map["message"];
+      companies = map["msg"];
       searchCompanies = companies;
     });
     //String name=data[0]["name"];
