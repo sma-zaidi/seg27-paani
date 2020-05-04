@@ -22,7 +22,7 @@ class _CustomerSignupScreenState extends State<CustomerSignupScreen> {
   Future<bool> _verifyEmail() async {
     try {
       var response =
-          await http.post('http://192.168.10.7:7777/users/register/', body: {
+          await http.post('https://seg27-paani-backend.herokuapp.com/users/register/', body: {
         'email': _email,
         'password': _password,
         'name': _name,
