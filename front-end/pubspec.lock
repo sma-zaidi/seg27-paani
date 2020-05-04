@@ -111,6 +111,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.0.1"
+  flutter_spinkit:
+    dependency: "direct main"
+    description:
+      name: flutter_spinkit
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "4.1.2+1"
   flutter_star_rating:
     dependency: "direct main"
     description:
@@ -310,13 +317,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.8"
-  wc_form_validators:
-    dependency: "direct main"
-    description:
-      name: wc_form_validators
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.1.1"
   xml:
     dependency: transitive
     description:

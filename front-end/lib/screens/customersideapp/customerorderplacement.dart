@@ -6,6 +6,7 @@ import 'package:paani/screens/customersideapp/orderplacementpackage.dart';
 import 'package:paani/screens/customersideapp/order_confirmation.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:paani/screens/customersideapp/googlemaps/G_Map.dart';
+import 'package:paani/globals.dart' as globals;
 
 class Place_Order_Screen extends StatefulWidget {
   var data;
@@ -21,9 +22,12 @@ class _Place_Order_ScreenState extends State<Place_Order_Screen> {
   static Package pkg1 = Package.forPractice(1, 1001, 50, 3500, 3.5);
   static Package pkg2 = Package.forPractice(2, 1001, 25, 2000, 3.3);
   static Package pkg3 = Package.forPractice(3, 1001, 30, 2300, 3.6);
-  final ctrl1 = TextEditingController();
+  // final ctrl1 = TextEditingController();
   final ctrl2 = TextEditingController();
   final ctrl3 = TextEditingController();
+  String address;
+  String contact;
+  bool locationset = false;
   List<DropdownMenuItem<Package>> menuItems =
       [pkg1, pkg2, pkg3].map<DropdownMenuItem<Package>>((Package pkg) {
     return DropdownMenuItem<Package>(
@@ -50,6 +54,9 @@ class _Place_Order_ScreenState extends State<Place_Order_Screen> {
     // TODO: implement initState
     super.initState();
     // you can have different listner functions if you wish
+    ctrl2.addListener(() {
+      contact = ctrl2.text;
+    });
     ctrl3.addListener(onChange);
   }
 
@@ -97,10 +104,14 @@ class _Place_Order_ScreenState extends State<Place_Order_Screen> {
             child: Card(
               margin: EdgeInsets.symmetric(vertical: 12.0),
               child: TextField(
+                enabled: locationset ? false : true,
                 decoration: InputDecoration(
                   hintText: 'Address',
                 ),
-                controller: ctrl1,
+                // controller: ctrl1,
+                onChanged: (text) {
+                  address = text;
+                },
               ),
             ),
           ),
@@ -111,28 +122,45 @@ class _Place_Order_ScreenState extends State<Place_Order_Screen> {
             padding: const EdgeInsets.only(left: 20, right: 20, top: 10),
             child: Card(
               color: Colors.teal,
-              child: FlatButton(
-                onPressed: () async {
-                  final position = await Geolocator().getCurrentPosition(
-                      desiredAccuracy: LocationAccuracy.high);
-                  dynamic result = await Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              G_Map(position.latitude, position.longitude)));
-                },
-                child: ListTile(
-                  title: Center(
-                    child: Text(
-                      'Current Location',
-                      style: TextStyle(color: Colors.white),
+              child: Column(
+                children: <Widget>[
+                  FlatButton(
+                    onPressed: () async {
+                      final position = await Geolocator().getCurrentPosition(
+                          desiredAccuracy: LocationAccuracy.high);
+                      dynamic result = await Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => G_Map(
+                                  position.latitude, position.longitude)));
+                      if (result != null) {
+                        setState(() {
+                          address = result.toString();
+                          locationset = true;
+                        });
+                      }
+                    },
+                    child: ListTile(
+                      title: Center(
+                        child: Text(
+                          'Current Location',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
+                      trailing: Icon(
+                        Icons.location_on,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
-                  trailing: Icon(
-                    Icons.location_on,
-                    color: Colors.white,
-                  ),
-                ),
+                  locationset
+                      ? Padding(
+                          padding:
+                              const EdgeInsets.fromLTRB(20.0, 8.0, 20.0, 8.0),
+                          child: Text("Your location has been set"),
+                        )
+                      : null,
+                ],
               ),
             ),
           ),
