@@ -10,7 +10,7 @@ router.get('/:companyid', async (req, res, next) => {
         if (result.length === 0){
             return res.json({error: 'false', msg:"No Packages Found!"})
         }
-        return res.json({msg:result})
+        return res.json({error: 'false', msg:result})
     } catch (error) {
         res.json({error: error})
     }
