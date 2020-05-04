@@ -15,7 +15,7 @@ class CustomerHomeScreen extends StatefulWidget {
 
 class HomeScreenState extends State<CustomerHomeScreen> {
   bool isSearching = false;
-  List<dynamic> companies;
+  List<dynamic> companies = [];
   List<dynamic> searchCompanies = [];
   var allCompanyPackages;
   Future<void> getData() async {
@@ -24,8 +24,8 @@ class HomeScreenState extends State<CustomerHomeScreen> {
         "https://seg27-paani-backend.herokuapp.com/companies",
         headers: {"Accept": "application/json"});
     //print(response.body);
-    Map<String, dynamic> mapCompanies = json.decode(responseCompanies.body);
-    companies = map["msg"];
+    var mapCompanies = jsonDecode(responseCompanies.body);
+    companies = mapCompanies['msg'];
     for (int i = 0; i < companies.length; i++) {
       var responsePackages = await http.get(
           "https://seg27-paani-backend.herokuapp.com/packages/${companies[i]['id']}",
@@ -35,7 +35,8 @@ class HomeScreenState extends State<CustomerHomeScreen> {
     }
     setState(() {
       searchCompanies = companies;
-    });  
+    });
+    print(searchCompanies);
     //String name=data[0]["name"];
     //List<dynamic> data= jsonDecode(response.body);
     //print(data[1]["company_id"]);
@@ -51,7 +52,7 @@ class HomeScreenState extends State<CustomerHomeScreen> {
           .toList();
     });
   }
-  
+
   String getPackageCapacities(Map<String, dynamic> company) {
     // Returns all bowser capacities of packages
     String returnString = "Services: ";
@@ -93,7 +94,7 @@ class HomeScreenState extends State<CustomerHomeScreen> {
         prices.substring(0, prices.length - 2); //To remove comma at the end
     return returnString;
   }
-  
+
   @override
   //this functions is called before anything gets rendered to the screen
   // ignore: must_call_super
@@ -205,8 +206,11 @@ class HomeScreenState extends State<CustomerHomeScreen> {
                                       height: 10,
                                     ),
                                     new Text(
-                                      getPackageCapacities(
-                                          searchCompanies[index]),
+                                      searchCompanies[index]['packages'] ==
+                                              "No Packages Found!"
+                                          ? 'Services: '
+                                          : getPackageCapacities(
+                                              searchCompanies[index]),
                                       style: new TextStyle(
                                         fontSize: 14,
                                       ),
@@ -215,8 +219,11 @@ class HomeScreenState extends State<CustomerHomeScreen> {
                                       height: 10,
                                     ),
                                     new Text(
-                                      getPackageBasePrices(
-                                          searchCompanies[index]),
+                                      searchCompanies[index]['packages'] !=
+                                              "No Packages Found!"
+                                          ? getPackageBasePrices(
+                                              searchCompanies[index])
+                                          : 'Base Price: ',
                                       style: new TextStyle(
                                         fontSize: 14,
                                       ),
@@ -225,8 +232,11 @@ class HomeScreenState extends State<CustomerHomeScreen> {
                                       height: 10,
                                     ),
                                     new Text(
-                                      getPackageKMPrices(
-                                          searchCompanies[index]),
+                                      searchCompanies[index]['packages'] !=
+                                              "No Packages Found!"
+                                          ? getPackageKMPrices(
+                                              searchCompanies[index])
+                                          : 'Price per Km: ',
                                       style: new TextStyle(
                                         fontSize: 14,
                                       ),
@@ -236,15 +246,45 @@ class HomeScreenState extends State<CustomerHomeScreen> {
                                     ),
                                     new RaisedButton(
                                       onPressed: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    Place_Order_Screen(
-                                                      data:
-                                                          searchCompanies[index]
-                                                              ['name'],
-                                                    )));
+                                        if (searchCompanies[index]
+                                                ['packages'] !=
+                                            "No Packages Found!") {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      Place_Order_Screen(
+                                                        data: searchCompanies[
+                                                            index],
+                                                      )));
+                                        } else {
+                                          showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return AlertDialog(
+                                                  title: Text(
+                                                    'Company has no Packages available right now',
+                                                    style: TextStyle(
+                                                        color: Colors.teal),
+                                                  ),
+                                                  actions: <Widget>[
+                                                    FlatButton(
+                                                      child: Text(
+                                                        'OK',
+                                                        style: TextStyle(
+                                                            color:
+                                                                Colors.white),
+                                                      ),
+                                                      color: Colors.teal,
+                                                      onPressed: () {
+                                                        Navigator.of(context)
+                                                            .pop();
+                                                      },
+                                                    ),
+                                                  ],
+                                                );
+                                              });
+                                        }
                                       },
                                       child: new Text('Order'),
                                       textColor: Colors.white,
@@ -278,3 +318,4 @@ class HomeScreenState extends State<CustomerHomeScreen> {
     );
   }
 }
+

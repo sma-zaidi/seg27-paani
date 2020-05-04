@@ -1,17 +1,15 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:paani/globals.dart' as globals;
+// import 'package:paani/globals.dart' as globals;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
-
   @override
   _LoginScreenState createState() => _LoginScreenState();
-
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final formKey = GlobalKey<FormState>();
 
@@ -34,65 +32,72 @@ class _LoginScreenState extends State<LoginScreen> {
     ));
   }
 
-  Future<String> _logUserIn() async { // handles user login
+  Future<String> _logUserIn() async {
+    // handles user login
 
     try {
-      var result = await http.post('https://seg27-paani-backend.herokuapp.com/users/login',
+      var result = await http.post(
+          'https://seg27-paani-backend.herokuapp.com/users/login',
           body: {'email': _email, 'password': _password});
 
       var response = json.decode(result.body);
-
+      print(response);
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setString("email", _email);
+      prefs.setString("password", _password);
       if (response['error'] == false) {
         Map message = response['msg'];
 
-        globals.id = message['id'].toString(); // session id
-        globals.name = message['name'].toString();
-
+        prefs.setString("userid", message['id'].toString()); // session id
+        prefs.setString("username", message['name'].toString());
         if (message.containsKey('ntn')) {
-          globals.address = message['address'].toString();
-          globals.contactnumber = message['contact_number'].toString();
-          globals.ntnnumber = message['ntn'].toString();
+          prefs.setString("address", message['address'].toString());
+          prefs.setString("contact", message['contact_number'].toString());
+          prefs.setString("ntn", message['ntn'].toString());
+          prefs.setString("accounttype", "COMPANY");
           return 'company';
-        } else return 'customer';
-
+        } else {
+          prefs.setString("accounttype", 'COSTUMER');
+          return 'customer';
+        }
       } else {
         return 'invalid login';
       }
-    } catch (error) { print(error); return 'error'; }
-
+    } catch (error) {
+      print(error);
+      return 'error';
+    }
   }
 
-  void _submit() async { 
-
-     _loading = true;
+  void _submit() async {
+    _loading = true;
 
     final form = formKey.currentState;
 
     if (form.validate()) {
-
       form.save();
 
       var result = await _logUserIn();
 
       if (result == 'error') {
         _showSnackBar('Unable to reach Paani\'s servers');
-      } else if (result == 'customer') { // credentials match a customer account
+      } else if (result == 'customer') {
+        // credentials match a customer account
         Navigator.pushNamedAndRemoveUntil(
             context, '/customerhomescreen', (_) => false);
-      } else if (result == 'company') { // credentials match a company account
+      } else if (result == 'company') {
+        // credentials match a company account
         Navigator.pushNamedAndRemoveUntil(
             context, '/companyhomescreen', (_) => false);
       } else {
         _showSnackBar("Incorrect email or password");
       }
-
     }
 
     _loading = false;
   }
 
   Widget build(BuildContext context) {
-
     Widget paaniLogo = Padding(
       padding: EdgeInsets.only(top: 0.0),
       child: Container(

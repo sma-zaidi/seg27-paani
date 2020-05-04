@@ -6,7 +6,6 @@ import 'package:paani/screens/customersideapp/orderplacementpackage.dart';
 import 'package:paani/screens/customersideapp/order_confirmation.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:paani/screens/customersideapp/googlemaps/G_Map.dart';
-import 'package:paani/globals.dart' as globals;
 
 class Place_Order_Screen extends StatefulWidget {
   var data;
@@ -19,23 +18,11 @@ class Place_Order_Screen extends StatefulWidget {
 class _Place_Order_ScreenState extends State<Place_Order_Screen> {
   var data;
   _Place_Order_ScreenState({this.data});
-  static Package pkg1 = Package.forPractice(1, 1001, 50, 3500, 3.5);
-  static Package pkg2 = Package.forPractice(2, 1001, 25, 2000, 3.3);
-  static Package pkg3 = Package.forPractice(3, 1001, 30, 2300, 3.6);
-  // final ctrl1 = TextEditingController();
+  final ctrl1 = TextEditingController();
   final ctrl2 = TextEditingController();
   final ctrl3 = TextEditingController();
-  String address;
-  String contact;
-  bool locationset = false;
-  List<DropdownMenuItem<Package>> menuItems =
-      [pkg1, pkg2, pkg3].map<DropdownMenuItem<Package>>((Package pkg) {
-    return DropdownMenuItem<Package>(
-      value: pkg,
-      child: Center(child: Text(pkg.tankerCap.toString())),
-    );
-  }).toList();
-  Package selectedPkg;
+  var menuItems;
+  var selected;
   void onChange() {
     if (ctrl3.text.length == 8) {
       String days = ctrl3.text.substring(0, 2);
@@ -46,18 +33,30 @@ class _Place_Order_ScreenState extends State<Place_Order_Screen> {
     }
   }
 
+  List<String> pkgIDs = [];
   String companyName;
+  bool showDetails = false;
 
   @override
   void initState() {
-    companyName = data;
+    companyName = data['name'];
+    menuItems = data['packages'];
+    for (int i = 0; i < menuItems.length; i++) {
+      pkgIDs.add(menuItems[i]['id'].toString());
+    }
+    print(data);
     // TODO: implement initState
     super.initState();
     // you can have different listner functions if you wish
-    ctrl2.addListener(() {
-      contact = ctrl2.text;
-    });
     ctrl3.addListener(onChange);
+  }
+
+  int getPkgDetails(int pkg_id) {
+    for (int i = 0; i < menuItems.length; i++) {
+      if (pkg_id == menuItems[i]['id']) {
+        return i;
+      }
+    }
   }
 
   @override
@@ -104,14 +103,10 @@ class _Place_Order_ScreenState extends State<Place_Order_Screen> {
             child: Card(
               margin: EdgeInsets.symmetric(vertical: 12.0),
               child: TextField(
-                enabled: locationset ? false : true,
                 decoration: InputDecoration(
                   hintText: 'Address',
                 ),
-                // controller: ctrl1,
-                onChanged: (text) {
-                  address = text;
-                },
+                controller: ctrl1,
               ),
             ),
           ),
@@ -122,45 +117,28 @@ class _Place_Order_ScreenState extends State<Place_Order_Screen> {
             padding: const EdgeInsets.only(left: 20, right: 20, top: 10),
             child: Card(
               color: Colors.teal,
-              child: Column(
-                children: <Widget>[
-                  FlatButton(
-                    onPressed: () async {
-                      final position = await Geolocator().getCurrentPosition(
-                          desiredAccuracy: LocationAccuracy.high);
-                      dynamic result = await Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => G_Map(
-                                  position.latitude, position.longitude)));
-                      if (result != null) {
-                        setState(() {
-                          address = result.toString();
-                          locationset = true;
-                        });
-                      }
-                    },
-                    child: ListTile(
-                      title: Center(
-                        child: Text(
-                          'Current Location',
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      ),
-                      trailing: Icon(
-                        Icons.location_on,
-                        color: Colors.white,
-                      ),
+              child: FlatButton(
+                onPressed: () async {
+                  final position = await Geolocator().getCurrentPosition(
+                      desiredAccuracy: LocationAccuracy.high);
+                  dynamic result = await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              G_Map(position.latitude, position.longitude)));
+                },
+                child: ListTile(
+                  title: Center(
+                    child: Text(
+                      'Current Location',
+                      style: TextStyle(color: Colors.white),
                     ),
                   ),
-                  locationset
-                      ? Padding(
-                          padding:
-                              const EdgeInsets.fromLTRB(20.0, 8.0, 20.0, 8.0),
-                          child: Text("Your location has been set"),
-                        )
-                      : null,
-                ],
+                  trailing: Icon(
+                    Icons.location_on,
+                    color: Colors.white,
+                  ),
+                ),
               ),
             ),
           ),
@@ -199,18 +177,53 @@ class _Place_Order_ScreenState extends State<Place_Order_Screen> {
           Padding(
             padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
             child: Center(
-              child: DropdownButton<Package>(
-                items: menuItems,
-                hint: Text('Select Tanker Capacity'),
-                onChanged: (Package pkg) {
+              child: DropdownButton<String>(
+                items: pkgIDs.map((String pkg) {
+                  return DropdownMenuItem<String>(
+                    value: pkg,
+                    child: Center(
+                      child: Center(child: Text('Package: ${pkg}')),
+                    ),
+                  );
+                }).toList(),
+                hint: Text('Select Package'),
+                onChanged: (String val) {
                   setState(() {
-                    selectedPkg = pkg;
+                    selected = val;
+                    showDetails = true;
                   });
+                  print(selected);
                 },
-                value: selectedPkg,
+                value: selected,
               ),
             ),
           ),
+          showDetails == true
+              ? Padding(
+                  padding: const EdgeInsets.only(top: 20),
+                  child: Center(
+                    child: Container(
+                      width: 200,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Text(
+                              'Capacity: ${menuItems[getPkgDetails(int.parse(selected))]['bowser_capacity']} litres'),
+                          Text(
+                              'Base Price: ${menuItems[getPkgDetails(int.parse(selected))]['price_base']} Rupees'),
+                          Text(''
+                              'Price per Km: ${menuItems[getPkgDetails(int.parse(selected))]['price_per_km']} Rupees'),
+                        ],
+                      ),
+                    ),
+                  ),
+                )
+              : Padding(
+                  padding: EdgeInsets.only(top: 20),
+                  child: Center(
+                    child: Text('Please Select a Package to Proceed'),
+                  ),
+                ),
           Padding(
             padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
             child: Card(
@@ -236,10 +249,7 @@ class _Place_Order_ScreenState extends State<Place_Order_Screen> {
                       "Content-Type": "application/json",
                     },
                   );
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => Order_Confirmation()));
+                  Navigator.pushNamed(context, '/order_confirmation');
                 },
               ),
             ),
@@ -249,3 +259,4 @@ class _Place_Order_ScreenState extends State<Place_Order_Screen> {
     );
   }
 }
+
