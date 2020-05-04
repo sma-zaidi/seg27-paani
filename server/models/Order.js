@@ -36,7 +36,7 @@ Order = {
     ongoing: async(customerid) => {
         try {
 
-            result = await Order.getLatestOrder(customerid);
+            result = await Order.getlatestOrder(customerid);
             return result.length ? true : false;
 
         } catch (error) { throw new Error(error) }
