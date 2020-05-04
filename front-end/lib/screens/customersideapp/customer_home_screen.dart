@@ -17,17 +17,25 @@ class HomeScreenState extends State<CustomerHomeScreen> {
   bool isSearching = false;
   List<dynamic> companies;
   List<dynamic> searchCompanies = [];
+  var allCompanyPackages;
   Future<void> getData() async {
     //var type -- http.response
-    var response = await http.get(
+    var responseCompanies = await http.get(
         "https://seg27-paani-backend.herokuapp.com/companies",
         headers: {"Accept": "application/json"});
     //print(response.body);
-    this.setState(() {
-      Map<String, dynamic> map = json.decode(response.body);
-      companies = map["msg"];
+    Map<String, dynamic> mapCompanies = json.decode(responseCompanies.body);
+    companies = map["msg"];
+    for (int i = 0; i < companies.length; i++) {
+      var responsePackages = await http.get(
+          "https://seg27-paani-backend.herokuapp.com/packages/${companies[i]['id']}",
+          headers: {"Accept": "application/json"});
+      var mapPackages = jsonDecode(responsePackages.body);
+      companies[i]['packages'] = mapPackages['msg'];
+    }
+    setState(() {
       searchCompanies = companies;
-    });
+    });  
     //String name=data[0]["name"];
     //List<dynamic> data= jsonDecode(response.body);
     //print(data[1]["company_id"]);
@@ -43,7 +51,49 @@ class HomeScreenState extends State<CustomerHomeScreen> {
           .toList();
     });
   }
+  
+  String getPackageCapacities(Map<String, dynamic> company) {
+    // Returns all bowser capacities of packages
+    String returnString = "Services: ";
+    String bowsers = "";
+    for (int i = 0; i < company['packages'].length; i++) {
+      bowsers = bowsers +
+          company['packages'][i]['bowser_capacity'].toString() +
+          " Litres, ";
+    }
+    returnString = returnString +
+        bowsers.substring(0, bowsers.length - 2); //To remove comma at the end
+    return returnString;
+  }
 
+  String getPackageBasePrices(Map<String, dynamic> company) {
+    // Returns all base prices of packages
+    String returnString = "Base Prices: ";
+    String prices = "";
+    for (int i = 0; i < company['packages'].length; i++) {
+      prices = prices +
+          company['packages'][i]['price_base'].toString() +
+          " Rupees, ";
+    }
+    returnString = returnString +
+        prices.substring(0, prices.length - 2); //To remove comma at the end
+    return returnString;
+  }
+
+  String getPackageKMPrices(Map<String, dynamic> company) {
+    // Returns all price/Km of packages
+    String returnString = "Price/Km: ";
+    String prices = "";
+    for (int i = 0; i < company['packages'].length; i++) {
+      prices = prices +
+          company['packages'][i]['price_per_km'].toString() +
+          " Rupees, ";
+    }
+    returnString = returnString +
+        prices.substring(0, prices.length - 2); //To remove comma at the end
+    return returnString;
+  }
+  
   @override
   //this functions is called before anything gets rendered to the screen
   // ignore: must_call_super
@@ -139,7 +189,7 @@ class HomeScreenState extends State<CustomerHomeScreen> {
                               ),
                               new Container(
                                 padding: const EdgeInsets.all(20),
-                                height: 225,
+                                width: 182,
                                 child: new Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
@@ -155,7 +205,8 @@ class HomeScreenState extends State<CustomerHomeScreen> {
                                       height: 10,
                                     ),
                                     new Text(
-                                      'Services:',
+                                      getPackageCapacities(
+                                          searchCompanies[index]),
                                       style: new TextStyle(
                                         fontSize: 14,
                                       ),
@@ -164,7 +215,8 @@ class HomeScreenState extends State<CustomerHomeScreen> {
                                       height: 10,
                                     ),
                                     new Text(
-                                      'Base Price:',
+                                      getPackageBasePrices(
+                                          searchCompanies[index]),
                                       style: new TextStyle(
                                         fontSize: 14,
                                       ),
@@ -173,7 +225,8 @@ class HomeScreenState extends State<CustomerHomeScreen> {
                                       height: 10,
                                     ),
                                     new Text(
-                                      'Price/km:',
+                                      getPackageKMPrices(
+                                          searchCompanies[index]),
                                       style: new TextStyle(
                                         fontSize: 14,
                                       ),
