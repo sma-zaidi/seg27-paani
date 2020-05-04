@@ -27,4 +27,15 @@ router.post('/', async (req, res, next) => {
     }
 })
 
+router.get('/:companyid', async (req, res, next) => {
+    company_id = req.params.company_id
+
+    try{
+        result = await Driver.getDrivers();
+        return res.json({error:"false", msg:result})
+    }catch (error){
+        return res.json({error:error})
+    }
+})
+
 module.exports = router

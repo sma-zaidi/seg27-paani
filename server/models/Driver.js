@@ -19,6 +19,13 @@ Driver = {
             return result.insertId;
         }catch (error) {throw new Error(error);}
     },
+
+    getDrivers: async (companyid) => {
+        try {
+            result = await query(`SELECT * FROM \`seg27-paani\`.drivers WHERE company_id = ?`, [companyid]);
+            return result;
+        } catch (error) { throw new Error(error) }
+    }
 }
 
 module.exports = Driver
