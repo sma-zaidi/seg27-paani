@@ -52,4 +52,15 @@ router.put('/', async (req, res, next) => { // create a package
     } catch (error) { console.log(error) ; return res.json({error: error}) };
 })
 
+router.delete('/:driverid', async (req, res, next) => {
+    driver_id = req.params.driverid
+
+    try{
+        result = await Driver.destroy(driver_id);
+        return res.json({error:"false", msg:result})
+    }catch (error){
+        return res.json({error:error})
+    }
+})
+
 module.exports = router
