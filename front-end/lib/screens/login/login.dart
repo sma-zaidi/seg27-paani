@@ -4,11 +4,14 @@ import 'package:http/http.dart' as http;
 import 'package:paani/globals.dart' as globals;
 
 class LoginScreen extends StatefulWidget {
+
   @override
   _LoginScreenState createState() => _LoginScreenState();
+
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final formKey = GlobalKey<FormState>();
 
@@ -31,49 +34,65 @@ class _LoginScreenState extends State<LoginScreen> {
     ));
   }
 
-  Future<String> _logUserIn() async {
-    var result = await http.post('http://192.168.10.7:7777/users/login',
-        body: {'email': _email, 'password': _password});
-    var credentials = json.decode(result.body);
-    print(credentials);
-    Map message = credentials['msg'];
-    if (credentials['error'] == false) {
-      globals.name = message['name'].toString();
-      globals.id = message['id'].toString();
-      if (message.containsKey('ntn')) {
-        globals.address = message['address'].toString();
-        globals.contactnumber = message['contact_number'].toString();
-        globals.ntnnumber = message['ntn'].toString();
-        return 'company';
+  Future<String> _logUserIn() async { // handles user login
+
+    try {
+      var result = await http.post('https://seg27-paani-backend.herokuapp.com/users/login',
+          body: {'email': _email, 'password': _password});
+
+      var response = json.decode(result.body);
+
+      if (response['error'] == false) {
+        Map message = response['msg'];
+
+        globals.id = message['id'].toString(); // session id
+        globals.name = message['name'].toString();
+
+        if (message.containsKey('ntn')) {
+          globals.address = message['address'].toString();
+          globals.contactnumber = message['contact_number'].toString();
+          globals.ntnnumber = message['ntn'].toString();
+          return 'company';
+        } else return 'customer';
+
       } else {
-        return 'customer';
+        return 'invalid login';
       }
-    } else {
-      return 'invalid login';
-    }
+    } catch (error) { print(error); return 'error'; }
+
   }
 
-  void _submit() async {
+  void _submit() async { 
+
+     _loading = true;
+
     final form = formKey.currentState;
 
-    _loading = true;
-
     if (form.validate()) {
+
       form.save();
-      if (await _logUserIn() == 'customer') {
+
+      var result = await _logUserIn();
+
+      if (result == 'error') {
+        _showSnackBar('Unable to reach Paani\'s servers');
+      } else if (result == 'customer') { // credentials match a customer account
         Navigator.pushNamedAndRemoveUntil(
             context, '/customerhomescreen', (_) => false);
-      } else if (await _logUserIn() == 'company') {
+      } else if (result == 'company') { // credentials match a company account
         Navigator.pushNamedAndRemoveUntil(
             context, '/companyhomescreen', (_) => false);
       } else {
-        _showSnackBar("Incorrect credentials");
+        _showSnackBar("Incorrect email or password");
       }
+
     }
+
     _loading = false;
   }
 
   Widget build(BuildContext context) {
+
     Widget paaniLogo = Padding(
       padding: EdgeInsets.only(top: 0.0),
       child: Container(
@@ -113,7 +132,7 @@ class _LoginScreenState extends State<LoginScreen> {
             TextFormField(
               validator: (text) {
                 if (text.isEmpty) {
-                  return 'Please enter some text';
+                  return 'Please enter your email address';
                 }
                 return null;
               },
@@ -127,7 +146,7 @@ class _LoginScreenState extends State<LoginScreen> {
             TextFormField(
               validator: (text) {
                 if (text.isEmpty) {
-                  return 'Please enter some text';
+                  return 'Please enter your password';
                 }
                 return null;
               },
