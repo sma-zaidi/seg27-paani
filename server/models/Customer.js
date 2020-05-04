@@ -28,6 +28,7 @@ Customer = {
                                     address = ?,
                                     location=?,
                                   WHERE id = ?`, [name, contact_number,address, location, id]);
+                                  
             return result;
 
         } catch (error) { throw new Error(error) }
