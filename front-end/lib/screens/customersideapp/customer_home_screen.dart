@@ -28,7 +28,6 @@ class HomeScreenState extends State<CustomerHomeScreen> {
       //print(response.body);
       this.setState(() {
         Map<String, dynamic> map = json.decode(response.body);
-        print(map["msg"]);
         companies = map["msg"];
         searchCompanies = companies;
         internetworking = "yes";
@@ -37,8 +36,8 @@ class HomeScreenState extends State<CustomerHomeScreen> {
       setState(() {
         internetworking = 'no';
       });
-      print(e);
     }
+    //var type -- http.response
     //String name=data[0]["name"];
     //List<dynamic> data= jsonDecode(response.body);
     //print(data[1]["company_id"]);
