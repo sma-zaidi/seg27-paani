@@ -21,18 +21,25 @@ class Order {
   }
 }
 
+bool internetissue = false;
+
 List<Order> orders = [];
 
 Future<void> getOrders() async {
-  var response =
-      await http.get('https://seg27-paani-backend.herokuapp.com/orders');
-  var extractedData = convert.jsonDecode(response.body);
-  List loadedOrders = extractedData['message'];
-  for (var i in loadedOrders) {
-    orders.add(Order(
-        order_id: i['order_id'],
-        location: i['location'],
-        capacity: i['bowser_capacity']));
+  try {
+    var response =
+        await http.get('https://seg27-paani-backend.herokuapp.com/orders');
+    var extractedData = convert.jsonDecode(response.body);
+    List loadedOrders = extractedData['message'];
+    for (var i in loadedOrders) {
+      orders.add(Order(
+          order_id: i['order_id'],
+          location: i['location'],
+          capacity: i['bowser_capacity']));
+    }
+    internetissue = false;
+  } catch (e) {
+    internetissue = true;
   }
 }
 
