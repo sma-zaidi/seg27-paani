@@ -32,17 +32,18 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Future<String> _logUserIn() async {
-    var result = await http.post('http://192.168.10.10:7777/users/login',
-        body: {'email_address': _email, 'password': _password});
+    var result = await http.post('http://192.168.10.7:7777/users/login',
+        body: {'email': _email, 'password': _password});
     var credentials = json.decode(result.body);
     print(credentials);
+    Map message = credentials['msg'];
     if (credentials['error'] == false) {
-      globals.name = credentials['msg']['name'];
-      globals.id = credentials['id'];
-      if (credentials['msg'].containskey('ntn')) {
-        globals.address = credentials['msg']['address'];
-        globals.contactnumber = credentials['msg']['contact_number'];
-        globals.ntnnumber = credentials['msg']['ntn'];
+      globals.name = message['name'].toString();
+      globals.id = message['id'].toString();
+      if (message.containsKey('ntn')) {
+        globals.address = message['address'].toString();
+        globals.contactnumber = message['contact_number'].toString();
+        globals.ntnnumber = message['ntn'].toString();
         return 'company';
       } else {
         return 'customer';
@@ -59,7 +60,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
     if (form.validate()) {
       form.save();
-
       if (await _logUserIn() == 'customer') {
         Navigator.pushNamedAndRemoveUntil(
             context, '/customerhomescreen', (_) => false);
@@ -67,7 +67,7 @@ class _LoginScreenState extends State<LoginScreen> {
         Navigator.pushNamedAndRemoveUntil(
             context, '/companyhomescreen', (_) => false);
       } else {
-        _showSnackBar("Incorrect email credentials");
+        _showSnackBar("Incorrect credentials");
       }
     }
     _loading = false;

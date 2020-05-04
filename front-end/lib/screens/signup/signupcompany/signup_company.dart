@@ -766,9 +766,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:wc_form_validators/wc_form_validators.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:email_validator/email_validator.dart';
 
 class CompanySignupScreen extends StatefulWidget {
   @override
@@ -777,24 +777,25 @@ class CompanySignupScreen extends StatefulWidget {
 
 class _CompanySignupScreenState extends State<CompanySignupScreen> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  final formKey = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>();
 
   Future<bool> _verifyEmail() async {
     try {
       var response =
-          await http.post('http://10.0.2.2:7777/users/register/', body: {
+          await http.post('http://192.168.10.7:7777/users/register/', body: {
         'email': _email,
         'password': _password,
         'name': _name,
         'contact_number': _contact,
         'address': _address,
         'ntn': _ntnnumber,
+        'accounttype': "COMPANY",
       });
       print(response.body);
-      if (json.decode(response.body)["message"] == true) {
-        return false;
-      } else {
+      if (json.decode(response.body)["error"] == false) {
         return true;
+      } else {
+        return false;
       }
     } catch (e) {
       print(e);
@@ -803,15 +804,13 @@ class _CompanySignupScreenState extends State<CompanySignupScreen> {
   }
 
   void _submit() async {
-    final form = formKey.currentState;
-
+    final form = _formKey.currentState;
     _loading = true;
-
     form.save();
     if (form.validate()) {
       if (await _verifyEmail()) {
         Navigator.pushNamedAndRemoveUntil(
-            context, '/RegisterTanker', ModalRoute.withName('/Signup_as'));
+            context, '/RegisterTanker', ModalRoute.withName('/'));
       }
     } else {
       _showSnackBar("Sorry Cound't store your information");
@@ -842,20 +841,30 @@ class _CompanySignupScreenState extends State<CompanySignupScreen> {
 
   Widget build(BuildContext context) {
     Widget DetailsForm = Form(
+      key: _formKey,
       child: Column(children: <Widget>[
         TextFormField(
-          validator: Validators.required("Enter your Company Name"),
+          validator: (text) {
+            if (text == null || text.isEmpty) {
+              return 'Company Name is required';
+            }
+            return null;
+          },
           onSaved: (text) => _name = text,
           cursorColor: Theme.of(context).primaryColor,
           decoration: InputDecoration(
-            border: InputBorder.none,
             labelText: 'Company Name',
             hintText: 'Company Name',
             prefixIcon: Icon(Icons.person),
           ),
         ),
         TextFormField(
-          validator: Validators.email("Invalid Email address"),
+          validator: (text) {
+            if (EmailValidator.validate(text) == false) {
+              return 'invalid Email-address';
+            }
+            return null;
+          },
           onSaved: (text) => _email = text,
           cursorColor: Theme.of(context).primaryColor,
           // obscureText: _obscurePassword,
@@ -866,7 +875,12 @@ class _CompanySignupScreenState extends State<CompanySignupScreen> {
           ),
         ),
         TextFormField(
-          validator: Validators.required("Enter your contact number"),
+          validator: (text) {
+            if (text == null || text.isEmpty) {
+              return 'Contact Number is required';
+            }
+            return null;
+          },
           inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
           onSaved: (text) => _contact = text,
           cursorColor: Theme.of(context).primaryColor,
@@ -878,7 +892,12 @@ class _CompanySignupScreenState extends State<CompanySignupScreen> {
           ),
         ),
         TextFormField(
-          validator: Validators.required("Enter your NTN Number"),
+          validator: (text) {
+            if (text == null || text.isEmpty || text.length != 13) {
+              return 'Invalid NTN number';
+            }
+            return null;
+          },
           inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
           onSaved: (text) => _ntnnumber = text,
           cursorColor: Theme.of(context).primaryColor,
@@ -890,12 +909,17 @@ class _CompanySignupScreenState extends State<CompanySignupScreen> {
           ),
         ),
         TextFormField(
-          validator: Validators.required("Enter your Company Address"),
+          validator: (text) {
+            if (text == null || text.isEmpty) {
+              return 'Address is required';
+            }
+            return null;
+          },
           onSaved: (text) => _address = text,
           cursorColor: Theme.of(context).primaryColor,
           // obscureText: _obscurePassword,
           decoration: InputDecoration(
-            labelText: 'Address (optional)',
+            labelText: 'Address',
             hintText: 'Adress',
             prefixIcon: Icon(Icons.view_compact),
           ),
@@ -906,7 +930,7 @@ class _CompanySignupScreenState extends State<CompanySignupScreen> {
                 r'^(?=.*[0-9]+.*)(?=.*[a-zA-Z]+.*)[0-9a-zA-Z]{6,}$';
             RegExp regex = new RegExp(pattern);
             if (!regex.hasMatch(text))
-              return 'Invalid password. Password must has atleast 1 letter, 1 number and must be 6 characters long';
+              return 'Invalid password. Password must has atleast 1 letter,\n 1 number and must be 6 characters long';
             else
               return null;
           },
@@ -963,15 +987,6 @@ class _CompanySignupScreenState extends State<CompanySignupScreen> {
             icon: Icon(Icons.info),
             color: Colors.white,
           ),
-          FlatButton(
-            onPressed: _submit,
-            child: Text(
-              'Next',
-              style: TextStyle(
-                color: Colors.white,
-              ),
-            ),
-          )
         ],
       ),
       body: SingleChildScrollView(
@@ -980,6 +995,19 @@ class _CompanySignupScreenState extends State<CompanySignupScreen> {
           child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.only(top: 20),
+                  child: Text(
+                    'Welcome',
+                    style: TextStyle(
+                        color: Color(0xFF002626),
+                        fontSize: 30.0,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ),
+                SizedBox(
+                  height: 20.0,
+                ),
                 Text(
                   'Please enter the required details:',
                   style: TextStyle(
@@ -994,6 +1022,20 @@ class _CompanySignupScreenState extends State<CompanySignupScreen> {
                   child: Column(
                     children: <Widget>[
                       DetailsForm,
+                      SizedBox(height: 20.0),
+                      ButtonTheme(
+                        minWidth: 170.0,
+                        child: RaisedButton(
+                          color: Colors.teal,
+                          onPressed: _submit,
+                          child: Text(
+                            'Sign Up',
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),

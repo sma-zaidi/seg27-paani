@@ -55,7 +55,7 @@ class CompletedState extends State<Completed> {
                       fit: BoxFit.fill,
                     ),
                   ),
-                )
+                ),
               ]),
         ),
       ),

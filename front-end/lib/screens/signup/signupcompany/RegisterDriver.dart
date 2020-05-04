@@ -171,7 +171,7 @@ class _RegisterDriverScreenState extends State<RegisterDriverScreen> {
                   Navigator.pushAndRemoveUntil(
                       context,
                       MaterialPageRoute(builder: (context) => Accountcreated()),
-                      (_) => false);
+                      ModalRoute.withName('/'));
                 },
               ),
             ),

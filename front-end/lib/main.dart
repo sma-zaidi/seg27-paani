@@ -5,8 +5,6 @@ import 'package:paani/screens/signup/signup_as.dart';
 import 'package:paani/screens/signup/signupcustomer/signup_customer.dart';
 import 'package:paani/screens/signup/signupcompany/signup_company.dart';
 import 'package:paani/screens/customersideapp/customer_home_screen.dart';
-import 'package:paani/screens/customersideapp/order_confirmation.dart';
-import 'package:paani/screens/customersideapp/order_receipt.dart';
 import 'package:paani/screens/signup/signupcompany/RegisterDriver.dart';
 import 'package:paani/screens/signup/signupcompany/RegisterTanker.dart';
 import 'package:paani/screens/companysideapp/CompanyHomeScreen.dart';
