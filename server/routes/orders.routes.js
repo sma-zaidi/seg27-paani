@@ -22,16 +22,16 @@ router.post('/', async (req, res, next) => { // create an order
     if (!customerid || !package_id || !delivery_time || !status || !created || !last_update || !cost) {
         return res.json({error: 'Atleast one of the required fields: customerid, package_id, delivery_time, status, created, last_update, cost is missing.'});
     }
-    else if (!delivery_address && !delivery_location){
+    if (!delivery_address && !delivery_location){
         return res.json({error: 'Both delivery_address and delivery_location are missing.'});
     }
     //No incomplete order
-    try { 
-        if(await Order.ongoing(customerid) == true) {
-            return res.json({error: 'Another order is in progress.'});
-        }
-    } catch (error) {
-        return res.json({error: error});}
+
+    result=await Order.getlatestOrder(customerid);
+    if(result.status != 'complete') {
+        return res.json({error: 'Another order is in progress.'});
+    }
+
     
     try {
         await Order.PlaceOrder(customerid, package_id, delivery_address, delivery_location, delivery_time, status, created, last_update, cost);

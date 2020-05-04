@@ -245,14 +245,45 @@ class HomeScreenState extends State<CustomerHomeScreen> {
                                     ),
                                     new RaisedButton(
                                       onPressed: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    Place_Order_Screen(
-                                                      data: searchCompanies[
-                                                          index],
-                                                    )));
+                                        if (searchCompanies[index]
+                                                ['packages'] !=
+                                            "No Packages Found!") {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      Place_Order_Screen(
+                                                        data: searchCompanies[
+                                                            index],
+                                                      )));
+                                        } else {
+                                          showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return AlertDialog(
+                                                  title: Text(
+                                                    'Company has no Packages available right now',
+                                                    style: TextStyle(
+                                                        color: Colors.teal),
+                                                  ),
+                                                  actions: <Widget>[
+                                                    FlatButton(
+                                                      child: Text(
+                                                        'OK',
+                                                        style: TextStyle(
+                                                            color:
+                                                                Colors.white),
+                                                      ),
+                                                      color: Colors.teal,
+                                                      onPressed: () {
+                                                        Navigator.of(context)
+                                                            .pop();
+                                                      },
+                                                    ),
+                                                  ],
+                                                );
+                                              });
+                                        }
                                       },
                                       child: new Text('Order'),
                                       textColor: Colors.white,

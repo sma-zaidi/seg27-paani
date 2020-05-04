@@ -17,6 +17,7 @@ class Place_Order_Screen extends StatefulWidget {
 
 class _Place_Order_ScreenState extends State<Place_Order_Screen> {
   var data;
+  String delDate;
   _Place_Order_ScreenState({this.data});
   final ctrl1 = TextEditingController();
   final ctrl2 = TextEditingController();
@@ -116,6 +117,7 @@ class _Place_Order_ScreenState extends State<Place_Order_Screen> {
                 enabled: locationset ? false : true,
                 decoration: InputDecoration(
                   hintText: 'Address',
+                  border: InputBorder.none,
                 ),
                 controller: ctrl1,
               ),
@@ -215,6 +217,7 @@ class _Place_Order_ScreenState extends State<Place_Order_Screen> {
               child: TextField(
                 decoration: InputDecoration(
                   hintText: '03001234567',
+                  border: InputBorder.none,
                 ),
                 keyboardType: TextInputType.number,
                 inputFormatters: <TextInputFormatter>[
