@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-// import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:paani/screens/customersideapp/drawer.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter_star_rating/flutter_star_rating.dart';
 import 'package:paani/screens/customersideapp/customerorderplacement.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 //import './Screens/drawer.dart';
 class CustomerHomeScreen extends StatefulWidget {
@@ -15,19 +15,30 @@ class CustomerHomeScreen extends StatefulWidget {
 
 class HomeScreenState extends State<CustomerHomeScreen> {
   bool isSearching = false;
-  List<dynamic> companies;
+  List<dynamic> companies = [];
   List<dynamic> searchCompanies = [];
+  String internetworking = "unknown";
+
   Future<void> getData() async {
-    //var type -- http.response
-    var response = await http.get(
-        "https://seg27-paani-backend.herokuapp.com/companies",
-        headers: {"Accept": "application/json"});
-    //print(response.body);
-    this.setState(() {
-      Map<String, dynamic> map = json.decode(response.body);
-      companies = map["message"];
-      searchCompanies = companies;
-    });
+    try {
+      //var type -- http.response
+      var response = await http.get(
+          "https://seg27-paani-backend.herokuapp.com/companies",
+          headers: {"Accept": "application/json"});
+      //print(response.body);
+      this.setState(() {
+        Map<String, dynamic> map = json.decode(response.body);
+        print(map["msg"]);
+        companies = map["msg"];
+        searchCompanies = companies;
+        internetworking = "yes";
+      });
+    } catch (e) {
+      setState(() {
+        internetworking = 'no';
+      });
+      print(e);
+    }
     //String name=data[0]["name"];
     //List<dynamic> data= jsonDecode(response.body);
     //print(data[1]["company_id"]);
@@ -51,10 +62,12 @@ class HomeScreenState extends State<CustomerHomeScreen> {
     this.getData();
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return new Scaffold(
-      appBar: new AppBar(
+  // Widget actualScreen() {
+// }
+
+  Widget internetissue() {
+    return Scaffold(
+      appBar: AppBar(
         title: !isSearching
             ? Text(
                 "Welcome",
@@ -104,7 +117,92 @@ class HomeScreenState extends State<CustomerHomeScreen> {
         ],
         backgroundColor: Colors.teal,
       ),
-      drawer: new DrawerDetails(),
+      drawer: DrawerDetails(),
+      body: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            ButtonTheme(
+              buttonColor: Colors.grey,
+              child: IconButton(
+                onPressed: () {
+                  getData();
+                },
+                icon: Icon(Icons.refresh),
+                iconSize: 70.0,
+                color: Colors.grey[700],
+              ),
+            ),
+            SizedBox(height: 20.0),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(15.0, 0.0, 15.0, 0.0),
+              child: Text(
+                "Can not connect to the server. Check your Internet Connection",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 25.0,
+                  letterSpacing: 0.5,
+                  color: Colors.grey[800],
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ]),
+    );
+  }
+
+  Widget actualpage() {
+    return Scaffold(
+      appBar: AppBar(
+        title: !isSearching
+            ? Text(
+                "Welcome",
+                style: TextStyle(color: Colors.white),
+              )
+            : TextField(
+                onChanged: (String input) {
+                  searchCompany(input);
+                },
+                style: TextStyle(color: Colors.white),
+                decoration: InputDecoration(
+                    border: InputBorder.none,
+                    hintText: 'Search',
+                    hintStyle: TextStyle(
+                      color: Colors.white,
+                    ),
+                    icon: Icon(
+                      Icons.search,
+                      color: Colors.white,
+                    )),
+              ),
+        actions: <Widget>[
+          !isSearching
+              ? IconButton(
+                  icon: Icon(
+                    Icons.search,
+                    color: Colors.white,
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      isSearching = true;
+                    });
+                  },
+                )
+              : IconButton(
+                  icon: Icon(
+                    Icons.clear,
+                    color: Colors.white,
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      searchCompanies = companies;
+                      isSearching = false;
+                    });
+                  },
+                ),
+        ],
+        backgroundColor: Colors.teal,
+      ),
+      drawer: DrawerDetails(),
       body: SingleChildScrollView(
         child: new Column(
           children: <Widget>[
@@ -223,5 +321,23 @@ class HomeScreenState extends State<CustomerHomeScreen> {
         ),
       ),
     );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (internetworking == "yes") {
+      return actualpage();
+    } else if (internetworking == "no") {
+      return internetissue();
+    } else {
+      return Scaffold(
+        body: Center(
+          child: SpinKitRotatingCircle(
+            color: Colors.teal,
+            size: 50.0,
+          ),
+        ),
+      );
+    }
   }
 }

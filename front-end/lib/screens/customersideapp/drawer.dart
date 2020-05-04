@@ -93,7 +93,9 @@ class DrawerDetailsState extends State<DrawerDetails> {
               'Logout',
               style: TextStyle(fontSize: 18),
             ),
-            onTap: null,
+            onTap: () {
+              Navigator.popUntil(context, ModalRoute.withName('/'));
+            },
           ),
         ],
       ),
