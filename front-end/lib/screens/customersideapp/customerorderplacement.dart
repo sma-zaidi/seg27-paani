@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:geolocator/geolocator.dart';
 import 'package:paani/screens/customersideapp/googlemaps/G_Map.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter/services.dart';
 
 class Place_Order_Screen extends StatefulWidget {

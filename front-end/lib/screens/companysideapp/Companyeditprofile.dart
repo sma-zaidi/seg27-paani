@@ -3,8 +3,6 @@ import 'package:flutter/services.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:paani/screens/companysideapp/Tankers_details.dart';
-import 'package:paani/screens/companysideapp/ViewDrivers.dart';
 
 class CompanyEditProfileScreen extends StatefulWidget {
   @override
@@ -210,8 +208,8 @@ class _CompanyEditProfileScreenState extends State<CompanyEditProfileScreen> {
               color: Colors.transparent,
               padding: EdgeInsets.all(0.0),
               onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => TankerDetails()));
+                Navigator.pushNamed(context, "/viewdriverstankerloading",
+                    arguments: {'required': 'tankers'});
               },
               child: Text(
                 "Edit Tankers details",
@@ -233,8 +231,8 @@ class _CompanyEditProfileScreenState extends State<CompanyEditProfileScreen> {
               padding: EdgeInsets.all(0.0),
               color: Colors.transparent,
               onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => DriversScreen()));
+                Navigator.pushNamed(context, "/viewdriverstankerloading",
+                    arguments: {'required': 'editdrivers'});
               },
               child: Text(
                 "Edit Drivers details",
@@ -301,7 +299,7 @@ class _CompanyEditProfileScreenState extends State<CompanyEditProfileScreen> {
                               minWidth: 170.0,
                               child: RaisedButton(
                                 color: Colors.teal,
-                                onPressed: _submit,
+                                onPressed: editprofile ? _submit : null,
                                 child: Text(
                                   'Save',
                                   style: TextStyle(

@@ -3,7 +3,6 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/services.dart';
-
 import 'package:paani/screens/companysideapp/Tankers_details.dart';
 
 class RegisterTankerScreen extends StatefulWidget {
@@ -97,11 +96,6 @@ class _RegisterTankerScreenState extends State<RegisterTankerScreen> {
       if (await _senddata(base, priceKM, size)) {
         _showSnackBar('Information added Successfully');
         this.setState(() {
-          Tankers.add({
-            'bowser_capacity': int.parse(size),
-            'price_base': int.parse(base),
-            'price_per_km': int.parse(priceKM),
-          });
           sizeController.text = "";
           baseController.text = "";
           KMController.text = "";
@@ -115,6 +109,12 @@ class _RegisterTankerScreenState extends State<RegisterTankerScreen> {
   Widget build(BuildContext context) {
     return !this.gettingdata
         ? Scaffold(
+            appBar: AppBar(
+              automaticallyImplyLeading: false,
+              centerTitle: true,
+              title: Text('Add Tanker', style: TextStyle(color: Colors.white)),
+              backgroundColor: Colors.teal,
+            ),
             key: scaffoldKey,
             body: ListView(
               children: <Widget>[
@@ -222,7 +222,7 @@ class _RegisterTankerScreenState extends State<RegisterTankerScreen> {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.only(top: 20),
+                  padding: EdgeInsets.only(top: 5),
                   child: Center(
                     child: FlatButton(
                       child: Card(
@@ -241,7 +241,11 @@ class _RegisterTankerScreenState extends State<RegisterTankerScreen> {
                         ),
                       ),
                       onPressed: () {
-                        Navigator.pop(context);
+                        Navigator.pushNamedAndRemoveUntil(
+                            context,
+                            '/viewdriverstankerloading',
+                            ModalRoute.withName('/companyeditprofile'),
+                            arguments: {'required': 'tankers'});
                       },
                     ),
                   ),

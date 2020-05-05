@@ -18,13 +18,13 @@ class _OrderStatusLoadingState extends State<OrderStatusLoading> {
         await http.get('https://seg27-paani-backend.herokuapp.com/orders/22');
     var message = json.decode(response.body);
     print(message);
-    if (message['msg'] is String) {
+    if (!message.containsKey('msg')) {
       setState(() {
         nodatafound = true;
       });
     } else {
       status = message['msg'];
-      if (status['status'] == 'completed') {
+      if (status['status'] == 'Complete') {
         Navigator.popAndPushNamed(context, '/ordercompleted');
       } else if (status['status'] == 'dispatched') {
         Navigator.popAndPushNamed(context, '/orderdispatched');
@@ -80,7 +80,6 @@ class _OrderStatusLoadingState extends State<OrderStatusLoading> {
                             color: Colors.white,
                           )),
                       onPressed: () {
-                        Navigator.pop(context);
                         Navigator.pop(context);
                       }),
                 ]),

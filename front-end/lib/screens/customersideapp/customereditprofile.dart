@@ -127,9 +127,9 @@ class _CustomerEditProfileScreenState extends State<CustomerEditProfileScreen> {
         Container(
           width: double.infinity,
           alignment: Alignment.centerRight,
-          color: Colors.white,
-          child: RaisedButton(
-              color: Colors.white,
+          color: Colors.transparent,
+          child: FlatButton(
+              color: Colors.transparent,
               onPressed: () {
                 this.setState(() {
                   editprofile = true;

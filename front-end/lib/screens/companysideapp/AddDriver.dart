@@ -3,6 +3,7 @@ import 'package:paani/screens/companysideapp/ViewDrivers.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:flutter/services.dart';
 
 class AddDriverScreen extends StatefulWidget {
   @override
@@ -35,14 +36,15 @@ class _AddDriverScreenState extends State<AddDriverScreen> {
       this.gettingdata = true;
     });
     SharedPreferences pref = await SharedPreferences.getInstance();
-    String userid = pref.getString('username');
+    String userid = pref.getString('userid');
     packageData = {
       'company_id': userid,
       'name': name,
       'cnic': cnic,
-      'contact': contact,
+      'contact_number': contact,
     };
     try {
+      print(packageData);
       var response = await http.post(
         'https://seg27-paani-backend.herokuapp.com/drivers/',
         body: packageData,
@@ -97,12 +99,6 @@ class _AddDriverScreenState extends State<AddDriverScreen> {
       if (await _senddata(
           nameController.text, cnicController.text, contactController.text)) {
         setState(() {
-          drivers.add({
-            'name': nameController.text,
-            'contact': contactController.text,
-            'CNIC': cnicController.text,
-            'Available': true
-          });
           nameController.text = "";
           cnicController.text = "";
           contactController.text = "";
@@ -124,22 +120,13 @@ class _AddDriverScreenState extends State<AddDriverScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return this.gettingdata
+    return !this.gettingdata
         ? Scaffold(
             key: scaffoldKey,
             appBar: AppBar(
+              automaticallyImplyLeading: false,
               centerTitle: true,
               title: Text('Add Driver', style: TextStyle(color: Colors.white)),
-              leading: FlatButton(
-                child: Icon(
-                  Icons.keyboard_backspace,
-                  color: Colors.white,
-                ),
-                onPressed: () {
-                  Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => DriversScreen()));
-                },
-              ),
               backgroundColor: Colors.teal,
             ),
             body: ListView(
@@ -176,12 +163,15 @@ class _AddDriverScreenState extends State<AddDriverScreen> {
                   child: Card(
                     margin: EdgeInsets.symmetric(vertical: 12),
                     child: TextField(
-                      controller: contactController,
-                      decoration: InputDecoration(
-                        hintText: '0300-1234567',
-                        border: InputBorder.none,
-                      ),
-                    ),
+                        controller: contactController,
+                        decoration: InputDecoration(
+                          hintText: '03001234567',
+                          border: InputBorder.none,
+                        ),
+                        keyboardType: TextInputType.number,
+                        inputFormatters: <TextInputFormatter>[
+                          WhitelistingTextInputFormatter.digitsOnly
+                        ]),
                   ),
                 ),
                 Padding(
@@ -196,39 +186,69 @@ class _AddDriverScreenState extends State<AddDriverScreen> {
                   child: Card(
                     margin: EdgeInsets.symmetric(vertical: 12),
                     child: TextField(
-                      controller: cnicController,
-                      decoration: InputDecoration(
-                        hintText: '12345-1234567-1',
-                        border: InputBorder.none,
+                        controller: cnicController,
+                        decoration: InputDecoration(
+                          hintText: '1234512345671',
+                          border: InputBorder.none,
+                        ),
+                        keyboardType: TextInputType.number,
+                        inputFormatters: <TextInputFormatter>[
+                          WhitelistingTextInputFormatter.digitsOnly
+                        ]),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(top: 20),
+                  child: Center(
+                    child: FlatButton(
+                      child: Card(
+                        color: Colors.teal,
+                        margin:
+                            EdgeInsets.symmetric(vertical: 12, horizontal: 85),
+                        child: ListTile(
+                          title: Text(
+                            'Add Driver',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          trailing: Icon(
+                            Icons.add,
+                            color: Colors.white,
+                          ),
+                        ),
                       ),
+                      onPressed: _submit,
                     ),
                   ),
                 ),
-                Center(
-                  child: FlatButton(
-                    color: Colors.teal,
-                    child: Text(
-                      'Add',
-                      style: TextStyle(color: Colors.white),
+                Padding(
+                  padding: EdgeInsets.only(top: 5),
+                  child: Center(
+                    child: FlatButton(
+                      child: Card(
+                        color: Colors.teal,
+                        margin:
+                            EdgeInsets.symmetric(vertical: 12, horizontal: 85),
+                        child: ListTile(
+                          title: Text(
+                            'Done',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          trailing: Icon(
+                            Icons.done,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                      onPressed: () {
+                        Navigator.pushNamedAndRemoveUntil(
+                            context,
+                            '/viewdriverstankerloading',
+                            ModalRoute.withName('/companyeditprofile'),
+                            arguments: {'required': 'editdrivers'});
+                      },
                     ),
-                    onPressed: _submit,
                   ),
                 ),
-                SizedBox(
-                  height: 18.0,
-                ),
-                Center(
-                  child: FlatButton(
-                    color: Colors.teal,
-                    child: Text(
-                      'Done',
-                      style: TextStyle(color: Colors.white),
-                    ),
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                  ),
-                )
               ],
             ),
           )

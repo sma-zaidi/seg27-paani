@@ -14,9 +14,14 @@ import 'package:paani/screens/customersideapp/orderstatus/order_dispatched.dart'
 import 'package:paani/screens/customersideapp/orderstatus/order_status_confirmed.dart';
 import 'package:paani/screens/customersideapp/orderstatus/order_status_declined.dart';
 import 'package:paani/screens/customersideapp/orderstatus/order_status_pending.dart';
+import 'package:paani/screens/companysideapp/ViewDrivers.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import 'screens/signup/signupcompany/RegisterDriver.dart';
+import 'package:paani/screens/companysideapp/view_drivers_tanker_loading.dart';
+import 'package:paani/screens/companysideapp/Tankers_details.dart';
+import 'package:paani/screens/companysideapp/Assign_Driver.dart';
+import 'package:paani/screens/companysideapp/Companyeditprofile.dart';
+import 'screens/companysideapp/Assign_Driver.dart';
+import 'screens/companysideapp/Companyeditprofile.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -43,6 +48,13 @@ Future<void> main() async {
         '/orderdispatched': (BuildContext context) => Dispatched(),
         '/orderpending': (BuildContext context) => Pending(),
         '/ordercompleted': (BuildContext context) => Completed(),
+        '/viewdrivers': (BuildContext context) => DriversScreen(),
+        "/viewdriverstankerloading": (BuildContext context) =>
+            Driver_Tanker_Loading(),
+        '/viewtankers': (BuildContext context) => TankerDetails(),
+        '/assigndriver': (BuildContext context) => AssignDriverScreen(),
+        '/companyeditprofile': (BuildContext context) =>
+            CompanyEditProfileScreen()
       },
       home: email == null
           ? IndexScreen()
