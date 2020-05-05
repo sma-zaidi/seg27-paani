@@ -14,7 +14,8 @@ User = {
     destroy: async (userid) => { // delete by id
         try {
             result = await query(`DELETE FROM \`seg27-paani\`.users WHERE id = ?`, [userid]);
-        } catch {}
+        } catch (error) { console.log(error) } // this method is only called while handling an exception during User.create. Throwing an error
+                                               // here MIGHT cause issues.
     },
 
     exists: async (email) => { // true if a user with this email exists, false otherwise
@@ -26,7 +27,7 @@ User = {
         } catch (error) { throw new Error(error) }
     },
 
-    getByEmail: async (email) => {
+    getByEmail: async (email) => { // returns userid, email, password and account_type
         try {
 
             result = await query(`SELECT * FROM \`seg27-paani\`.users WHERE email = ?`, [email]);
