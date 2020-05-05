@@ -212,6 +212,7 @@ class _CompanyEditProfileScreenState extends State<CompanyEditProfileScreen> {
         ? Scaffold(
             key: scaffoldKey,
             appBar: AppBar(
+              backgroundColor: Colors.teal,
               title: Text('Edit Profile'),
               actions: <Widget>[
                 IconButton(
