@@ -56,7 +56,7 @@ Order = {
 
     getByCompanyAndStatus: async (companyid, status) => {
         try {
-            result = await query(`SELECT * FROM \`seg27-paani\`.orders
+            result = await query(`SELECT \`seg27-paani\`.orders.*, \`seg27-paani\`.orders.id AS orderid, \`seg27-paani\`.packages.* FROM \`seg27-paani\`.orders
                                   INNER JOIN \`seg27-paani\`.packages ON \`seg27-paani\`.orders.package_id = \`seg27-paani\`.packages.id                     
                                   WHERE company_id = ? AND status = ?`, [companyid, status]);
             return result;
