@@ -3,7 +3,7 @@ const Company = require('../models/Company');
 
 const router = express.Router();
 
-router.get('/', async (req, res, next) => {
+router.get('/', async (req, res, next) => { // returns a list of companies
     try {
         companies = await Company.getAll()
         if (companies.length == 0){
