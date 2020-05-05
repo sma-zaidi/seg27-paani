@@ -22,5 +22,17 @@ router.post('/', async (req, res, next) => { // insert a review
     } catch (error) { return res.json({error: error}) };
 })
 
+router.get('/avg/:companyid', async (req, res, next) => {
+    company_id = req.params.companyid
+
+    try{
+        rating = await Review.getAvgCompanyRating(company_id);
+        return res.json({error:'false', msg:rating})
+
+    }catch (error){
+        return res.json({error:error})
+    }
+})
+
 
 module.exports = router
