@@ -17,34 +17,35 @@ router.put('/', async (req, res, next) => { // edit order status
 })
 
 router.post('/', async (req, res, next) => { // create an order
-    console.log(req.body)
-    var {customerid, package_id, delivery_address, delivery_location, delivery_time,status, cost} = req.body 
-    console.log(customerid, package_id, delivery_address, delivery_location,delivery_time, status, cost)
-    if (!customerid || !package_id || !delivery_time || !status || !cost) {
-        return res.json({error: 'Atleast one of the required fields: customerid, package_id, delivery_address,delivery_time, status, cost is missing.'});
+    var {customer_id, package_id, delivery_address, delivery_location, delivery_time, estimated_cost, cost} = req.body
+
+    if (!customer_id || !package_id || !delivery_time) {
+        return res.json({error: 'Atleast one of the required fields: customer_id, package_id or delivery_time is missing.'});
     }
-    else if (!delivery_address && !delivery_location){
-        return res.json({error: 'Both delivery_address and delivery_location are missing.'});
+
+    if (!delivery_address && !delivery_location) {
+        return res.json({error: 'Provide atleast one of delivery_address and delivery_location'});
     }
 
     try {
         //no previous orders, create new order
-        if( await Order.exists(customerid)==false)
+        if(await Order.exists(customer_id) == false)
         {
-            await Order.PlaceOrder(customerid, package_id, delivery_address, delivery_location,delivery_time, status,cost);
+            await Order.PlaceOrder(customer_id, package_id, delivery_address, delivery_location, delivery_time, estimated_cost, cost);
             return res.json({error: false, msg: 'Order has been added.'});}
-        //can not create a new order if previous is completed
-        else{
-            result= await Order.getlatestOrder(customerid)
+        //can not create a new order if previous isn't completed
+        else {
+            result = await Order.getlatestOrder(customer_id)
             if(result[0].status != "Complete"){
                 return res.json({error: 'Another order is in progress.'});
             }
-            await Order.PlaceOrder(customerid, package_id, delivery_address, delivery_location,delivery_time, status,cost);
+            await Order.PlaceOrder(customer_id, package_id, delivery_address, delivery_location, delivery_time, estimated_cost, cost);
             return res.json({error: false, msg: 'Order has been added.'});
         }    
 
 
-    }catch(error){
+    } catch(error){
+        console.log(error);
         return res.json({error: error});
     }
         

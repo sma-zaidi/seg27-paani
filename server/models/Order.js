@@ -2,7 +2,7 @@
 const query = require('../database/db.query'); // simplifies database queries
 
 Order = {
-    
+
     exists: async(customerid) => {
         try {
 
@@ -12,12 +12,12 @@ Order = {
         } catch (error) { throw new Error(error) }
     },
 
-    PlaceOrder: async (customerid, package_id, delivery_address, delivery_location,delivery_time, status,cost) => {//returns order id
-        try {console.log("IN")
-            result = await query(`INSERT INTO \`seg27-paani\`.orders (customer_id,package_id,delivery_address,delivery_location,delivery_time,status,cost)
-                                  VALUES (?, ?, ?, ?, ?, ?, ?)`, [customerid, package_id, delivery_address, delivery_location,datetime, status,cost]);
+    PlaceOrder: async (customerid, package_id, delivery_address, delivery_location, delivery_time, estimated_cost, cost) => {//returns order id
+        try {
+            result = await query(`INSERT INTO \`seg27-paani\`.orders (customer_id, package_id, delivery_address, delivery_location, delivery_time, estimated_cost, cost)
+                                  VALUES (?, ?, ?, ?, ?, ?, ?)`, [customerid, package_id, delivery_address, delivery_location, delivery_time, estimated_cost, cost]);
             return result.insertId;
-        }catch (error) {throw new Error(error)}
+        } catch (error) {throw new Error(error)}
     },
 
 	getOrderHistory: async (customerid) => {
