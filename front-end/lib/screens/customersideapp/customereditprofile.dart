@@ -46,7 +46,6 @@ class _CustomerEditProfileScreenState extends State<CustomerEditProfileScreen> {
 
   void _submit() async {
     final form = _formKey.currentState;
-    _loading = true;
     form.save();
     if (form.validate()) {
       if (await _verifyEmail()) {
@@ -56,10 +55,7 @@ class _CustomerEditProfileScreenState extends State<CustomerEditProfileScreen> {
     } else {
       _showSnackBar("Sorry Cound't store your information");
     }
-    _loading = false;
   }
-
-  var _loading = false;
 
   String _password;
   String _cpassword;

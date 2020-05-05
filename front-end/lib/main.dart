@@ -34,7 +34,7 @@ Future<void> main() async {
         '/customer_signup': (BuildContext context) => CustomerSignupScreen(),
         '/company_signup': (BuildContext context) => CompanySignupScreen(),
         '/RegisterDriver': (BuildContext context) => RegisterDriver(),
-        '/RegisterTanker': (BuildContext context) => RegisterTanker(),
+        '/RegisterTanker': (BuildContext context) => RegisterTankerScreen(),
         '/companyhomescreen': (BuildContext context) => CompanyHomeScreen(),
         '/customerhomescreen': (BuildContext context) => CustomerHomeScreen(),
         '/orderhistory': (BuildContext context) => OrderHistoryScreen(),

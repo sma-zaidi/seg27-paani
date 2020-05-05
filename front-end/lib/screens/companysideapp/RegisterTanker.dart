@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:paani/screens/signup/signupcompany/optionalScreen.dart';
 
 class RegisterTankerScreen extends StatefulWidget {
   @override
@@ -131,38 +130,6 @@ class _RegisterTankerScreenState extends State<RegisterTankerScreen> {
                           ],
                         );
                       });
-                },
-              ),
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(top: 10),
-            child: Center(
-              child: Text(
-                'or',
-                style: TextStyle(color: Colors.teal),
-              ),
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(top: 10),
-            child: Center(
-              child: FlatButton(
-                child: Card(
-                  color: Colors.teal,
-                  margin: EdgeInsets.symmetric(vertical: 12, horizontal: 120),
-                  child: ListTile(
-                    title: Center(
-                      child: Text(
-                        'Next',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
-                  ),
-                ),
-                onPressed: () {
-                  Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => Optional()));
                 },
               ),
             ),
