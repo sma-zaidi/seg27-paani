@@ -72,7 +72,7 @@ router.get('/:customerid',async (req, res, next) => {
         if (result.length === 0){
             return res.json({msg:"None Found!"})
         }
-        return res.json({msg:result})
+        return res.json({error: false, msg:result[0]})
     } catch (error) {
         res.json({error: error})
     }
