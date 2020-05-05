@@ -22,18 +22,11 @@ Customer = {
     editDetails: async (id, name, contact_number, address, location) => { // update customer details
         try {
             result = await query(`UPDATE \`seg27-paani\`.companies
-<<<<<<< HEAD
                                   SET
                                     name = ?,
                                     contact_number = ?,
                                     address = ?,
                                     location=?
-=======
-                                  SET name = ?,
-                                      contact_number = ?,
-                                      address = ?,
-                                      location=?,
->>>>>>> 9763a7cd666d6f072cab3ed3372618b61efc1515
                                   WHERE id = ?`, [name, contact_number,address, location, id]);
                                   
             return result;
