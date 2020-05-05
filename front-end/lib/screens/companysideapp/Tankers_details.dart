@@ -53,7 +53,7 @@ class TankerDetailsState extends State<TankerDetails> {
               Container(
                 // width: MediaQuery.of(context).size.width,
                 padding: EdgeInsets.only(left: 10),
-                width: 230,
+                width: 210,
                 child: new Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
@@ -87,19 +87,68 @@ class TankerDetailsState extends State<TankerDetails> {
                 ),
               ),
               SizedBox(
-                width: 10,
+                width: 22,
               ),
               Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
                   Row(
                     children: <Widget>[
                       Text('Edit'),
+                      SizedBox(
+                        width: 15,
+                      ),
                       FlatButton(
                         child: Icon(Icons.edit),
                         onPressed: () {
                           Navigator.of(context).push(MaterialPageRoute(
                               builder: (context) =>
                                   EditTankerScreen(data: index)));
+                        },
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: <Widget>[
+                      Text('Delete'),
+                      FlatButton(
+                        child: Icon(Icons.delete),
+                        onPressed: () {
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: Text(
+                                    'Are you Sure you want to delete package?',
+                                    style: TextStyle(color: Colors.teal),
+                                  ),
+                                  actions: <Widget>[
+                                    FlatButton(
+                                      color: Colors.teal,
+                                      child: Text(
+                                        'YES',
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                      onPressed: () {
+                                        setState(() {
+                                          Tankers.removeAt(index);
+                                        });
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
+                                    FlatButton(
+                                      color: Colors.teal,
+                                      child: Text(
+                                        'NO',
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                    )
+                                  ],
+                                );
+                              });
                         },
                       ),
                     ],
