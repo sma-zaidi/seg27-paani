@@ -31,7 +31,7 @@ class _RegisterTankerScreenState extends State<RegisterTankerScreen> {
   bool _sizevalidate = false;
   bool _basepricevalidate = false;
   bool _priceperkmvalidate = false;
-  bool gettingdata = true;
+  bool gettingdata = false;
   @override
   Future<bool> _senddata(String base, priceKM, size) async {
     this.setState(() {

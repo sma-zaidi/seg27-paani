@@ -43,13 +43,9 @@ class _AddDriverScreenState extends State<AddDriverScreen> {
       'contact': contact,
     };
     try {
-      var response = await http.put(
+      var response = await http.post(
         'https://seg27-paani-backend.herokuapp.com/drivers/',
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-          "Content-Type": "application/json",
-        },
-        body: jsonEncode(packageData),
+        body: packageData,
       );
       print(response.body);
       if (json.decode(response.body)['error'] == false) {
@@ -100,7 +96,6 @@ class _AddDriverScreenState extends State<AddDriverScreen> {
     } else {
       if (await _senddata(
           nameController.text, cnicController.text, contactController.text)) {
-        _showSnackBar('Driver Added Successfully');
         setState(() {
           drivers.add({
             'name': nameController.text,
@@ -112,6 +107,7 @@ class _AddDriverScreenState extends State<AddDriverScreen> {
           cnicController.text = "";
           contactController.text = "";
         });
+        _showSnackBar('Driver Added Successfully');
       } else {
         _showSnackBar('Sorry, Driver Could not be added');
       }

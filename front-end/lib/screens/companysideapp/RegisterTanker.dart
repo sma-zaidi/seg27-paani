@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter/services.dart';
 
-import 'Tankers_details.dart';
+import 'package:paani/screens/companysideapp/Tankers_details.dart';
 
 class RegisterTankerScreen extends StatefulWidget {
   @override
@@ -32,28 +33,29 @@ class _RegisterTankerScreenState extends State<RegisterTankerScreen> {
   bool _sizevalidate = false;
   bool _basepricevalidate = false;
   bool _priceperkmvalidate = false;
-  bool gettingdata = true;
+  bool gettingdata = false;
   @override
   Future<bool> _senddata(String base, priceKM, size) async {
+    print(base);
+    print(priceKM);
+    print(size);
     this.setState(() {
       this.gettingdata = true;
     });
     SharedPreferences pref = await SharedPreferences.getInstance();
-    String userid = pref.getString('username');
+    String userid = pref.getString('userid');
+    print(userid);
     packageData = {
       'company_id': userid,
       'price_base': base,
       'price_per_km': priceKM,
-      'browser_capacity': size
+      'bowser_capacity': size
     };
+    print(packageData);
     try {
-      var response = await http.put(
+      var response = await http.post(
         'https://seg27-paani-backend.herokuapp.com/packages/',
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-          "Content-Type": "application/json",
-        },
-        body: jsonEncode(packageData),
+        body: packageData,
       );
       print(response.body);
       if (json.decode(response.body)['error'] == false) {
@@ -94,14 +96,19 @@ class _RegisterTankerScreenState extends State<RegisterTankerScreen> {
       String priceKM = KMController.text;
       if (await _senddata(base, priceKM, size)) {
         _showSnackBar('Information added Successfully');
+        this.setState(() {
+          Tankers.add({
+            'bowser_capacity': int.parse(size),
+            'price_base': int.parse(base),
+            'price_per_km': int.parse(priceKM),
+          });
+          sizeController.text = "";
+          baseController.text = "";
+          KMController.text = "";
+        });
       } else {
         _showSnackBar("Sorry, Couldnot add the informatiion");
       }
-      setState(() {
-        sizeController.text = "";
-        baseController.text = "";
-        KMController.text = "";
-      });
     }
   }
 
@@ -130,6 +137,10 @@ class _RegisterTankerScreenState extends State<RegisterTankerScreen> {
                         errorText:
                             _sizevalidate ? "This value cannot be empty" : null,
                       ),
+                      keyboardType: TextInputType.number,
+                      inputFormatters: <TextInputFormatter>[
+                        WhitelistingTextInputFormatter.digitsOnly
+                      ],
                     ),
                   ),
                 ),
@@ -153,6 +164,10 @@ class _RegisterTankerScreenState extends State<RegisterTankerScreen> {
                             ? "This value can not be empty"
                             : null,
                       ),
+                      keyboardType: TextInputType.number,
+                      inputFormatters: <TextInputFormatter>[
+                        WhitelistingTextInputFormatter.digitsOnly
+                      ],
                     ),
                   ),
                 ),
@@ -176,6 +191,10 @@ class _RegisterTankerScreenState extends State<RegisterTankerScreen> {
                             ? "This value cannot be empty"
                             : null,
                       ),
+                      keyboardType: TextInputType.number,
+                      inputFormatters: <TextInputFormatter>[
+                        WhitelistingTextInputFormatter.digitsOnly
+                      ],
                     ),
                   ),
                 ),

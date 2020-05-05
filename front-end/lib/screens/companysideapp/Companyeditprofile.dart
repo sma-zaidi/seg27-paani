@@ -127,9 +127,9 @@ class _CompanyEditProfileScreenState extends State<CompanyEditProfileScreen> {
         Container(
           width: double.infinity,
           alignment: Alignment.centerRight,
-          color: Colors.white,
-          child: RaisedButton(
-              color: Colors.white,
+          color: Colors.transparent,
+          child: FlatButton(
+              color: Colors.transparent,
               onPressed: () {
                 this.setState(() {
                   editprofile = true;
@@ -206,7 +206,9 @@ class _CompanyEditProfileScreenState extends State<CompanyEditProfileScreen> {
           width: double.infinity,
           alignment: Alignment.centerRight,
           color: Colors.transparent,
-          child: RaisedButton(
+          child: FlatButton(
+              color: Colors.transparent,
+              padding: EdgeInsets.all(0.0),
               onPressed: () {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => TankerDetails()));
@@ -214,17 +216,22 @@ class _CompanyEditProfileScreenState extends State<CompanyEditProfileScreen> {
               child: Text(
                 "Edit Tankers details",
                 style: TextStyle(
-                  color: Colors.red,
+                  letterSpacing: 0.7,
+                  color: Colors.red[300],
+                  fontSize: 15.0,
                   decoration: TextDecoration.underline,
                 ),
               )),
         ),
-        SizedBox(height: 15.0),
+        SizedBox(height: 0.0),
         Container(
           width: double.infinity,
           alignment: Alignment.centerRight,
           color: Colors.transparent,
-          child: RaisedButton(
+          padding: EdgeInsets.all(0.0),
+          child: FlatButton(
+              padding: EdgeInsets.all(0.0),
+              color: Colors.transparent,
               onPressed: () {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => DriversScreen()));
@@ -232,8 +239,10 @@ class _CompanyEditProfileScreenState extends State<CompanyEditProfileScreen> {
               child: Text(
                 "Edit Drivers details",
                 style: TextStyle(
-                  color: Colors.red,
-                  decoration: TextDecoration.overline,
+                  letterSpacing: 0.7,
+                  color: Colors.red[300],
+                  fontSize: 15.0,
+                  decoration: TextDecoration.underline,
                 ),
               )),
         ),

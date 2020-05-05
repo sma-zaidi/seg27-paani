@@ -17,6 +17,7 @@ class _OrderStatusLoadingState extends State<OrderStatusLoading> {
     var response =
         await http.get('https://seg27-paani-backend.herokuapp.com/orders/22');
     var message = json.decode(response.body);
+    print(message);
     if (message['msg'] is String) {
       setState(() {
         nodatafound = true;
