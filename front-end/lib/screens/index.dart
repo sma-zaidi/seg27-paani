@@ -1,34 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-
-void main() => runApp(MaterialApp(
-      home: IndexScreen(),
-      theme: ThemeData(primaryColor: Colors.teal),
-    ));
 
 class IndexScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        child: Center(
-          child: new Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: <Widget>[
-                Container(
-                    margin: EdgeInsets.only(bottom: 130.0),
-                    child: ClipRRect(
-                        borderRadius: BorderRadius.circular(8.0),
-                        child: new Image.asset(
-                          'assets/logo_transparentbg.png',
-                          width: 400.0,
-                          height: 200.0,
-                          fit: BoxFit.fill,
-                        ))),
-                customButton('Log In', context),
-                customButton('Sign Up', context),
-              ]),
-        ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Container(
+            margin: EdgeInsets.only(bottom: 130.0),
+            child: Image.asset(
+              'assets/logo_transparentbg.png',
+              width: 400.0,
+              height: 200.0,
+              fit: BoxFit.fill,
+            )
+          ),
+          customButton('Log In', context),
+          customButton('Sign Up', context),
+        ]
       ),
     );
   }

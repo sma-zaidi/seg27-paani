@@ -10,6 +10,9 @@ import 'package:paani/screens/signup/signupcompany/RegisterTanker.dart';
 import 'package:paani/screens/companysideapp/CompanyHomeScreen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+// remove
+import 'package:paani/screens/companysideapp/completedorders.dart';
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -33,7 +36,7 @@ Future<void> main() async {
         '/customerhomescreen': (BuildContext context) => CustomerHomeScreen(),
       },
       home: email == null
-          ? IndexScreen()
+          ? CompletedOrders()
           : (prefs.getString("accounttype") == 'COMPANY'
               ? CompanyHomeScreen()
               : CustomerHomeScreen())));
