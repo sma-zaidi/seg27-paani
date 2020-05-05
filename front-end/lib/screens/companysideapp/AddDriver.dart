@@ -44,7 +44,7 @@ class _AddDriverScreenState extends State<AddDriverScreen> {
           ),
           onPressed: () {
             Navigator.of(context)
-                .push(MaterialPageRoute(builder: (context) => DriversScreen()));
+                .push(MaterialPageRoute(builder: (context) => Driver()));
           },
         ),
         backgroundColor: Colors.teal,
