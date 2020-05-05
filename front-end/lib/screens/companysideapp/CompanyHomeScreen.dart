@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:badges/badges.dart';
+import 'package:paani/screens/companysideapp/in_progress.dart';
 import 'new_requests_screen.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
@@ -21,25 +22,19 @@ class Order {
   }
 }
 
-bool internetissue = false;
-
 List<Order> orders = [];
 
 Future<void> getOrders() async {
-  try {
-    var response =
-        await http.get('https://seg27-paani-backend.herokuapp.com/orders');
-    var extractedData = convert.jsonDecode(response.body);
-    List loadedOrders = extractedData['message'];
-    for (var i in loadedOrders) {
-      orders.add(Order(
-          order_id: i['order_id'],
-          location: i['location'],
-          capacity: i['bowser_capacity']));
-    }
-    internetissue = false;
-  } catch (e) {
-    internetissue = true;
+  var response =
+      await http.get('https://seg27-paani-backend.herokuapp.com/orders');
+  var extractedData = convert.jsonDecode(response.body);
+  print(extractedData);
+  List loadedOrders = extractedData['message'];
+  for (var i in loadedOrders) {
+    orders.add(Order(
+        order_id: i['order_id'],
+        location: i['location'],
+        capacity: i['bowser_capacity']));
   }
 }
 
@@ -129,8 +124,8 @@ class _CompanyHomeScreenState extends State<CompanyHomeScreen> {
               setState(() {
                 newReq = 0;
               });
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => NewReqInit()));
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => NewReqs()));
             },
             child: Card(
               color: Colors.teal.shade300,
@@ -152,6 +147,8 @@ class _CompanyHomeScreenState extends State<CompanyHomeScreen> {
               setState(() {
                 inPro = 0;
               });
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => InProgress()));
             },
             child: Card(
               color: Colors.teal.shade300,

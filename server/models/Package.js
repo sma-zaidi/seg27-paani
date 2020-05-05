@@ -30,7 +30,7 @@ Package = {
         } catch (error) { throw new Error(error) }
     },
 
-    getPackages: async (companyid) => {
+    getByCompany: async (companyid) => {
         try {
             result = await query(`SELECT * FROM \`seg27-paani\`.packages WHERE company_id = ?`, [companyid])
             return result;

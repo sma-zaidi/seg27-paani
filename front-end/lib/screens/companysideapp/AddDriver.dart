@@ -2,15 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:sweetalert/sweetalert.dart';
 import 'package:paani/screens/companysideapp/ViewDrivers.dart';
 
-class AddDriver extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: AddDriverScreen(),
-    );
-  }
-}
-
 class AddDriverScreen extends StatefulWidget {
   @override
   _AddDriverScreenState createState() => _AddDriverScreenState();
@@ -36,16 +27,6 @@ class _AddDriverScreenState extends State<AddDriverScreen> {
         title: Text(
           'Add Driver',
           style: TextStyle(color: Colors.white),
-        ),
-        leading: FlatButton(
-          child: Icon(
-            Icons.keyboard_backspace,
-            color: Colors.white,
-          ),
-          onPressed: () {
-            Navigator.of(context)
-                .push(MaterialPageRoute(builder: (context) => DriversScreen()));
-          },
         ),
         backgroundColor: Colors.teal,
       ),

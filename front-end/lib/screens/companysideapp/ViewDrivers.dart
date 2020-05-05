@@ -1,7 +1,9 @@
 import 'package:paani/screens/companysideapp/EditDriverScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:sweetalert/sweetalert.dart';
-import 'package:paani/screens/companysideapp/AddDriver.dart';
+import 'AddDriver.dart';
+
+void main() => runApp(Driver());
 
 var drivers = [
   {
@@ -54,6 +56,16 @@ var drivers = [
   },
 ];
 
+class Driver extends StatelessWidget {
+  // This widget is the root of your application.
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: DriversScreen(),
+    );
+  }
+}
+
 class DriversScreen extends StatefulWidget {
   @override
   _DriversScreenState createState() => _DriversScreenState();
@@ -65,15 +77,6 @@ class _DriversScreenState extends State<DriversScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.teal,
-        leading: FlatButton(
-          child: Icon(
-            Icons.keyboard_backspace,
-            color: Colors.white,
-          ),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        ),
         centerTitle: true,
         title: Text(
           'Drivers',
@@ -86,8 +89,8 @@ class _DriversScreenState extends State<DriversScreen> {
               color: Colors.white,
             ),
             onPressed: () {
-              Navigator.of(context)
-                  .push(MaterialPageRoute(builder: (context) => AddDriver()));
+              Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => AddDriverScreen()));
             },
           )
         ],
@@ -107,7 +110,8 @@ class _DriversScreenState extends State<DriversScreen> {
                     shape: BoxShape.circle,
                     image: DecorationImage(
                       fit: BoxFit.fill,
-                      image: AssetImage('images/no_pic.jpg'),
+                      image:
+                          AssetImage('assets/user-profile-default-image.png'),
                     ),
                   ),
                 ),

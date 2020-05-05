@@ -4,8 +4,6 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:paani/screens/companysideapp/Tankers_details.dart';
-import 'package:paani/screens/companysideapp/ViewDrivers.dart';
 
 class CompanyEditProfileScreen extends StatefulWidget {
   @override
@@ -17,6 +15,11 @@ class _CompanyEditProfileScreenState extends State<CompanyEditProfileScreen> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final _formKey = GlobalKey<FormState>();
 
+  // final namectrl = TextEditingController();
+  // final contactctrl = TextEditingController();
+  // final ntnctrl = TextEditingController();
+  // final address = TextEditingController();
+  // final password = TextEditingController();
   bool gettingdata = true;
   Future<bool> _verifyEmail() async {
     try {
@@ -43,7 +46,7 @@ class _CompanyEditProfileScreenState extends State<CompanyEditProfileScreen> {
 
   void _submit() async {
     final form = _formKey.currentState;
-
+    _loading = true;
     form.save();
     if (form.validate()) {
       if (await _verifyEmail()) {
@@ -53,7 +56,10 @@ class _CompanyEditProfileScreenState extends State<CompanyEditProfileScreen> {
     } else {
       _showSnackBar("Sorry Cound't store your information");
     }
+    _loading = false;
   }
+
+  var _loading = false;
 
   String _password;
   String _cpassword;
@@ -188,6 +194,7 @@ class _CompanyEditProfileScreenState extends State<CompanyEditProfileScreen> {
             labelText: 'New Password',
             hintText: 'New Password',
             prefixIcon: Icon(Icons.vpn_key),
+            suffixIcon: Icon(Icons.edit),
           ),
         ),
         TextFormField(
@@ -203,6 +210,7 @@ class _CompanyEditProfileScreenState extends State<CompanyEditProfileScreen> {
             labelText: 'Confirm password',
             hintText: 'Confirm Password',
             prefixIcon: Icon(Icons.vpn_key),
+            suffixIcon: Icon(Icons.edit),
           ),
         ),
       ]),
@@ -212,6 +220,7 @@ class _CompanyEditProfileScreenState extends State<CompanyEditProfileScreen> {
         ? Scaffold(
             key: scaffoldKey,
             appBar: AppBar(
+              backgroundColor: Colors.teal,
               title: Text('Edit Profile'),
               actions: <Widget>[
                 IconButton(
@@ -254,39 +263,6 @@ class _CompanyEditProfileScreenState extends State<CompanyEditProfileScreen> {
                         child: Column(
                           children: <Widget>[
                             DetailsForm,
-                            Container(
-                              width: double.infinity,
-                              alignment: Alignment.centerRight,
-                              child: RaisedButton(
-                                  onPressed: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                TankerDetails()));
-                                  },
-                                  child: Text(
-                                    "Edit Tankers details",
-                                    style: TextStyle(color: Colors.red),
-                                  )),
-                            ),
-                            SizedBox(height: 15.0),
-                            Container(
-                              width: double.infinity,
-                              alignment: Alignment.centerRight,
-                              child: RaisedButton(
-                                  onPressed: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                DriversScreen()));
-                                  },
-                                  child: Text(
-                                    "Edit Drivers details",
-                                    style: TextStyle(color: Colors.red),
-                                  )),
-                            ),
                             SizedBox(height: 20.0),
                             ButtonTheme(
                               minWidth: 170.0,

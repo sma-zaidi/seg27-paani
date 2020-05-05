@@ -34,13 +34,6 @@ import 'package:paani/screens/companysideapp/drawer.dart';
 //  "2-5-2020"
 //]
 
-class NewReqInit extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return new MaterialApp(home: NewReqs());
-  }
-}
-
 class NewReqs extends StatefulWidget {
   @override
   _NewReqsState createState() => _NewReqsState();
@@ -52,11 +45,9 @@ class _NewReqsState extends State<NewReqs> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.teal,
-        title: Center(
-          child: Text('New Requests'),
-        ),
+        title: Text('New Requests'),
+        centerTitle: true,
       ),
-      drawer: DrawerDetails(),
       body: ListView.separated(
         itemCount: orders.length,
         itemBuilder: (BuildContext context, int index) {
