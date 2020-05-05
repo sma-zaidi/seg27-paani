@@ -2,11 +2,21 @@
 const query = require('../database/db.query'); // simplifies database queries
 
 Order = {
-
-    PlaceOrder: async (customerid, package_id, delivery_address, delivery_location, delivery_time, status, created, last_update, cost) => {//returns order id
+    
+    exists: async(customerid) => {
         try {
-            result = await query(`INSERT INTO \`seg27-paani\`.orders (customer_id,package_id,delivery_address,delivery_location,delivery_time,status,created,last_update, cost)
-                                  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`, [customerid, package_id, delivery_address, delivery_location, delivery_time, status, created, last_update, cost]);
+
+            result = await query(`SELECT * FROM \`seg27-paani\`.orders WHERE customer_id = ?`, [customerid]);
+            return result.length ? true : false;
+
+        } catch (error) { throw new Error(error) }
+    },
+
+    PlaceOrder: async (customerid, package_id, delivery_address, delivery_location, delivery_time, status,created, last_update, cost) => {//returns order id
+        try {console.log("help")
+            result = await query(`INSERT INTO \`seg27-paani\`.orders (customer_id,package_id,delivery_address,delivery_location,delivery_time,status,created, last_update, cost)
+                                  VALUES (?, ?, ?, ?, ?, ?, ?,?,?)`, [customerid, package_id, delivery_address, delivery_location, delivery_time, status, created, last_update, cost]);
+            console.log("did it ")
             return result.insertId;
         }catch (error) {throw new Error(error)}
     },
@@ -24,15 +34,26 @@ Order = {
 
     getlatestOrder: async (customerid) => {
         try {
-        	
+            
             result = await query(`SELECT status FROM \`seg27-paani\`.orders 
                                     INNER JOIN \`seg27-paani\`.packages ON \`seg27-paani\`.orders.package_id = \`seg27-paani\`.packages.id
                                     INNER JOIN \`seg27-paani\`.companies ON \`seg27-paani\`.packages.company_id = \`seg27-paani\`.companies.id
-                                    WHERE last_update = (SELECT MAX(last_update) FROM \`seg27-paani\`.orders WHERE customer_id = ?)`, [customerid]);         
-            return result;
+                                    WHERE last_update = (SELECT MAX(last_update) FROM \`seg27-paani\`.orders WHERE customer_id = ?)`, [customerid]);   
+            if(result.length === 0){return false;}                              
+            else{return result;}
         }catch (error) {throw new Error(error)}
     },
-  
+
+    ongoing: async(customerid) => {
+        try {
+
+            result = await Order.getlatestOrder(customerid);
+            console.log(result[0].status);
+            if(result[0].status != "complete"){console.log("finally");return true;}
+            else{return false;}
+
+        } catch (error) { throw new Error(error) }
+    },  
 
     getByCompanyAndStatus: async (companyid, status) => {
         try {

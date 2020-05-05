@@ -17,33 +17,44 @@ router.put('/', async (req, res, next) => { // edit order status
 })
 
 router.post('/', async (req, res, next) => { // create an order
-    var {customerid, package_id, delivery_address, delivery_location, delivery_time, status, created, last_update, cost} = req.body
-
-    if (!customerid || !package_id || !delivery_time || !status || !created || !last_update || !cost) {
-        return res.json({error: 'Atleast one of the required fields: customerid, package_id, delivery_time, status, created, last_update, cost is missing.'});
+    console.log(req.body)
+    var {customerid, package_id, delivery_address, delivery_location, delivery_time, status,created, last_update, cost} = req.body 
+    console.log(customerid, package_id, delivery_address, delivery_location, delivery_time, status,created, last_update, cost)
+    if (!customerid || !package_id || !delivery_time || !status || !cost) {
+        return res.json({error: 'Atleast one of the required fields: customerid, package_id, delivery_address,delivery_time, status, cost is missing.'});
     }
-    if (!delivery_address && !delivery_location){
+    else if (!delivery_address && !delivery_location){
         return res.json({error: 'Both delivery_address and delivery_location are missing.'});
     }
-    //No incomplete order
 
-    result=await Order.getlatestOrder(customerid);
-    if(result.status != 'complete') {
-        return res.json({error: 'Another order is in progress.'});
-    }
-
-    
     try {
-        await Order.PlaceOrder(customerid, package_id, delivery_address, delivery_location, delivery_time, status, created, last_update, cost);
-        return res.json({error: false, msg: 'Order has been added.'});
-    } catch (error) { return res.json({error: error}) };
+        //no previous orders, create new order
+        if( await Order.exists(customerid)==false)
+        {
+            await Order.PlaceOrder(customerid, package_id, delivery_address, delivery_location, delivery_time, status,created, last_update,cost);
+            return res.json({error: false, msg: 'Order has been added.'});}
+        //can not create a new order if previous is completed
+        else{
+            result= await Order.getlatestOrder(customerid)
+            if(result[0].status != "Complete"){
+                return res.json({error: 'Another order is in progress.'});
+            }
+            await Order.PlaceOrder(customerid, package_id, delivery_address, delivery_location, delivery_time, status,created, last_update,cost);
+            return res.json({error: false, msg: 'Order has been added.'});
+        }    
+
+
+    }catch(error){
+        return res.json({error: error});
+    }
+        
 })
 
 
 router.get('/history/:customerid', async (req, res, next) => {
     try {
         customerid = req.params.customerid
-        result = await Order.getOrderHistory(customerid)
+        result = await Order.getOrderHistory(customerid);
         if (result.length === 0){
             return res.json({msg:"No Order History Found!"})
         }
@@ -56,7 +67,7 @@ router.get('/history/:customerid', async (req, res, next) => {
 router.get('/:customerid',async (req, res, next) => {
     try {
         customerid = req.params.customerid
-        result = await Order.getlatestOrder(customerid)
+        result = await Order.getlatestOrder(customerid);
         if (result.length === 0){
             return res.json({msg:"None Found!"})
         }
