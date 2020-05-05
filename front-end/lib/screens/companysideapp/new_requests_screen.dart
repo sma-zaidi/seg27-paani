@@ -52,8 +52,8 @@ class _NewReqsState extends State<NewReqs> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.teal,
-        title: Center(
-          child: Text('New Requests'),
+        title: Text('New Requests'),
+        centerTitle: true,
         ),
       ),
       drawer: DrawerDetails(),
