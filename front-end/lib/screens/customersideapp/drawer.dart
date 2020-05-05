@@ -9,11 +9,11 @@ import 'package:paani/screens/customersideapp/order_status_loading.dart';
 
 class DrawerDetails extends StatefulWidget {
   @override
-  DrawerDetailsState createState() => new DrawerDetailsState();
+  DrawerDetailsState createState() => DrawerDetailsState();
 }
 
 class DrawerDetailsState extends State<DrawerDetails> {
-  Future<String> getname() async {
+  Future<String> getName() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     String name = pref.getString("username");
     return name;
@@ -22,15 +22,15 @@ class DrawerDetailsState extends State<DrawerDetails> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<String>(
-        future: getname(),
-        builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
-          if (snapshot.hasData) {
-            return drawer('${snapshot.data}', context);
-          } else if (snapshot.hasError) {
-            return drawer('User Name', context);
-          }
-          return Container();
-        });
+      future: getName(),
+      builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+        if (snapshot.hasData) {
+          return drawer('${snapshot.data}', context);
+        } else {
+          return drawer('?', context);
+        }
+      }
+    );
   }
 
   Widget drawer(String name, BuildContext context) {
@@ -141,7 +141,7 @@ class DrawerDetailsState extends State<DrawerDetails> {
               SharedPreferences pref = await SharedPreferences.getInstance();
               pref.clear().then((result) {
                 Navigator.pushNamedAndRemoveUntil(context, '/', (_) => false);
-              });
+              }).catchError((error) {Navigator.pushNamedAndRemoveUntil(context, '/', (_) => false);});
             },
           ),
         ],
