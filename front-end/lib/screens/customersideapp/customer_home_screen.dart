@@ -155,7 +155,7 @@ class HomeScreenState extends State<CustomerHomeScreen> {
         ],
         backgroundColor: Colors.teal,
       ),
-      drawer: new DrawerDetails(),
+      drawer: DrawerDetails(),
       body: searchCompanies.length > 0
           ? new ListView.builder(
               //vertical by default
