@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-// import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:paani/screens/customersideapp/drawer.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -318,4 +317,3 @@ class HomeScreenState extends State<CustomerHomeScreen> {
     );
   }
 }
-

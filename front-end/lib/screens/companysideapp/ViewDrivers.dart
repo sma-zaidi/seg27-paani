@@ -1,9 +1,7 @@
 import 'package:paani/screens/companysideapp/EditDriverScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:sweetalert/sweetalert.dart';
-import 'AddDriver.dart';
-
-void main() => runApp(Driver());
+import 'package:paani/screens/companysideapp/AddDriver.dart';
 
 var drivers = [
   {
@@ -55,16 +53,6 @@ var drivers = [
     "Available": false
   },
 ];
-
-class Driver extends StatelessWidget {
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: DriversScreen(),
-    );
-  }
-}
 
 class DriversScreen extends StatefulWidget {
   @override

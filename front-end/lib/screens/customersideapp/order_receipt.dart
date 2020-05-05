@@ -48,21 +48,21 @@ class Order_Receipt extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: 70.0),
-                ButtonTheme(
-                  minWidth: double.infinity,
-                  height: 50.0,
-                  buttonColor: Colors.blue,
-                  child: RaisedButton.icon(
-                    icon: Icon(Icons.hourglass_empty),
-                    onPressed: null,
-                    label: Text("Order Status",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            color: Colors.white,
-                            letterSpacing: 0.8,
-                            fontSize: 22.0)),
-                  ),
-                ),
+                // ButtonTheme(
+                //   minWidth: double.infinity,
+                //   height: 50.0,
+                //   buttonColor: Colors.blue,
+                //   child: RaisedButton.icon(
+                //     icon: Icon(Icons.hourglass_empty),
+                //     onPressed: null,
+                //     label: Text("Order Status",
+                //         textAlign: TextAlign.center,
+                //         style: TextStyle(
+                //             color: Colors.white,
+                //             letterSpacing: 0.8,
+                //             fontSize: 22.0)),
+                //   ),
+                // ),
                 SizedBox(height: 50.0),
                 ButtonTheme(
                   minWidth: double.infinity,

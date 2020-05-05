@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:paani/screens/customersideapp/order_receipt.dart';
-import 'package:paani/main.dart';
 
 class Order_Confirmation extends StatelessWidget {
   @override
