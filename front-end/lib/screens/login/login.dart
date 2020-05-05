@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-// import 'package:paani/globals.dart' as globals;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -65,14 +64,13 @@ class _LoginScreenState extends State<LoginScreen> {
       } else {
         return 'invalid login';
       }
-    } catch (error) {
-      print(error);
-      return 'error';
-    }
+    } catch (error) { print(error); return 'error'; }
   }
 
   void _submit() async {
-    _loading = true;
+    setState(() {
+      _loading = true;
+    });
 
     final form = formKey.currentState;
 
@@ -96,106 +94,91 @@ class _LoginScreenState extends State<LoginScreen> {
       }
     }
 
-    _loading = false;
+    setState(() {
+      _loading = false;
+    });
   }
 
   Widget build(BuildContext context) {
-    Widget paaniLogo = Padding(
-      padding: EdgeInsets.only(top: 0.0),
-      child: Container(
-        height: 200.0,
-        width: 400.0,
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('assets/logo_transparentbg.png'),
-            fit: BoxFit.fill,
-          ),
-        ),
-      ),
+    Widget paaniLogo = Image.asset(
+      'assets/logo_transparentbg.png', // paani logo
+      width: 400.0,
+      height: 200.0,
+      fit: BoxFit.fill,
     );
 
     Widget loginButton = ButtonTheme(
-      padding: EdgeInsets.only(bottom: 1),
-      minWidth: 300,
+      minWidth: 320,
       child: RaisedButton(
-        onPressed: _submit,
+        onPressed: _loading ? null : _submit,
         child: Text(
-          'Login',
+          'LOGIN',
           style: TextStyle(
             color: Colors.white,
+            letterSpacing: 1.5,
           ),
         ),
         color: Theme.of(context).primaryColor,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(18.0),
+          borderRadius: BorderRadius.circular(20.0),
         ),
       ),
     );
 
     Widget loginForm = Form(
         key: formKey,
-        child: Column(
-          children: <Widget>[
-            TextFormField(
-              validator: (text) {
-                if (text.isEmpty) {
-                  return 'Please enter your email address';
-                }
-                return null;
-              },
-              onSaved: (text) => _email = text,
-              cursorColor: Theme.of(context).primaryColor,
-              decoration: InputDecoration(
-                labelText: 'Email address',
-                prefixIcon: Icon(Icons.email),
-              ),
-            ),
-            TextFormField(
-              validator: (text) {
-                if (text.isEmpty) {
-                  return 'Please enter your password';
-                }
-                return null;
-              },
-              onSaved: (text) => _password = text,
-              cursorColor: Theme.of(context).primaryColor,
-              obscureText: _obscurePassword,
-              decoration: InputDecoration(
-                  labelText: 'Password',
-                  prefixIcon: Icon(Icons.vpn_key),
-                  suffixIcon: IconButton(
-                      icon: _obscurePassword
-                          ? Icon(Icons.visibility_off)
-                          : Icon(Icons.visibility),
-                      onPressed: () => {
-                            setState(() {
-                              _obscurePassword = !_obscurePassword;
-                            })
-                          })),
-            ),
-          ],
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 20.0),
+            child: Column(
+              children: <Widget>[
+                TextFormField(
+                  validator: (text) {
+                    if (text.isEmpty) {
+                      return 'Please enter your email address';
+                    }
+                    return null;
+                  },
+                  onSaved: (text) => _email = text,
+                  cursorColor: Theme.of(context).primaryColor,
+                  decoration: InputDecoration(
+                    labelText: 'Email address',
+                    prefixIcon: Icon(Icons.email),
+                  ),
+                ),
+                SizedBox(height: 6,),
+                TextFormField(
+                  validator: (text) {
+                    if (text.isEmpty) {
+                      return 'Please enter your password';
+                    }
+                    return null;
+                  },
+                  onSaved: (text) => _password = text,
+                  cursorColor: Theme.of(context).primaryColor,
+                  obscureText: _obscurePassword,
+                  decoration: InputDecoration(
+                      labelText: 'Password',
+                      prefixIcon: Icon(Icons.vpn_key),
+                      suffixIcon: IconButton(
+                          icon: _obscurePassword
+                              ? Icon(Icons.visibility_off)
+                              : Icon(Icons.visibility),
+                          onPressed: () {
+                                setState(() {
+                                  _obscurePassword = !_obscurePassword;
+                                });
+                              })
+                            ),
+                ),
+            ],
+          ),
         ));
 
     return Scaffold(
       key: scaffoldKey,
       appBar: AppBar(
-        title: Text('Paani - Log in'),
-        actions: <Widget>[
-          IconButton(
-            onPressed: () {},
-            icon: Icon(Icons.info),
-            color: Colors.white,
-          ),
-          FlatButton(
-            onPressed: _submit,
-            child: Text(
-              'Next',
-              style: TextStyle(
-                color: Colors.white,
-              ),
-            ),
-          )
-        ],
+        title: Text('Paani - Log in', style: TextStyle(letterSpacing: 1.5),),
+        centerTitle: true,
       ),
       body: SingleChildScrollView(
         child: Center(
@@ -203,13 +186,9 @@ class _LoginScreenState extends State<LoginScreen> {
             children: <Widget>[
               paaniLogo,
               loginForm,
-              SizedBox(
-                height: 20.0,
-              ),
-              Padding(
-                padding: EdgeInsets.only(bottom: 50.0),
-                child: loginButton,
-              ),
+              SizedBox(height: 6.0,),
+              loginButton,
+              SizedBox(height: 6.0,),
             ],
           ),
         ),
