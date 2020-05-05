@@ -108,7 +108,7 @@ router.post('/login', async (req, res, next) => {
     if (user.account_type == 'CUSTOMER') {
         try {
             result = await Customer.getById(user.id);
-            return res.json({error: false, msg: result})
+            return res.json({error: false, msg: result}) // send back customer's details
         } catch (error) { console.log(error); return res.json({error: error}); }
     }
 
@@ -117,7 +117,7 @@ router.post('/login', async (req, res, next) => {
     else if (user.account_type == 'COMPANY') {
         try {
             result = await Company.getById(user.id);
-            return res.json({error: false, msg: result})
+            return res.json({error: false, msg: result}) // send back company's details
         } catch (error) { console.log(error); return res.json({error: error}); }
     }
 
