@@ -26,7 +26,7 @@ Customer = {
                                     name = ?,
                                     contact_number = ?,
                                     address = ?,
-                                    location=?,
+                                    location=?
                                   WHERE id = ?`, [name, contact_number,address, location, id]);
                                   
             return result;

@@ -18,8 +18,8 @@ router.put('/', async (req, res, next) => { // edit order status
 
 router.post('/', async (req, res, next) => { // create an order
     console.log(req.body)
-    var {customerid, package_id, delivery_address, delivery_location, delivery_time, status,created, last_update, cost} = req.body 
-    console.log(customerid, package_id, delivery_address, delivery_location, delivery_time, status,created, last_update, cost)
+    var {customerid, package_id, delivery_address, delivery_location, delivery_time,status, cost} = req.body 
+    console.log(customerid, package_id, delivery_address, delivery_location,delivery_time, status, cost)
     if (!customerid || !package_id || !delivery_time || !status || !cost) {
         return res.json({error: 'Atleast one of the required fields: customerid, package_id, delivery_address,delivery_time, status, cost is missing.'});
     }
@@ -31,7 +31,7 @@ router.post('/', async (req, res, next) => { // create an order
         //no previous orders, create new order
         if( await Order.exists(customerid)==false)
         {
-            await Order.PlaceOrder(customerid, package_id, delivery_address, delivery_location, delivery_time, status,created, last_update,cost);
+            await Order.PlaceOrder(customerid, package_id, delivery_address, delivery_location,delivery_time, status,cost);
             return res.json({error: false, msg: 'Order has been added.'});}
         //can not create a new order if previous is completed
         else{
@@ -39,7 +39,7 @@ router.post('/', async (req, res, next) => { // create an order
             if(result[0].status != "Complete"){
                 return res.json({error: 'Another order is in progress.'});
             }
-            await Order.PlaceOrder(customerid, package_id, delivery_address, delivery_location, delivery_time, status,created, last_update,cost);
+            await Order.PlaceOrder(customerid, package_id, delivery_address, delivery_location,delivery_time, status,cost);
             return res.json({error: false, msg: 'Order has been added.'});
         }    
 
