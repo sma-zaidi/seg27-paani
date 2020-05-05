@@ -6,6 +6,7 @@ const router = express.Router();
 router.post('/', async (req, res, next) => { // insert a review
 	//id= customer_id
     var {id, review, rating} = req.body
+    console.log(id,review,rating)
     //review already exists or not
     try { 
         if(await Review.exists(id) == true) {

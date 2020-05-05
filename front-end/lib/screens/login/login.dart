@@ -58,6 +58,8 @@ class _LoginScreenState extends State<LoginScreen> {
           return 'company';
         } else {
           prefs.setString("accounttype", 'COSTUMER');
+          prefs.setString("address", message['address'].toString());
+          prefs.setString("contact", message['contact_number'].toString());
           return 'customer';
         }
       } else {

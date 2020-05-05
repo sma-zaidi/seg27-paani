@@ -2,10 +2,10 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:paani/screens/customersideapp/orderplacementpackage.dart';
-import 'package:paani/screens/customersideapp/order_confirmation.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:paani/screens/customersideapp/googlemaps/G_Map.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:flutter/services.dart';
 
 class Place_Order_Screen extends StatefulWidget {
   var data;
@@ -37,6 +37,9 @@ class _Place_Order_ScreenState extends State<Place_Order_Screen> {
   List<String> pkgIDs = [];
   String companyName;
   bool showDetails = false;
+  bool locationset = false;
+  dynamic contact;
+  dynamic address;
 
   @override
   void initState() {
@@ -49,6 +52,12 @@ class _Place_Order_ScreenState extends State<Place_Order_Screen> {
     // TODO: implement initState
     super.initState();
     // you can have different listner functions if you wish
+    ctrl2.addListener(() {
+      contact = ctrl2.text;
+    });
+    ctrl1.addListener(() {
+      address = ctrl1.text;
+    });
     ctrl3.addListener(onChange);
   }
 
@@ -104,6 +113,7 @@ class _Place_Order_ScreenState extends State<Place_Order_Screen> {
             child: Card(
               margin: EdgeInsets.symmetric(vertical: 12.0),
               child: TextField(
+                enabled: locationset ? false : true,
                 decoration: InputDecoration(
                   hintText: 'Address',
                   border: InputBorder.none,
@@ -128,6 +138,14 @@ class _Place_Order_ScreenState extends State<Place_Order_Screen> {
                       MaterialPageRoute(
                           builder: (context) =>
                               G_Map(position.latitude, position.longitude)));
+                  if (result != null) {
+                    setState(() {
+                      address = result.toString();
+                      ctrl1.text = '';
+                      locationset = true;
+                    });
+                  }
+                  // }
                 },
                 child: ListTile(
                   title: Center(
@@ -144,6 +162,40 @@ class _Place_Order_ScreenState extends State<Place_Order_Screen> {
               ),
             ),
           ),
+          locationset
+              ? Padding(
+                  padding: const EdgeInsets.fromLTRB(15.0, 0.0, 15.0, 0.0),
+                  child: Container(
+                    color: Colors.grey[400],
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        Padding(
+                          padding:
+                              const EdgeInsets.fromLTRB(20.0, 8.0, 20.0, 8.0),
+                          child: Text(
+                            "Your location has been set",
+                          ),
+                        ),
+                        SizedBox(width: 10.0),
+                        RaisedButton.icon(
+                            label: Text('remove',
+                                style: TextStyle(color: Colors.white)),
+                            color: Colors.teal,
+                            icon: Icon(
+                              Icons.remove,
+                              color: Colors.white,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                locationset = false;
+                              });
+                            })
+                      ],
+                    ),
+                  ),
+                )
+              : SizedBox(height: 0.0),
           Padding(
             padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
             child: Text('Contact Number'),
@@ -157,6 +209,10 @@ class _Place_Order_ScreenState extends State<Place_Order_Screen> {
                   hintText: '03001234567',
                   border: InputBorder.none,
                 ),
+                keyboardType: TextInputType.number,
+                inputFormatters: <TextInputFormatter>[
+                  WhitelistingTextInputFormatter.digitsOnly
+                ],
                 controller: ctrl2,
               ),
             ),
@@ -291,4 +347,3 @@ class _Place_Order_ScreenState extends State<Place_Order_Screen> {
     );
   }
 }
-

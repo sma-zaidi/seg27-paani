@@ -7,6 +7,7 @@ class Declined extends StatefulWidget {
 }
 
 class DeclinedState extends State<Declined> {
+  // static const routeName = '/order_declined';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
