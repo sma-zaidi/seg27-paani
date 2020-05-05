@@ -48,7 +48,7 @@ Future<void> main() async {
         '/ordercompleted': (BuildContext context) => Completed(),
       },
       home: email == null
-          ? CompletedOrders()
+          ? IndexScreen()
           : (prefs.getString("accounttype") == 'COMPANY'
               ? CompanyHomeScreen()
               : CustomerHomeScreen())));
