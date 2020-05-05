@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+// import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:paani/screens/customersideapp/drawer.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -155,165 +156,149 @@ class HomeScreenState extends State<CustomerHomeScreen> {
         backgroundColor: Colors.teal,
       ),
       drawer: new DrawerDetails(),
-      body: SingleChildScrollView(
-        child: new Column(
-          children: <Widget>[
-            new Container(
-              height: 657,
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: searchCompanies.length > 0
-                  ? new ListView.builder(
-                      //vertical by default
-                      itemCount: searchCompanies.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return new Card(
-                          elevation: 5,
-                          child: new Row(
-                            children: <Widget>[
-                              //image inside container
-                              new Container(
-                                height: 225,
-                                width: 150,
-                                decoration: new BoxDecoration(
-                                  borderRadius: new BorderRadius.only(
-                                    bottomLeft: new Radius.circular(5),
-                                    topLeft: new Radius.circular(5),
-                                  ),
-                                  image: new DecorationImage(
-                                    fit: BoxFit.cover,
-                                    image: new AssetImage(
-                                      'assets/default3.png',
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              new Container(
-                                padding: const EdgeInsets.all(20),
-                                width: 182,
-                                child: new Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    new Text(
-                                      searchCompanies[index]["name"],
-                                      style: new TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.teal,
-                                      ),
-                                    ),
-                                    new SizedBox(
-                                      height: 10,
-                                    ),
-                                    new Text(
-                                      searchCompanies[index]['packages'] ==
-                                              "No Packages Found!"
-                                          ? 'Services: '
-                                          : getPackageCapacities(
-                                              searchCompanies[index]),
-                                      style: new TextStyle(
-                                        fontSize: 14,
-                                      ),
-                                    ),
-                                    new SizedBox(
-                                      height: 10,
-                                    ),
-                                    new Text(
-                                      searchCompanies[index]['packages'] !=
-                                              "No Packages Found!"
-                                          ? getPackageBasePrices(
-                                              searchCompanies[index])
-                                          : 'Base Price: ',
-                                      style: new TextStyle(
-                                        fontSize: 14,
-                                      ),
-                                    ),
-                                    new SizedBox(
-                                      height: 10,
-                                    ),
-                                    new Text(
-                                      searchCompanies[index]['packages'] !=
-                                              "No Packages Found!"
-                                          ? getPackageKMPrices(
-                                              searchCompanies[index])
-                                          : 'Price per Km: ',
-                                      style: new TextStyle(
-                                        fontSize: 14,
-                                      ),
-                                    ),
-                                    new SizedBox(
-                                      height: 10,
-                                    ),
-                                    new RaisedButton(
-                                      onPressed: () {
-                                        if (searchCompanies[index]
-                                                ['packages'] !=
-                                            "No Packages Found!") {
-                                          Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      Place_Order_Screen(
-                                                        data: searchCompanies[
-                                                            index],
-                                                      )));
-                                        } else {
-                                          showDialog(
-                                              context: context,
-                                              builder: (BuildContext context) {
-                                                return AlertDialog(
-                                                  title: Text(
-                                                    'Company has no Packages available right now',
-                                                    style: TextStyle(
-                                                        color: Colors.teal),
-                                                  ),
-                                                  actions: <Widget>[
-                                                    FlatButton(
-                                                      child: Text(
-                                                        'OK',
-                                                        style: TextStyle(
-                                                            color:
-                                                                Colors.white),
-                                                      ),
-                                                      color: Colors.teal,
-                                                      onPressed: () {
-                                                        Navigator.of(context)
-                                                            .pop();
-                                                      },
-                                                    ),
-                                                  ],
-                                                );
-                                              });
-                                        }
-                                      },
-                                      child: new Text('Order'),
-                                      textColor: Colors.white,
-                                      color: Colors.teal,
-                                    ),
-                                    new SizedBox(
-                                      height: 10,
-                                    ),
-                                    new StarRating(
-                                      rating: 3.45,
-                                      starConfig: new StarConfig(
-                                        fillColor: Colors.teal,
-                                        strokeColor: Colors.teal,
-                                        size: 20,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
+      body: searchCompanies.length > 0
+          ? new ListView.builder(
+              //vertical by default
+              itemCount: searchCompanies.length,
+              itemBuilder: (BuildContext context, int index) {
+                return new Card(
+                  elevation: 5,
+                  child: new Row(
+                    children: <Widget>[
+                      //image inside container
+                      new Container(
+                        height: 225,
+                        width: 150,
+                        decoration: new BoxDecoration(
+                          borderRadius: new BorderRadius.only(
+                            bottomLeft: new Radius.circular(5),
+                            topLeft: new Radius.circular(5),
                           ),
-                        );
-                      })
-                  : Center(
-                      child: CircularProgressIndicator(),
-                    ),
+                          image: new DecorationImage(
+                            fit: BoxFit.cover,
+                            image: new AssetImage(
+                              'assets/default3.png',
+                            ),
+                          ),
+                        ),
+                      ),
+                      new Container(
+                        padding: const EdgeInsets.all(20),
+                        width: 182,
+                        child: new Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            new Text(
+                              searchCompanies[index]["name"],
+                              style: new TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.teal,
+                              ),
+                            ),
+                            new SizedBox(
+                              height: 10,
+                            ),
+                            new Text(
+                              searchCompanies[index]['packages'] ==
+                                      "No Packages Found!"
+                                  ? 'Services: '
+                                  : getPackageCapacities(
+                                      searchCompanies[index]),
+                              style: new TextStyle(
+                                fontSize: 14,
+                              ),
+                            ),
+                            new SizedBox(
+                              height: 10,
+                            ),
+                            new Text(
+                              searchCompanies[index]['packages'] !=
+                                      "No Packages Found!"
+                                  ? getPackageBasePrices(searchCompanies[index])
+                                  : 'Base Price: ',
+                              style: new TextStyle(
+                                fontSize: 14,
+                              ),
+                            ),
+                            new SizedBox(
+                              height: 10,
+                            ),
+                            new Text(
+                              searchCompanies[index]['packages'] !=
+                                      "No Packages Found!"
+                                  ? getPackageKMPrices(searchCompanies[index])
+                                  : 'Price per Km: ',
+                              style: new TextStyle(
+                                fontSize: 14,
+                              ),
+                            ),
+                            new SizedBox(
+                              height: 10,
+                            ),
+                            new RaisedButton(
+                              onPressed: () {
+                                if (searchCompanies[index]['packages'] !=
+                                    "No Packages Found!") {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              Place_Order_Screen(
+                                                data: searchCompanies[index],
+                                              )));
+                                } else {
+                                  showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          title: Text(
+                                            'Company has no Packages available right now',
+                                            style:
+                                                TextStyle(color: Colors.teal),
+                                          ),
+                                          actions: <Widget>[
+                                            FlatButton(
+                                              child: Text(
+                                                'OK',
+                                                style: TextStyle(
+                                                    color: Colors.white),
+                                              ),
+                                              color: Colors.teal,
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                              },
+                                            ),
+                                          ],
+                                        );
+                                      });
+                                }
+                              },
+                              child: new Text('Order'),
+                              textColor: Colors.white,
+                              color: Colors.teal,
+                            ),
+                            new SizedBox(
+                              height: 10,
+                            ),
+                            new StarRating(
+                              rating: 3.45,
+                              starConfig: new StarConfig(
+                                fillColor: Colors.teal,
+                                strokeColor: Colors.teal,
+                                size: 20,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              })
+          : Center(
+              child: CircularProgressIndicator(),
             ),
-          ],
-        ),
-      ),
     );
   }
 }
