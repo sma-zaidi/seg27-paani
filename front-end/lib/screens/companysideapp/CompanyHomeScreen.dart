@@ -152,6 +152,8 @@ class _CompanyHomeScreenState extends State<CompanyHomeScreen> {
               setState(() {
                 inPro = 0;
               });
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => InProgress()));
             },
             child: Card(
               color: Colors.teal.shade300,
