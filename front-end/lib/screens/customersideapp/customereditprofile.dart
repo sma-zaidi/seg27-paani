@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class CustomerEditProfileScreen extends StatefulWidget {
   @override
@@ -20,48 +19,77 @@ class _CustomerEditProfileScreenState extends State<CustomerEditProfileScreen> {
   // final ntnctrl = TextEditingController();
   // final address = TextEditingController();
   // final password = TextEditingController();
+
+  String _name, _contact, _address;
   bool gettingdata = true;
-  Future<bool> _verifyEmail() async {
+  bool editprofile = false;
+
+  Future<bool> _UpdateInformation() async {
+    this.setState(() {
+      this.gettingdata = true;
+    });
     try {
-      var response =
-          await http.post('http://192.168.10.7:7777/users/r2gister/', body: {
-        'password': _password,
-        'name': _name,
-        'contact_number': _contact,
-        'address': _address,
-        'ntn': _ntnnumber,
-        'accounttype': "COMPANY",
-      });
+      print("adas");
+      SharedPreferences pref = await SharedPreferences.getInstance();
+      print("d");
+      String userid = pref.getString('userid');
+      print('s');
+      var response = await http.put(
+        'https://seg27-paani-backend.herokuapp.com/customers/',
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+          "Content-Type": "application/json",
+        },
+        body: jsonEncode({
+          'id': userid,
+          'name': _name,
+          'contact_number': _contact,
+          'address': _address,
+          'location': '',
+        }),
+      );
       print(response.body);
       if (json.decode(response.body)["error"] == false) {
+        this.setState(() {
+          pref.setString('username', _name);
+          pref.setString('contact', _contact);
+          pref.setString('address', _address);
+          this.editprofile = false;
+          this.gettingdata = false;
+        });
         return true;
       } else {
-        return true;
+        this.setState(() {
+          this.gettingdata = false;
+        });
+        return false;
       }
     } catch (e) {
-      print(e);
+      this.setState(() {
+        this.gettingdata = false;
+      });
       return false;
     }
   }
 
   void _submit() async {
     final form = _formKey.currentState;
+
     form.save();
     if (form.validate()) {
-      if (await _verifyEmail()) {
-        Navigator.pushNamedAndRemoveUntil(
-            context, '/RegisterTanker', ModalRoute.withName('/'));
+      if (await _UpdateInformation()) {
+        print("adas");
+        _showSnackBar("Information Updated Successfully");
+        this.setState(() {
+          editprofile = false;
+        });
+      } else {
+        _showSnackBar("Sorry Cound't store your information");
       }
     } else {
       _showSnackBar("Sorry Cound't store your information");
     }
   }
-
-  String _password;
-  String _cpassword;
-  String _name, _contact, _address, _ntnnumber;
-
-  bool _obscurePassword = true;
 
   void _showSnackBar(String text) {
     scaffoldKey.currentState.hideCurrentSnackBar();
@@ -80,11 +108,8 @@ class _CustomerEditProfileScreenState extends State<CustomerEditProfileScreen> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     //Return String
     _name = prefs.getString('username');
-    print(_name);
     _contact = prefs.getString('contact') ?? '';
     _address = prefs.getString('address') ?? '';
-    _ntnnumber = prefs.getString('ntn') ?? '';
-    _password = prefs.getString('password') ?? '';
     setState(() {
       this.gettingdata = false;
     });
@@ -99,7 +124,29 @@ class _CustomerEditProfileScreenState extends State<CustomerEditProfileScreen> {
     Widget DetailsForm = Form(
       key: _formKey,
       child: Column(children: <Widget>[
+        Container(
+          width: double.infinity,
+          alignment: Alignment.centerRight,
+          color: Colors.white,
+          child: RaisedButton(
+              color: Colors.white,
+              onPressed: () {
+                this.setState(() {
+                  editprofile = true;
+                });
+              },
+              child: Text(
+                "Edit",
+                style: TextStyle(
+                  letterSpacing: 0.7,
+                  color: Colors.red[300],
+                  fontSize: 15.0,
+                  decoration: TextDecoration.underline,
+                ),
+              )),
+        ),
         TextFormField(
+          enabled: editprofile,
           initialValue: _name,
           validator: (text) {
             if (text == null || text.isEmpty) {
@@ -117,13 +164,14 @@ class _CustomerEditProfileScreenState extends State<CustomerEditProfileScreen> {
           ),
         ),
         TextFormField(
+          enabled: editprofile,
+          initialValue: _contact,
           validator: (text) {
             if (text == null || text.isEmpty) {
               return 'Contact Number is required';
             }
             return null;
           },
-          initialValue: _contact,
           inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
           onSaved: (text) => _contact = text,
           cursorColor: Theme.of(context).primaryColor,
@@ -136,13 +184,14 @@ class _CustomerEditProfileScreenState extends State<CustomerEditProfileScreen> {
           ),
         ),
         TextFormField(
+          enabled: editprofile,
+          initialValue: _address,
           validator: (text) {
             if (text == null || text.isEmpty) {
               return 'Address is required';
             }
             return null;
           },
-          initialValue: _address,
           onSaved: (text) => _address = text,
           cursorColor: Theme.of(context).primaryColor,
           // obscureText: _obscurePassword,
@@ -150,43 +199,6 @@ class _CustomerEditProfileScreenState extends State<CustomerEditProfileScreen> {
             labelText: 'Address',
             hintText: 'Adress',
             prefixIcon: Icon(Icons.view_compact),
-            suffixIcon: Icon(Icons.edit),
-          ),
-        ),
-        TextFormField(
-          initialValue: _password,
-          validator: (text) {
-            Pattern pattern =
-                r'^(?=.*[0-9]+.*)(?=.*[a-zA-Z]+.*)[0-9a-zA-Z]{6,}$';
-            RegExp regex = new RegExp(pattern);
-            if (!regex.hasMatch(text))
-              return 'Invalid password. Password must has atleast 1 letter,\n 1 number and must be 6 characters long';
-            else
-              return null;
-          },
-          onSaved: (text) => _password = text,
-          cursorColor: Theme.of(context).primaryColor,
-          obscureText: _obscurePassword,
-          decoration: InputDecoration(
-            labelText: 'New Password',
-            hintText: 'New Password',
-            prefixIcon: Icon(Icons.vpn_key),
-            suffixIcon: Icon(Icons.edit),
-          ),
-        ),
-        TextFormField(
-          initialValue: _password,
-          validator: (text) {
-            if (_cpassword != _password) return 'Passwords do not match';
-            return null;
-          },
-          onSaved: (text) => _cpassword = text,
-          cursorColor: Theme.of(context).primaryColor,
-          obscureText: _obscurePassword,
-          decoration: InputDecoration(
-            labelText: 'Confirm password',
-            hintText: 'Confirm Password',
-            prefixIcon: Icon(Icons.vpn_key),
             suffixIcon: Icon(Icons.edit),
           ),
         ),
@@ -244,7 +256,7 @@ class _CustomerEditProfileScreenState extends State<CustomerEditProfileScreen> {
                               minWidth: 170.0,
                               child: RaisedButton(
                                 color: Colors.teal,
-                                onPressed: _submit,
+                                onPressed: editprofile ? _submit : null,
                                 child: Text(
                                   'Save',
                                   style: TextStyle(
@@ -261,11 +273,9 @@ class _CustomerEditProfileScreenState extends State<CustomerEditProfileScreen> {
             ),
           )
         : Scaffold(
+            key: scaffoldKey,
             body: Center(
-              child: SpinKitRotatingCircle(
-                color: Colors.teal,
-                size: 50.0,
-              ),
+              child: CircularProgressIndicator(),
             ),
           );
   }
