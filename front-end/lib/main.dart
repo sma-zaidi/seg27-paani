@@ -16,6 +16,8 @@ import 'package:paani/screens/customersideapp/orderstatus/order_status_declined.
 import 'package:paani/screens/customersideapp/orderstatus/order_status_pending.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'screens/signup/signupcompany/RegisterDriver.dart';
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -31,7 +33,7 @@ Future<void> main() async {
         '/signup_as': (BuildContext context) => SignupAsScreen(),
         '/customer_signup': (BuildContext context) => CustomerSignupScreen(),
         '/company_signup': (BuildContext context) => CompanySignupScreen(),
-        '/RegisterDriver': (BuildContext context) => RegisterDriver(),
+        '/RegisterDriver': (BuildContext context) => RegisterDriverScreen(),
         '/RegisterTanker': (BuildContext context) => RegisterTankerScreen(),
         '/companyhomescreen': (BuildContext context) => CompanyHomeScreen(),
         '/customerhomescreen': (BuildContext context) => CustomerHomeScreen(),
@@ -49,11 +51,14 @@ Future<void> main() async {
               : CustomerHomeScreen())));
 }
 
-Future<bool> checkloggedin() async { // 
+Future<bool> checkloggedin() async {
+  //
   SharedPreferences pref = await SharedPreferences.getInstance();
   String email = pref.getString('email') ?? '';
-  if (email == '') return false;
-  else return true;
+  if (email == '')
+    return false;
+  else
+    return true;
 }
 
 // class MyApp extends StatelessWidget {

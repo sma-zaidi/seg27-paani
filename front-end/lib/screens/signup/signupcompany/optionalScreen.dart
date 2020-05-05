@@ -38,8 +38,8 @@ class _OptionalScreenState extends State<OptionalScreen> {
                 ),
               ),
               onPressed: () {
-                Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => RegisterDriver()));
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => RegisterDriverScreen()));
               },
             ),
             Padding(
