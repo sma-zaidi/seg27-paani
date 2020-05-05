@@ -8,7 +8,7 @@ Company = {
                                   VALUES (?, ?, ?, ?, ?, ?)`, [userid, name, ntn, contact_number, address, location]);
             return result.insertId;
 
-        } catch (error) { throw new Error(error); }
+        } catch (error) { throw new Error(error) }
     },
 
     getById: async (companyid) => { // returns JSON with a row from the companies table in the database.
@@ -24,10 +24,8 @@ Company = {
             result = await query(`SELECT * FROM \`seg27-paani\`.companies`);
             return result;
 
-        } catch (error) {throw new Error(error)}
+        } catch (error) { throw new Error(error) }
     },
-
-    
 
 }
 
