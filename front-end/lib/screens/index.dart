@@ -4,45 +4,40 @@ class IndexScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          Container(
-            margin: EdgeInsets.only(bottom: 130.0),
-            child: Image.asset(
+      appBar: AppBar(),
+      body: Container(
+        padding: EdgeInsets.only(top: 130.0),
+        child: Column(
+          children: <Widget>[
+            Image.asset(
               'assets/logo_transparentbg.png',
               width: 400.0,
               height: 200.0,
               fit: BoxFit.fill,
-            )
-          ),
-          customButton('Log In', context),
-          customButton('Sign Up', context),
-        ]
+            ),
+            customButton('LOG IN', () {
+              Navigator.pushNamed(context, '/login');
+            }),
+            customButton('SIGN UP', () {
+              Navigator.pushNamed(context, '/signup_as');
+            }),
+          ]
+        ),
       ),
     );
   }
 }
 
-Widget customButton(String text, BuildContext context) {
+Widget customButton(String text, Function onPressed) {
   return ButtonTheme(
-    padding: EdgeInsets.only(bottom: 1),
-    minWidth: 200,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(20.0)
+    ),
+    buttonColor: Colors.teal,
+    minWidth: 150.0,
     child: RaisedButton(
-      onPressed: () {
-        if (text == 'Log In') {
-          Navigator.pushNamed(context, '/login');
-        } else if (text == 'Sign Up') {
-          Navigator.pushNamed(context, '/signup_as');
-        }
-      },
-      child: Text(
-        text,
-        style: TextStyle(
-          color: Colors.white,
-          letterSpacing: 1.5,
-        ),
+      onPressed: onPressed,
+      child: Text(text, style: TextStyle(color: Colors.white, letterSpacing: 1.5,)
       ),
     ),
   );

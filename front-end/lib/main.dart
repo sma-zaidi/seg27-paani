@@ -16,14 +16,10 @@ import 'package:paani/screens/customersideapp/orderstatus/order_status_declined.
 import 'package:paani/screens/customersideapp/orderstatus/order_status_pending.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-// remove
-import 'package:paani/screens/companysideapp/completedorders.dart';
-
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SharedPreferences prefs = await SharedPreferences.getInstance();
   var email = prefs.getString('email');
-  print(email);
   runApp(MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Paani App',
@@ -31,7 +27,6 @@ Future<void> main() async {
         primarySwatch: Colors.teal,
       ),
       routes: {
-        // '/': (BuildContext context) => IndexScreen(),
         '/login': (BuildContext context) => LoginScreen(),
         '/signup_as': (BuildContext context) => SignupAsScreen(),
         '/customer_signup': (BuildContext context) => CustomerSignupScreen(),
@@ -54,14 +49,11 @@ Future<void> main() async {
               : CustomerHomeScreen())));
 }
 
-Future<bool> checkloggedin() async {
+Future<bool> checkloggedin() async { // 
   SharedPreferences pref = await SharedPreferences.getInstance();
   String email = pref.getString('email') ?? '';
-  if (email == '') {
-    return false;
-  } else {
-    return true;
-  }
+  if (email == '') return false;
+  else return true;
 }
 
 // class MyApp extends StatelessWidget {
