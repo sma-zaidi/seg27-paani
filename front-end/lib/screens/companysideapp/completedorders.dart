@@ -31,7 +31,6 @@ class CompletedOrdersState extends State<CompletedOrders> {
                 Container(
                   // width: MediaQuery.of(context).size.width,
                   padding: EdgeInsets.only(left: 10),
-                  height: 100,
                   width: 180,
                   child: new Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
