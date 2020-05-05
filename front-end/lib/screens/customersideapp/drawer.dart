@@ -3,6 +3,7 @@ import 'package:paani/screens/customersideapp/customer_home_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:paani/screens/customersideapp/customereditprofile.dart';
 import 'package:paani/screens/customersideapp/order_history_customer_loading.dart';
+import 'package:paani/screens/customersideapp/order_status_loading.dart';
 // import 'package:paani/screens/home_screen.dart';
 // import 'package:http/http.dart' as http;
 
@@ -96,7 +97,12 @@ class DrawerDetailsState extends State<DrawerDetails> {
               'Order Status',
               style: TextStyle(fontSize: 18),
             ),
-            onTap: null,
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => OrderStatusLoading()));
+            },
           ),
           new ListTile(
             leading: Icon(Icons.history),

@@ -9,6 +9,11 @@ import 'package:paani/screens/signup/signupcompany/RegisterDriver.dart';
 import 'package:paani/screens/signup/signupcompany/RegisterTanker.dart';
 import 'package:paani/screens/companysideapp/CompanyHomeScreen.dart';
 import 'package:paani/screens/customersideapp/order_history_customer.dart';
+import 'package:paani/screens/customersideapp/orderstatus/order_completed.dart';
+import 'package:paani/screens/customersideapp/orderstatus/order_dispatched.dart';
+import 'package:paani/screens/customersideapp/orderstatus/order_status_confirmed.dart';
+import 'package:paani/screens/customersideapp/orderstatus/order_status_declined.dart';
+import 'package:paani/screens/customersideapp/orderstatus/order_status_pending.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 Future<void> main() async {
@@ -33,6 +38,11 @@ Future<void> main() async {
         '/companyhomescreen': (BuildContext context) => CompanyHomeScreen(),
         '/customerhomescreen': (BuildContext context) => CustomerHomeScreen(),
         '/orderhistory': (BuildContext context) => OrderHistoryScreen(),
+        '/orderconfirmed': (BuildContext context) => Confirmed(),
+        '/orderdeclined': (BuildContext context) => Declined(),
+        '/orderdispatched': (BuildContext context) => Dispatched(),
+        '/orderpending': (BuildContext context) => Pending(),
+        '/ordercompleted': (BuildContext context) => Completed(),
       },
       home: email == null
           ? IndexScreen()

@@ -9,7 +9,7 @@ class Loading extends StatefulWidget {
 }
 
 class _LoadingState extends State<Loading> {
-  dynamic pastorders = [];
+  dynamic pastorders;
   Future<void> getorders() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     String id = pref.getString("userid");

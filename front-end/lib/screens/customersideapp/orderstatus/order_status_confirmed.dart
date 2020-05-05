@@ -7,6 +7,7 @@ class Confirmed extends StatefulWidget {
 }
 
 class ConfirmedState extends State<Confirmed> {
+  // static const routeName = '/order_confirmed';
   @override
   Widget build(BuildContext context) {
     return Scaffold(

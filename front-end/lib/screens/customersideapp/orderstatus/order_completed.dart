@@ -7,6 +7,7 @@ class Completed extends StatefulWidget {
 }
 
 class CompletedState extends State<Completed> {
+  // static const routeName = '/order_completed';
   @override
   Widget build(BuildContext context) {
     return Scaffold(

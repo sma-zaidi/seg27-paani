@@ -7,6 +7,7 @@ class Dispatched extends StatefulWidget {
 }
 
 class DispatchedState extends State<Dispatched> {
+  // static const routeName = '/order_dispatched';
   int estimate = 3323232;
   @override
   Widget build(BuildContext context) {
