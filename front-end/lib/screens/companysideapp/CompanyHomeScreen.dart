@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:badges/badges.dart';
+import 'package:paani/screens/companysideapp/in_progress.dart';
 import 'new_requests_screen.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
+import 'package:paani/screens/companysideapp/drawer.dart';
 
 class Order {
   int order_id;
@@ -26,6 +28,7 @@ Future<void> getOrders() async {
   var response =
       await http.get('https://seg27-paani-backend.herokuapp.com/orders');
   var extractedData = convert.jsonDecode(response.body);
+  print(extractedData);
   List loadedOrders = extractedData['message'];
   for (var i in loadedOrders) {
     orders.add(Order(
@@ -110,24 +113,19 @@ class _CompanyHomeScreenState extends State<CompanyHomeScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.teal,
-        leading: FlatButton(
-          onPressed: () {},
-          child: Icon(
-            Icons.menu,
-          ),
-        ),
       ),
+      drawer: DrawerDetails(),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Image.asset('images/logo_transparentbg.png'),
+          Image.asset('assets/logo_transparentbg.png'),
           FlatButton(
             onPressed: () {
               setState(() {
                 newReq = 0;
               });
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => NewReqInit()));
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => NewReqs()));
             },
             child: Card(
               color: Colors.teal.shade300,
@@ -149,6 +147,8 @@ class _CompanyHomeScreenState extends State<CompanyHomeScreen> {
               setState(() {
                 inPro = 0;
               });
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => InProgress()));
             },
             child: Card(
               color: Colors.teal.shade300,

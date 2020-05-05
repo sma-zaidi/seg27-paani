@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:sweetalert/sweetalert.dart';
 import 'package:paani/screens/companysideapp/CompanyHomeScreen.dart';
+import 'package:paani/screens/companysideapp/drawer.dart';
 
 //final List<int> ordersID = <int>[1584, 2459, 3842, 4443, 5042, 6213, 7456];
 //final List<String> address = <String>[
@@ -33,13 +34,6 @@ import 'package:paani/screens/companysideapp/CompanyHomeScreen.dart';
 //  "2-5-2020"
 //]
 
-class NewReqInit extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return new MaterialApp(home: NewReqs());
-  }
-}
-
 class NewReqs extends StatefulWidget {
   @override
   _NewReqsState createState() => _NewReqsState();
@@ -49,6 +43,11 @@ class _NewReqsState extends State<NewReqs> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.teal,
+        title: Text('New Requests'),
+        centerTitle: true,
+      ),
       body: ListView.separated(
         itemCount: orders.length,
         itemBuilder: (BuildContext context, int index) {
@@ -206,16 +205,6 @@ class _NewReqsState extends State<NewReqs> {
         separatorBuilder: (BuildContext context, int index) {
           return Divider();
         },
-      ),
-      appBar: AppBar(
-        backgroundColor: Colors.teal,
-        title: Center(
-          child: Text('New Requests'),
-        ),
-        leading: FlatButton(
-          onPressed: () {},
-          child: Icon(Icons.menu),
-        ),
       ),
     );
   }

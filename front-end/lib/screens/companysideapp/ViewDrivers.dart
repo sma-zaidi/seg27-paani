@@ -77,15 +77,6 @@ class _DriversScreenState extends State<DriversScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.teal,
-        leading: FlatButton(
-          child: Icon(
-            Icons.keyboard_backspace,
-            color: Colors.white,
-          ),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        ),
         centerTitle: true,
         title: Text(
           'Drivers',
@@ -98,8 +89,8 @@ class _DriversScreenState extends State<DriversScreen> {
               color: Colors.white,
             ),
             onPressed: () {
-              Navigator.of(context)
-                  .push(MaterialPageRoute(builder: (context) => AddDriver()));
+              Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => AddDriverScreen()));
             },
           )
         ],
@@ -119,7 +110,8 @@ class _DriversScreenState extends State<DriversScreen> {
                     shape: BoxShape.circle,
                     image: DecorationImage(
                       fit: BoxFit.fill,
-                      image: AssetImage('images/no_pic.jpg'),
+                      image:
+                          AssetImage('assets/user-profile-default-image.png'),
                     ),
                   ),
                 ),
