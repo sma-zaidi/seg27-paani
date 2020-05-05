@@ -27,6 +27,7 @@ class InProgressState extends State<InProgress> {
             Container(
               padding: EdgeInsets.only(left: 10),
               height: 100,
+              width: 150,
               child: new Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
@@ -76,7 +77,7 @@ class InProgressState extends State<InProgress> {
               ),
             ),
             SizedBox(
-              width: 90,
+              width: 15,
             ),
             IconButton(
               icon: Image.asset('assets/confirmed.png'),
@@ -84,21 +85,25 @@ class InProgressState extends State<InProgress> {
               onPressed: () {},
             ),
             SizedBox(
-              width: 20,
+              width: 15,
             ),
-            RaisedButton(
-              onPressed: () {},
-              child: Row(
-                children: <Widget>[
-                  Text("Cancel"),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Icon(Icons.clear)
-                ],
+            ButtonTheme(
+              minWidth: 0,
+              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+              child: RaisedButton(
+                onPressed: () {},
+                child: Row(
+                  children: <Widget>[
+                    Text("Cancel"),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Icon(Icons.clear)
+                  ],
+                ),
+                textColor: Colors.white,
+                color: Colors.teal,
               ),
-              textColor: Colors.white,
-              color: Colors.teal,
             ),
           ],
         );
