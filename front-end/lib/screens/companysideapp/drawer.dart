@@ -140,7 +140,7 @@ class DrawerDetailsState extends State<DrawerDetails> {
                       },
                     ),
                     new ListTile(
-                      leading: Icon(Icons.person_outline),
+                      leading: Icon(Icons.shopping_cart),
                       title: Text(
                         'Tankers',
                         style: TextStyle(fontSize: 18),
