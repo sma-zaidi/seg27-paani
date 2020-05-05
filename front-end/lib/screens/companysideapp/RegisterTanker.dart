@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'Tankers_details.dart';
+
 class RegisterTankerScreen extends StatefulWidget {
   @override
   _RegisterTankerScreenState createState() => _RegisterTankerScreenState();
@@ -95,12 +97,12 @@ class _RegisterTankerScreenState extends State<RegisterTankerScreen> {
                 ),
                 onPressed: () {
                   int size = int.parse(sizeController.text);
-                  double base = double.parse(baseController.text);
-                  double priceKM = double.parse(KMController.text);
-                  packageData.add({
-                    'size': size,
-                    'base price': base,
-                    'price per KM': priceKM
+                  int base = int.parse(baseController.text);
+                  int priceKM = int.parse(KMController.text);
+                  Tankers.add({
+                    'bowser_capacity': size,
+                    'price_base': base,
+                    'price_per_km': priceKM
                   });
                   //TODO: Send POST request to Server with the DATA
                   setState(() {
@@ -110,7 +112,7 @@ class _RegisterTankerScreenState extends State<RegisterTankerScreen> {
                   });
                   showDialog(
                       context: context,
-                      builder: (BuildContext cotext) {
+                      builder: (BuildContext context) {
                         return AlertDialog(
                           title: Text(
                             'Tanker Details Added Successfully',
@@ -124,6 +126,7 @@ class _RegisterTankerScreenState extends State<RegisterTankerScreen> {
                               ),
                               color: Colors.teal,
                               onPressed: () {
+                                Navigator.of(context).pop();
                                 Navigator.of(context).pop();
                               },
                             )

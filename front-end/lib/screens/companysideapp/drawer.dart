@@ -6,6 +6,8 @@ import 'package:paani/screens/companysideapp/completedorders.dart';
 import 'package:paani/screens/companysideapp/ViewDrivers.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'Tankers_details.dart';
+
 // import 'package:paani/screens/home_screen.dart';
 // import 'package:http/http.dart' as http;
 
@@ -135,6 +137,19 @@ class DrawerDetailsState extends State<DrawerDetails> {
                             context,
                             MaterialPageRoute(
                                 builder: (context) => DriversScreen()));
+                      },
+                    ),
+                    new ListTile(
+                      leading: Icon(Icons.person_outline),
+                      title: Text(
+                        'Tankers',
+                        style: TextStyle(fontSize: 18),
+                      ),
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => TankerDetails()));
                       },
                     ),
                     new ListTile(
