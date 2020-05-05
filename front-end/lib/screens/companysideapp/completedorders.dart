@@ -23,101 +23,96 @@ class CompletedOrdersState extends State<CompletedOrders> {
           ),
         ),
       ),
-      body: Column(
-        children: <Widget>[
-          Expanded(
-            child: ListView.builder(
-                itemCount: order.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return Row(
+      body: ListView.builder(
+          itemCount: order.length,
+          itemBuilder: (BuildContext context, int index) {
+            return Row(
+              children: <Widget>[
+                Container(
+                  // width: MediaQuery.of(context).size.width,
+                  padding: EdgeInsets.only(left: 10),
+                  height: 100,
+                  width: 180,
+                  child: new Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Container(
-                        // width: MediaQuery.of(context).size.width,
-                        padding: EdgeInsets.only(left: 10),
-                        height: 100,
-                        child: new Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Text(
-                              "Order id: ",
-                              style: TextStyle(
-                                color: Colors.black45,
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            Text(
-                              "Driver:",
-                              style: TextStyle(
-                                color: Colors.black45,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            Text(
-                              "Address:",
-                              style: TextStyle(
-                                color: Colors.black45,
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            Text(
-                              "Package:",
-                              style: TextStyle(
-                                color: Colors.black45,
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            Text(
-                              "Deliver Date:",
-                              style: TextStyle(
-                                color: Colors.black45,
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
                       SizedBox(
-                        width: 80,
+                        height: 10,
                       ),
-                      RatingBarIndicator(
-                        itemSize: 30.0,
-                        rating: 3,
-                        // minRating: 1,
-                        direction: Axis.horizontal,
-                        itemCount: 5,
-                        itemPadding: EdgeInsets.symmetric(horizontal: 2.0),
-                        itemBuilder: (context, _) => Icon(
-                          Icons.star,
-                          color: Colors.amber,
+                      Text(
+                        "Order id: ",
+                        style: TextStyle(
+                          color: Colors.black45,
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
-                      // RaisedButton(
-                      //   onPressed: () {},
-                      //   child: Row(
-                      //     children: <Widget>[
-                      //       Text("Cancel"),
-                      //       SizedBox(
-                      //         width: 10,
-                      //       ),
-                      //       Icon(Icons.clear)
-                      //     ],
-                      //   ),
-                      //   textColor: Colors.white,
-                      //   color: Colors.teal,
-                      // ),
+                      Text(
+                        "Driver:",
+                        style: TextStyle(
+                          color: Colors.black45,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Text(
+                        "Address:",
+                        style: TextStyle(
+                          color: Colors.black45,
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Text(
+                        "Package:",
+                        style: TextStyle(
+                          color: Colors.black45,
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Text(
+                        "Deliver Date:",
+                        style: TextStyle(
+                          color: Colors.black45,
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ],
-                  );
-                }),
-          ),
-        ],
-      ),
+                  ),
+                ),
+                SizedBox(
+                  width: 10,
+                ),
+                RatingBarIndicator(
+                  itemSize: 30.0,
+                  rating: 3,
+                  // minRating: 1,
+                  direction: Axis.horizontal,
+                  itemCount: 5,
+                  itemPadding: EdgeInsets.symmetric(horizontal: 2.0),
+                  itemBuilder: (context, _) => Icon(
+                    Icons.star,
+                    color: Colors.amber,
+                  ),
+                ),
+                // RaisedButton(
+                //   onPressed: () {},
+                //   child: Row(
+                //     children: <Widget>[
+                //       Text("Cancel"),
+                //       SizedBox(
+                //         width: 10,
+                //       ),
+                //       Icon(Icons.clear)
+                //     ],
+                //   ),
+                //   textColor: Colors.white,
+                //   color: Colors.teal,
+                // ),
+              ],
+            );
+          }),
     );
   }
 }
