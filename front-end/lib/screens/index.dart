@@ -1,3 +1,8 @@
+/*
+  Choose whether to login or signup
+  First screen a user sees if they're logged out.
+*/
+
 import 'package:flutter/material.dart';
 
 class IndexScreen extends StatelessWidget {

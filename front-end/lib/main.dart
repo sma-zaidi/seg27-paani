@@ -7,7 +7,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'package:paani/routes/routes.dart';
+import 'package:paani/routes/routes.dart'; // defines the routes variable
 
 Future<void> main() async {
 
@@ -18,10 +18,8 @@ Future<void> main() async {
     MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Paani',
-      theme: ThemeData(
-        primarySwatch: Colors.teal,
-      ),
-      routes: routes,
+      theme: ThemeData(primarySwatch: Colors.teal,),
+      routes: routes, // defined in routes/routes.dart
       home: prefs.getString('email') == null
           ? index
           : (prefs.getString("accounttype") == 'COMPANY'
@@ -29,6 +27,7 @@ Future<void> main() async {
               : customerHome)
     )
   );
+  
 }
 
 Future<bool> checkloggedin() async {
