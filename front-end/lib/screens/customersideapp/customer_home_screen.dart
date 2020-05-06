@@ -1,45 +1,70 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-// import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:paani/screens/customersideapp/drawer.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter_star_rating/flutter_star_rating.dart';
 import 'package:paani/screens/customersideapp/customerorderplacement.dart';
 
-//import './Screens/drawer.dart';
 class CustomerHomeScreen extends StatefulWidget {
   @override
-  HomeScreenState createState() => new HomeScreenState();
+  HomeScreenState createState() => HomeScreenState();
 }
 
 class HomeScreenState extends State<CustomerHomeScreen> {
+
+  bool failedToLoad = false; // gets set to true if loading homescreen data from the server fails
+
   bool isSearching = false;
-  List<dynamic> companies = [];
-  List<dynamic> searchCompanies = [];
+  var companies = [];
+  var searchCompanies = [];
   var allCompanyPackages;
-  Future<void> getData() async {
-    //var type -- http.response
-    var responseCompanies = await http.get(
-        "https://seg27-paani-backend.herokuapp.com/companies",
-        headers: {"Accept": "application/json"});
-    //print(response.body);
-    var mapCompanies = jsonDecode(responseCompanies.body);
-    companies = mapCompanies['msg'];
-    for (int i = 0; i < companies.length; i++) {
-      var responsePackages = await http.get(
-          "https://seg27-paani-backend.herokuapp.com/packages/${companies[i]['id']}",
+
+  Future<http.Response> getCompanies() async {
+    try {
+      return await http.get(
+          "https://seg27-paani-backend.herokuapp.com/companies",
           headers: {"Accept": "application/json"});
-      var mapPackages = jsonDecode(responsePackages.body);
-      companies[i]['packages'] = mapPackages['msg'];
+    } catch (error) {
+      setState((){failedToLoad = true;});
+      print(error);
+      return null;      
     }
-    setState(() {
-      searchCompanies = companies;
-    });
-    print(searchCompanies);
-    //String name=data[0]["name"];
-    //List<dynamic> data= jsonDecode(response.body);
-    //print(data[1]["company_id"]);
+  }
+
+  Future<http.Response> getPackages(company) async {
+    try {
+      return await http.get(
+          "https://seg27-paani-backend.herokuapp.com/packages/${company['id']}",
+          headers: {"Accept": "application/json"});
+    } catch (error) {
+      setState((){failedToLoad = true;});
+      print(error);
+      return null;      
+    }
+  }
+
+  Future<void> getData() async {
+
+      var responseCompanies = await getCompanies();
+      if (responseCompanies == null) return; // error occured
+      var mapCompanies = jsonDecode(responseCompanies.body);
+      companies = mapCompanies['msg'];
+
+      for (int i = 0; i < companies.length; i++) { // get each company's packages. Takes a bit, persistent http might help.
+        var responsePackages = await getPackages(companies[i]);
+        if (responsePackages == null) { // error occured
+          companies = [];
+          return;
+        }
+        var mapPackages = jsonDecode(responsePackages.body);
+        companies[i]['packages'] = mapPackages['msg'];
+      }
+
+      setState(() {
+        searchCompanies = companies;
+      });
+
   }
 
   void searchCompany(String input) {
@@ -98,23 +123,25 @@ class HomeScreenState extends State<CustomerHomeScreen> {
   @override
   //this functions is called before anything gets rendered to the screen
   // ignore: must_call_super
-  void initState() {
-    this.getData();
+  void initState () {
+      getData();
   }
 
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: new AppBar(
+        centerTitle: true,
         title: !isSearching
             ? Text(
-                "Welcome",
+                "Paani - Home",
                 style: TextStyle(color: Colors.white),
               )
             : TextField(
                 onChanged: (String input) {
                   searchCompany(input);
                 },
+                cursorColor: Colors.white,
                 style: TextStyle(color: Colors.white),
                 decoration: InputDecoration(
                     border: InputBorder.none,
@@ -253,7 +280,7 @@ class HomeScreenState extends State<CustomerHomeScreen> {
                                       builder: (BuildContext context) {
                                         return AlertDialog(
                                           title: Text(
-                                            'Company has no Packages available right now',
+                                            'Company has no packages available right now.',
                                             style:
                                                 TextStyle(color: Colors.teal),
                                           ),
@@ -296,9 +323,30 @@ class HomeScreenState extends State<CustomerHomeScreen> {
                   ),
                 );
               })
-          : Center(
-              child: CircularProgressIndicator(),
-            ),
+          : Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20.0),
+                child: Center(
+                child: failedToLoad ? Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Text('Failed to reach Paani\'s servers.\nPlease check your internet connection and try again.',
+                      textAlign: TextAlign.center,
+                    ),
+                    SizedBox(height: 6.0,),
+                    RaisedButton(
+                      onPressed: () {
+                        Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(builder: (context) => CustomerHomeScreen()),
+                        (_) => false);
+                      },
+                      child: Text('Refresh'),
+                    )
+                  ],
+                ) : CircularProgressIndicator()
+              ),
+          ),
     );
   }
 }
