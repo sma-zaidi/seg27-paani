@@ -22,15 +22,14 @@ class DrawerDetailsState extends State<DrawerDetails> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<String>(
-      future: getName(),
-      builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
-        if (snapshot.hasData) {
-          return drawer('${snapshot.data}', context);
-        } else {
-          return drawer('?', context);
-        }
-      }
-    );
+        future: getName(),
+        builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+          if (snapshot.hasData) {
+            return drawer('${snapshot.data}', context);
+          } else {
+            return drawer('?', context);
+          }
+        });
   }
 
   Widget drawer(String name, BuildContext context) {
@@ -139,9 +138,10 @@ class DrawerDetailsState extends State<DrawerDetails> {
             ),
             onTap: () async {
               SharedPreferences pref = await SharedPreferences.getInstance();
-              pref.clear().then((result) {
-                Navigator.pushNamedAndRemoveUntil(context, '/', (_) => false);
-              }).catchError((error) {Navigator.pushNamedAndRemoveUntil(context, '/', (_) => false);});
+              await pref.remove('email');
+              await pref.clear();
+              Navigator.pushNamedAndRemoveUntil(context, '/', (_) => false);
+              // }).catchError((error) {Navigator.pushNamedAndRemoveUntil(context, '/', (_) => false);});
             },
           ),
         ],

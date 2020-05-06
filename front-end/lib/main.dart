@@ -29,13 +29,9 @@ import 'screens/companysideapp/Assign_Driver.dart';
 import 'screens/companysideapp/Companyeditprofile.dart';
 
 Future<void> main() async {
-
   WidgetsFlutterBinding.ensureInitialized();
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  var email = prefs.getString('email');
-
-  runApp(
-    MaterialApp(
+  runApp(MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Paani',
       theme: ThemeData(
@@ -64,7 +60,7 @@ Future<void> main() async {
         '/companyeditprofile': (BuildContext context) =>
             CompanyEditProfileScreen()
       },
-      home: email == null
+      home: prefs.getString('email') == null
           ? IndexScreen()
           : (prefs.getString("accounttype") == 'COMPANY'
               ? CompanyHomeScreen()

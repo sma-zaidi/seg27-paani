@@ -178,6 +178,7 @@ class DrawerDetailsState extends State<DrawerDetails> {
               ),
               onTap: () async {
                 SharedPreferences pref = await SharedPreferences.getInstance();
+                await pref.remove('email');
                 await pref.clear();
                 Navigator.pushNamedAndRemoveUntil(context, '/', (_) => false);
               },

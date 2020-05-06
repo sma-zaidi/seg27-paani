@@ -49,22 +49,23 @@ class _LoginScreenState extends State<LoginScreen> {
 
         prefs.setString("userid", message['id'].toString()); // session id
         prefs.setString("username", message['name'].toString());
+        prefs.setString("address", message['address'].toString());
+        prefs.setString("contact", message['contact_number'].toString());
         if (message.containsKey('ntn')) {
-          prefs.setString("address", message['address'].toString());
-          prefs.setString("contact", message['contact_number'].toString());
           prefs.setString("ntn", message['ntn'].toString());
           prefs.setString("accounttype", "COMPANY");
           return 'company';
         } else {
           prefs.setString("accounttype", 'COSTUMER');
-          prefs.setString("address", message['address'].toString());
-          prefs.setString("contact", message['contact_number'].toString());
           return 'customer';
         }
       } else {
         return 'invalid login';
       }
-    } catch (error) { print(error); return 'error'; }
+    } catch (error) {
+      print(error);
+      return 'error';
+    }
   }
 
   void _submit() async {
@@ -129,47 +130,48 @@ class _LoginScreenState extends State<LoginScreen> {
         key: formKey,
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 20.0),
-            child: Column(
-              children: <Widget>[
-                TextFormField(
-                  validator: (text) {
-                    if (text.isEmpty) {
-                      return 'Please enter your email address';
-                    }
-                    return null;
-                  },
-                  onSaved: (text) => _email = text,
-                  cursorColor: Theme.of(context).primaryColor,
-                  decoration: InputDecoration(
-                    labelText: 'Email address',
-                    prefixIcon: Icon(Icons.email),
-                  ),
+          child: Column(
+            children: <Widget>[
+              TextFormField(
+                validator: (text) {
+                  if (text.isEmpty) {
+                    return 'Please enter your email address';
+                  }
+                  return null;
+                },
+                onSaved: (text) => _email = text,
+                cursorColor: Theme.of(context).primaryColor,
+                decoration: InputDecoration(
+                  labelText: 'Email address',
+                  prefixIcon: Icon(Icons.email),
                 ),
-                SizedBox(height: 6,),
-                TextFormField(
-                  validator: (text) {
-                    if (text.isEmpty) {
-                      return 'Please enter your password';
-                    }
-                    return null;
-                  },
-                  onSaved: (text) => _password = text,
-                  cursorColor: Theme.of(context).primaryColor,
-                  obscureText: _obscurePassword,
-                  decoration: InputDecoration(
-                      labelText: 'Password',
-                      prefixIcon: Icon(Icons.vpn_key),
-                      suffixIcon: IconButton(
-                          icon: _obscurePassword
-                              ? Icon(Icons.visibility_off)
-                              : Icon(Icons.visibility),
-                          onPressed: () {
-                                setState(() {
-                                  _obscurePassword = !_obscurePassword;
-                                });
-                              })
-                            ),
-                ),
+              ),
+              SizedBox(
+                height: 6,
+              ),
+              TextFormField(
+                validator: (text) {
+                  if (text.isEmpty) {
+                    return 'Please enter your password';
+                  }
+                  return null;
+                },
+                onSaved: (text) => _password = text,
+                cursorColor: Theme.of(context).primaryColor,
+                obscureText: _obscurePassword,
+                decoration: InputDecoration(
+                    labelText: 'Password',
+                    prefixIcon: Icon(Icons.vpn_key),
+                    suffixIcon: IconButton(
+                        icon: _obscurePassword
+                            ? Icon(Icons.visibility_off)
+                            : Icon(Icons.visibility),
+                        onPressed: () {
+                          setState(() {
+                            _obscurePassword = !_obscurePassword;
+                          });
+                        })),
+              ),
             ],
           ),
         ));
@@ -177,7 +179,10 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       key: scaffoldKey,
       appBar: AppBar(
-        title: Text('Paani - Log in', style: TextStyle(letterSpacing: 1.5),),
+        title: Text(
+          'Paani - Log in',
+          style: TextStyle(letterSpacing: 1.5),
+        ),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -186,9 +191,13 @@ class _LoginScreenState extends State<LoginScreen> {
             children: <Widget>[
               paaniLogo,
               loginForm,
-              SizedBox(height: 6.0,),
+              SizedBox(
+                height: 6.0,
+              ),
               loginButton,
-              SizedBox(height: 6.0,),
+              SizedBox(
+                height: 6.0,
+              ),
             ],
           ),
         ),
