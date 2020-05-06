@@ -49,7 +49,6 @@ class _EditTankerScreenState extends State<EditTankerScreen> {
 
   Future<bool> _submit() async {
     try {
-      SharedPreferences pref = await SharedPreferences.getInstance(); 
 
       var response = await updatePackage(
         Tankers[data]['id'],
