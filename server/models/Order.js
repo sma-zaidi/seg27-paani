@@ -20,6 +20,15 @@ Order = {
         } catch (error) {throw new Error(error)}
     },
 
+    rating: async (orderid) => {
+        try {
+            result = await query(`SELECT rating FROM \`seg27-paani\`.orders 
+                                    INNER JOIN \`seg27-paani\`.reviews ON \`seg27-paani\`.orders.id = \`seg27-paani\`.reviews.id
+                                    WHERE orders.id = ?`, [orderid]);
+            return result;
+        }catch (error) {throw new Error(error)}
+    },
+
 	getOrderHistory: async (customerid) => {
         try {
             result = await query(`SELECT * FROM \`seg27-paani\`.orders 

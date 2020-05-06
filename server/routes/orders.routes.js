@@ -65,6 +65,19 @@ router.get('/history/:customerid', async (req, res, next) => {
     }
 })
 
+router.get('/rating/:orderid', async (req, res, next) => {
+    try {
+        orderid = req.params.orderid
+        result = await Order.rating(orderid);
+        if (result.length === 0){
+            return res.json({msg:"No completed order!"})
+        }
+        return res.json({msg:result})
+    } catch (error) {
+        res.json({error: error})
+    }
+})
+
 router.get('/:customerid',async (req, res, next) => {
     try {
         customerid = req.params.customerid
