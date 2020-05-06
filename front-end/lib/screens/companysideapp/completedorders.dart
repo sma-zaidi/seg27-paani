@@ -20,6 +20,17 @@ class CompletedOrdersState extends State<CompletedOrders> {
         'https://seg27-paani-backend.herokuapp.com/orders/${pref.getString('userid')}/Complete');
     var dataBody = jsonDecode(responseCompleted.body);
     if (dataBody['error'] == false) {
+      for (int i = 0; i < dataBody['msg'].length; i++) {
+        var responseRating = await http.get(
+            'https://seg27-paani-backend.herokuapp.com/orders/rating/${dataBody['msg'][i]['orderid'].toString()}');
+        var dataRating = jsonDecode(responseRating.body);
+        print(dataRating);
+        if (dataRating['msg'] == "No completed order!") {
+          dataBody['msg'][i]['rating'] = null;
+        } else {
+          dataBody['msg'][i]['rating'] = dataRating['msg'][0]['rating'];
+        }
+      }
       setState(() {
         completedOrders = dataBody['msg'];
         loadScreen = false;
@@ -112,19 +123,32 @@ class CompletedOrdersState extends State<CompletedOrders> {
                     SizedBox(
                       width: 10,
                     ),
-                    RatingBarIndicator(
-                      //TODO: implement rating
-                      itemSize: 30.0,
-                      rating: 3,
-                      // minRating: 1,
-                      direction: Axis.horizontal,
-                      itemCount: 5,
-                      itemPadding: EdgeInsets.symmetric(horizontal: 2.0),
-                      itemBuilder: (context, _) => Icon(
-                        Icons.star,
-                        color: Colors.amber,
-                      ),
-                    ),
+                    completedOrders[index]['rating'] == null
+                        ? RatingBarIndicator(
+                            itemSize: 30.0,
+                            rating: 0,
+                            // minRating: 1,
+                            direction: Axis.horizontal,
+                            itemCount: 5,
+                            itemPadding: EdgeInsets.symmetric(horizontal: 2.0),
+                            itemBuilder: (context, _) => Icon(
+                              Icons.star,
+                              color: Colors.amber,
+                            ),
+                          )
+                        : RatingBarIndicator(
+                            itemSize: 30.0,
+                            rating: double.parse(
+                                completedOrders[index]['rating'].toString()),
+                            // minRating: 1,
+                            direction: Axis.horizontal,
+                            itemCount: 5,
+                            itemPadding: EdgeInsets.symmetric(horizontal: 2.0),
+                            itemBuilder: (context, _) => Icon(
+                              Icons.star,
+                              color: Colors.amber,
+                            ),
+                          )
                     // RaisedButton(
                     //   onPressed: () {},
                     //   child: Row(
