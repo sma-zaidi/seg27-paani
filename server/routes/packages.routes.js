@@ -28,6 +28,7 @@ router.post('/', async (req, res, next) => { // create a package
 })
 
 router.put('/', async (req, res, next) => { // modify package
+    console.log(req.body);
     var {package_id, price_base, price_per_km, bowser_capacity} = req.body
 
     if (!package_id || !price_base || !price_per_km || !bowser_capacity) {
