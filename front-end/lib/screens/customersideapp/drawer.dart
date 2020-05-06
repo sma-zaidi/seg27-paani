@@ -1,11 +1,15 @@
+/*
+  Defines the sliding menu on the customer home screen.
+*/
+
 import 'package:flutter/material.dart';
-import 'package:paani/screens/customersideapp/customer_home_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'package:paani/screens/index.dart';
+import 'package:paani/screens/customersideapp/customer_home_screen.dart';
 import 'package:paani/screens/customersideapp/customereditprofile.dart';
 import 'package:paani/screens/customersideapp/order_history_customer_loading.dart';
 import 'package:paani/screens/customersideapp/order_status_loading.dart';
-// import 'package:paani/screens/home_screen.dart';
-// import 'package:http/http.dart' as http;
 
 class DrawerDetails extends StatefulWidget {
   @override
@@ -26,7 +30,7 @@ class DrawerDetailsState extends State<DrawerDetails> {
         builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
           if (snapshot.hasData) {
             return drawer('${snapshot.data}', context);
-          } else {
+          } else { // something went wrong. Probably better to log the user out here
             return drawer('?', context);
           }
         });
@@ -136,12 +140,10 @@ class DrawerDetailsState extends State<DrawerDetails> {
               'Logout',
               style: TextStyle(fontSize: 18),
             ),
-            onTap: () async {
+            onTap: () async { // delete locally stored user info and redirect to the login/signup screen.
               SharedPreferences pref = await SharedPreferences.getInstance();
-              await pref.remove('email');
               await pref.clear();
-              Navigator.pushNamedAndRemoveUntil(context, '/', (_) => false);
-              // }).catchError((error) {Navigator.pushNamedAndRemoveUntil(context, '/', (_) => false);});
+              Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => IndexScreen()), (_) => false);
             },
           ),
         ],

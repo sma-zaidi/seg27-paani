@@ -31,8 +31,7 @@ class _LoginScreenState extends State<LoginScreen> {
     ));
   }
 
-  Future<String> _logUserIn() async {
-    // handles user login
+  Future<String> _logUserIn() async { // handles user login
 
     try {
       var result = await http.post(
@@ -40,32 +39,33 @@ class _LoginScreenState extends State<LoginScreen> {
           body: {'email': _email, 'password': _password});
 
       var response = json.decode(result.body);
-      print(response);
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      prefs.setString("email", _email);
-      prefs.setString("password", _password);
+
       if (response['error'] == false) {
         Map message = response['msg'];
 
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+
+        // store the user's information locally
         prefs.setString("userid", message['id'].toString()); // session id
+        prefs.setString("email", _email);
+        prefs.setString("password", _password);
         prefs.setString("username", message['name'].toString());
         prefs.setString("address", message['address'].toString());
         prefs.setString("contact", message['contact_number'].toString());
-        if (message.containsKey('ntn')) {
+
+        if (message.containsKey('ntn')) { // if the account belongs to a company
           prefs.setString("ntn", message['ntn'].toString());
           prefs.setString("accounttype", "COMPANY");
           return 'company';
-        } else {
+        } else { // account belongs to a customer
           prefs.setString("accounttype", 'COSTUMER');
           return 'customer';
         }
       } else {
         return 'invalid login';
       }
-    } catch (error) {
-      print(error);
-      return 'error';
-    }
+    } catch (error) { print(error); return 'error'; }
+
   }
 
   void _submit() async {
