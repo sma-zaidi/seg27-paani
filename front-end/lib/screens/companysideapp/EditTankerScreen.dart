@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert';
+
 import 'Tankers_details.dart';
 import 'package:sweetalert/sweetalert.dart';
 
@@ -10,11 +14,72 @@ class EditTankerScreen extends StatefulWidget {
 }
 
 class _EditTankerScreenState extends State<EditTankerScreen> {
+  final scaffoldKey = GlobalKey<ScaffoldState>();
+
   var data;
   _EditTankerScreenState({this.data});
   var capController = TextEditingController();
   var baseController = TextEditingController();
   var KMController = TextEditingController();
+
+  Future<http.Response> updatePackage(id, priceBase, pricePerKm, bowserCapacity) async {
+    try {
+      var response = await http.put(
+        'https://seg27-paani-backend.herokuapp.com/packages',
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+            "Content-Type": "application/json",
+        },
+        body: jsonEncode({
+          'package_id': id,
+          'price_base': priceBase,
+          'price_per_km': pricePerKm,
+          'bowser_capacity': bowserCapacity,
+        })
+      );
+
+      var message = jsonDecode(response.body);
+      if(message['error'] == true) return null;
+      else return response;
+    } catch (error) {
+      return null;
+    }
+
+  }
+
+  Future<bool> _submit() async {
+    try {
+      SharedPreferences pref = await SharedPreferences.getInstance(); 
+
+      var response = await updatePackage(
+        Tankers[data]['id'],
+        Tankers[data]['price_base'],
+        Tankers[data]['price_per_km'],
+        Tankers[data]['bowser_capacity'],
+      );
+
+      if (response == null) return false; // edit failed
+      return true;
+
+    } catch (error) {
+      print(error);
+      return false;
+    }
+  }
+
+  void _showSnackBar(String text) {
+    scaffoldKey.currentState.hideCurrentSnackBar();
+    scaffoldKey.currentState.showSnackBar(SnackBar(
+      content: Text(text),
+      action: SnackBarAction(
+        label: 'Dismiss',
+        onPressed: () {
+          scaffoldKey.currentState.hideCurrentSnackBar();
+        },
+      ),
+    ));
+  }
+
   @override
   void initState() {
     capController.text = Tankers[data]['bowser_capacity'].toString();
@@ -25,6 +90,7 @@ class _EditTankerScreenState extends State<EditTankerScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: scaffoldKey,
       appBar: AppBar(
         title: Text('Edit Tanker'),
         centerTitle: true,
@@ -121,7 +187,7 @@ class _EditTankerScreenState extends State<EditTankerScreen> {
                             ),
                             color: Colors.teal,
                           ),
-                          onPressed: () {
+                          onPressed: () async {
                             setState(() {
                               Tankers[data]['bowser_capacity'] =
                                   int.parse(capController.text);
@@ -129,11 +195,14 @@ class _EditTankerScreenState extends State<EditTankerScreen> {
                                   int.parse(baseController.text);
                               Tankers[data]['price_per_km'] =
                                   int.parse(KMController.text);
+                
                             });
-                            Navigator.of(context).pop();
-                            Navigator.of(context).pop();
-                            SweetAlert.show(context,
-                                style: SweetAlertStyle.success);
+                            Navigator.of(context, rootNavigator: true).pop();
+                            if (await _submit()) {
+                              _showSnackBar('Package updated');
+                            } else {
+                              _showSnackBar('Couldn\'t update package');
+                            }
                           },
                         ),
                         FlatButton(
