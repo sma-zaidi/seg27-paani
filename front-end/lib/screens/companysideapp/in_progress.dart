@@ -1,5 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'CompanyHomeScreen.dart';
+import 'CompanyHomeScreen.dart';
+import 'CompanyHomeScreen.dart';
 
 class InProgress extends StatefulWidget {
   @override
@@ -35,7 +38,7 @@ class InProgressState extends State<InProgress> {
                       height: 10,
                     ),
                     Text(
-                      "Order id:",
+                      "Order id: ${ongoingOrders[index]['orderid']}",
                       style: TextStyle(
                         color: Colors.black45,
                         fontSize: 15,
@@ -50,7 +53,7 @@ class InProgressState extends State<InProgress> {
                       ),
                     ),
                     Text(
-                      "Address:",
+                      "Address: ${ongoingOrders[index]['delivery_address']}",
                       style: TextStyle(
                         color: Colors.black45,
                         fontSize: 15,
@@ -58,7 +61,7 @@ class InProgressState extends State<InProgress> {
                       ),
                     ),
                     Text(
-                      "Package:",
+                      "Package ID: ${ongoingOrders[index]['id']}",
                       style: TextStyle(
                         color: Colors.black45,
                         fontSize: 15,
@@ -66,7 +69,7 @@ class InProgressState extends State<InProgress> {
                       ),
                     ),
                     Text(
-                      "Deliver Date:",
+                      "Deliver Date: ${ongoingOrders[index]['delivery_time']}",
                       style: TextStyle(
                         color: Colors.black45,
                         fontSize: 15,
@@ -108,7 +111,7 @@ class InProgressState extends State<InProgress> {
             ],
           );
         },
-        itemCount: 10,
+        itemCount: ongoingOrders.length,
         separatorBuilder: (BuildContext context, int index) => Divider(),
       ),
     );

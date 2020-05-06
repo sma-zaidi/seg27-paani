@@ -1,42 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:badges/badges.dart';
 import 'package:paani/screens/companysideapp/in_progress.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'new_requests_screen.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
 import 'package:paani/screens/companysideapp/drawer.dart';
 
-class Order {
-  int order_id;
-  int capacity;
-  String location;
-
-  Order({this.order_id, this.capacity, this.location});
-
-  factory Order.fromJSON(Map<String, dynamic> json) {
-    return Order(
-      order_id: json['order_id'],
-      capacity: json['bowser_capacity'],
-      location: json['location'],
-    );
-  }
-}
-
-List<Order> orders = [];
-
-Future<void> getOrders() async {
-  var response =
-      await http.get('https://seg27-paani-backend.herokuapp.com/orders');
-  var extractedData = convert.jsonDecode(response.body);
-  print(extractedData);
-  List loadedOrders = extractedData['message'];
-  for (var i in loadedOrders) {
-    orders.add(Order(
-        order_id: i['order_id'],
-        location: i['location'],
-        capacity: i['bowser_capacity']));
-  }
-}
+var newOrders = [];
+var ongoingOrders = [];
+int inPro = 0;
+int newReq = 0;
 
 Badge getBadge(int a, int b) {
   // a is number that badge will show
@@ -100,73 +74,133 @@ class CompanyHomeScreen extends StatefulWidget {
 }
 
 class _CompanyHomeScreenState extends State<CompanyHomeScreen> {
+  var errorPending;
+  var errorOngoing;
+
+  Future<void> getOrders() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    print(pref.getString('userid'));
+    var responsePending = await http.get(
+        'https://seg27-paani-backend.herokuapp.com/orders/${pref.getString('userid')}/Pending');
+    var dataPending = convert.jsonDecode(responsePending.body);
+    if (dataPending['error'] == false) {
+      setState(() {
+        newOrders = dataPending['msg'];
+        print(newOrders);
+        errorPending = false;
+        newReq = newOrders.length;
+      });
+    } else {
+      setState(() {
+        print(newOrders);
+        errorPending = dataPending['error'];
+        newReq = 0;
+      });
+    }
+    var responseOngoing = await http.get(
+        'https://seg27-paani-backend.herokuapp.com/orders/${pref.getString('userid')}/Confirmed');
+    var dataOngoing = convert.jsonDecode(responseOngoing.body);
+    if (dataOngoing['error'] == false) {
+      setState(() {
+        ongoingOrders = dataOngoing['msg'];
+        errorOngoing = false;
+        inPro = ongoingOrders.length;
+      });
+    } else {
+      setState(() {
+        errorOngoing = dataOngoing['error'];
+        inPro = 0;
+      });
+    }
+  }
+
   @override
   initState() {
     super.initState();
     getOrders();
   }
 
-  int inPro = 11;
-  int newReq = orders.length;
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.teal,
-      ),
-      drawer: DrawerDetails(),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Image.asset('assets/logo_transparentbg.png'),
-          FlatButton(
-            onPressed: () {
-              setState(() {
-                newReq = 0;
-              });
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => NewReqs()));
-            },
-            child: Card(
-              color: Colors.teal.shade300,
-              margin: EdgeInsets.symmetric(horizontal: 40.0, vertical: 10.0),
-              child: ListTile(
-                title: Text(
-                  'New Requests',
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 21.0,
-                      fontWeight: FontWeight.bold),
-                ),
-                trailing: getBadge(newReq, 0),
-              ),
+    return errorPending == null || errorOngoing == null
+        ? Scaffold(
+            body: Center(
+              child: CircularProgressIndicator(),
             ),
-          ),
-          FlatButton(
-            onPressed: () {
-              setState(() {
-                inPro = 0;
-              });
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => InProgress()));
-            },
-            child: Card(
-              color: Colors.teal.shade300,
-              margin: EdgeInsets.symmetric(horizontal: 40.0, vertical: 10.0),
-              child: ListTile(
-                title: Text(
-                  'In Progress',
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 21.0,
-                      fontWeight: FontWeight.bold),
-                ),
-                trailing: getBadge(inPro, 1),
-              ),
+          )
+        : Scaffold(
+            appBar: AppBar(
+              backgroundColor: Colors.teal,
+              actions: <Widget>[
+                FlatButton(
+                  child: Icon(
+                    Icons.refresh,
+                    color: Colors.white,
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      errorPending = null;
+                      errorOngoing = null;
+                      getOrders();
+                    });
+                  },
+                )
+              ],
             ),
-          ),
-        ],
-      ),
-    );
+            drawer: DrawerDetails(),
+            body: ListView(
+              children: <Widget>[
+                Image.asset('assets/logo_transparentbg.png'),
+                FlatButton(
+                  onPressed: () {
+                    setState(() {
+                      newReq = 0;
+                    });
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => NewReqs()));
+                  },
+                  child: Card(
+                    color: Colors.teal.shade300,
+                    margin:
+                        EdgeInsets.symmetric(horizontal: 40.0, vertical: 10.0),
+                    child: ListTile(
+                      title: Text(
+                        'New Requests',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 21.0,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      trailing: getBadge(newReq, 0),
+                    ),
+                  ),
+                ),
+                FlatButton(
+                  onPressed: () {
+                    setState(() {
+                      inPro = 0;
+                    });
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => InProgress()));
+                  },
+                  child: Card(
+                    color: Colors.teal.shade300,
+                    margin:
+                        EdgeInsets.symmetric(horizontal: 40.0, vertical: 10.0),
+                    child: ListTile(
+                      title: Text(
+                        'In Progress',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 21.0,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      trailing: getBadge(inPro, 1),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          );
   }
 }
