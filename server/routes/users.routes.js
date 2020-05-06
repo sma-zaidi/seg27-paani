@@ -70,7 +70,7 @@ router.post('/register', async (req, res, next) => {
         } catch (error) { console.log(error); return res.json({error: error}); }
 
         try {
-            await Company.create(20, name, ntn, contact_number, address, location);
+            await Company.create(userid, name, ntn, contact_number, address, location);
         } catch (error) {
             User.destroy(userid); // user is created before customer, so if something goes wrong while creating the customer, need to roll back.
             console.log(error);
