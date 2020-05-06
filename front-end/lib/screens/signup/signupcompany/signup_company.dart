@@ -769,6 +769,8 @@ import 'package:flutter/services.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:email_validator/email_validator.dart';
+import 'package:paani/screens/customersideapp/googlemaps/G_Map.dart';
+import 'package:geolocator/geolocator.dart';
 
 class CompanySignupScreen extends StatefulWidget {
   @override
@@ -781,16 +783,18 @@ class _CompanySignupScreenState extends State<CompanySignupScreen> {
 
   Future<bool> _verifyEmail() async {
     try {
-      var response =
-          await http.post('http://192.168.10.7:7777/users/register/', body: {
-        'email': _email,
-        'password': _password,
-        'name': _name,
-        'contact_number': _contact,
-        'address': _address,
-        'ntn': _ntnnumber,
-        'account_type': "COMPANY",
-      });
+      var response = await http.post(
+          'https://seg27-paani-backend.herokuapp.com/users/register/',
+          body: {
+            'email': _email,
+            'password': _password,
+            'name': _name,
+            'contact_number': _contact,
+            'address': _address,
+            'ntn': _ntnnumber,
+            'location': _location,
+            'account_type': "COMPANY",
+          });
       print(response.body);
       if (json.decode(response.body)["error"] == false) {
         return true;
@@ -805,27 +809,32 @@ class _CompanySignupScreenState extends State<CompanySignupScreen> {
 
   void _submit() async {
     final form = _formKey.currentState;
-    _loading = true;
     form.save();
     if (form.validate()) {
-      if (await _verifyEmail()) {
-        Navigator.pushNamedAndRemoveUntil(
-            context, '/RegisterTanker', ModalRoute.withName('/'));
+      if (_location != null) {
+        print(_location);
+        if (await _verifyEmail()) {
+          Navigator.pushNamedAndRemoveUntil(
+              context, '/RegisterTanker', ModalRoute.withName('/'));
+        } else {
+          _showSnackBar("Sorry could not create your account");
+        }
+      } else {
+        _showSnackBar("Please Set your current location");
       }
     }
     // } else {
     //   _showSnackBar("Sorry Cound't store your information");
     // }
-    _loading = false;
   }
-
-  var _loading = false;
 
   String _email, _password;
   String _cpassword;
-  String _name, _contact, _address, _ntnnumber;
+  String _name, _contact, _address, _ntnnumber, _location;
 
   bool _obscurePassword = true;
+  bool pageloading = false;
+  bool locationset = false;
 
   void _showSnackBar(String text) {
     scaffoldKey.currentState.hideCurrentSnackBar();
@@ -894,7 +903,7 @@ class _CompanySignupScreenState extends State<CompanySignupScreen> {
         ),
         TextFormField(
           validator: (text) {
-            if (text == null || text.isEmpty || text.length != 13) {
+            if (text == null || text.isEmpty || text.length != 7) {
               return 'Invalid NTN number';
             }
             return null;
@@ -905,7 +914,7 @@ class _CompanySignupScreenState extends State<CompanySignupScreen> {
           // obscureText: _obscurePassword,
           decoration: InputDecoration(
             labelText: 'NTN Number',
-            hintText: '13 digits (without dashes)',
+            hintText: '7 digits (without dashes)',
             prefixIcon: Icon(Icons.contact_phone),
           ),
         ),
@@ -1023,6 +1032,89 @@ class _CompanySignupScreenState extends State<CompanySignupScreen> {
                   child: Column(
                     children: <Widget>[
                       DetailsForm,
+                      Padding(
+                        padding:
+                            const EdgeInsets.only(left: 20, right: 20, top: 10),
+                        child: Card(
+                          color: Colors.teal,
+                          child: FlatButton(
+                            onPressed: pageloading
+                                ? null
+                                : () async {
+                                    this.setState(() {
+                                      pageloading = true;
+                                    });
+                                    final position = await Geolocator()
+                                        .getCurrentPosition(
+                                            desiredAccuracy:
+                                                LocationAccuracy.high);
+                                    dynamic result = await Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => G_Map(
+                                                position.latitude,
+                                                position.longitude)));
+                                    this.setState(() {
+                                      pageloading = false;
+                                    });
+                                    if (result != null) {
+                                      setState(() {
+                                        _location = result.toString();
+                                        locationset = true;
+                                      });
+                                    }
+                                    // }
+                                  },
+                            child: ListTile(
+                              title: Center(
+                                child: Text(
+                                  'Current Location',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              ),
+                              trailing: Icon(
+                                Icons.location_on,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      locationset
+                          ? Padding(
+                              padding: const EdgeInsets.fromLTRB(
+                                  24.0, 0.0, 24.0, 0.0),
+                              child: Container(
+                                color: Colors.grey[400],
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: <Widget>[
+                                    Padding(
+                                      padding: const EdgeInsets.fromLTRB(
+                                          15.0, 8.0, 15.0, 8.0),
+                                      child: Text(
+                                        "Your location has been set",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                    SizedBox(width: 10.0),
+                                    IconButton(
+                                        icon: Icon(
+                                          Icons.remove_circle,
+                                          color: Colors.red,
+                                        ),
+                                        onPressed: () {
+                                          setState(() {
+                                            _location = null;
+                                            locationset = false;
+                                          });
+                                        })
+                                  ],
+                                ),
+                              ),
+                            )
+                          : SizedBox(height: 0.0),
                       SizedBox(height: 20.0),
                       ButtonTheme(
                         minWidth: 170.0,

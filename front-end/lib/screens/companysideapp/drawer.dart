@@ -131,8 +131,8 @@ class DrawerDetailsState extends State<DrawerDetails> {
                 style: TextStyle(fontSize: 18),
               ),
               onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => DriversScreen()));
+                Navigator.pushNamed(context, "/viewdriverstankerloading",
+                    arguments: {'required': 'editdrivers'});
               },
             ),
             new ListTile(
@@ -142,8 +142,8 @@ class DrawerDetailsState extends State<DrawerDetails> {
                 style: TextStyle(fontSize: 18),
               ),
               onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => TankerDetails()));
+                Navigator.pushNamed(context, "/viewdriverstankerloading",
+                    arguments: {'required': 'tankers'});
               },
             ),
             new ListTile(

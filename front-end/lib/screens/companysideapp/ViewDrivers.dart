@@ -2,6 +2,8 @@ import 'package:paani/screens/companysideapp/EditDriverScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:sweetalert/sweetalert.dart';
 import 'AddDriver.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 var drivers;
 // var drivers = [
@@ -217,10 +219,22 @@ class _DriversScreenState extends State<DriversScreen> {
                                                   ),
                                                   color: Colors.teal,
                                                 ),
-                                                onPressed: () {
-                                                  setState(() {
-                                                    drivers.removeAt(index);
-                                                  });
+                                                onPressed: () async {
+                                                  var driverid =
+                                                      drivers[index]['id'];
+                                                  var response = await http.delete(
+                                                      'https://seg27-paani-backend.herokuapp.com/drivers/$driverid');
+                                                  var message = json
+                                                      .decode(response.body);
+                                                  print(message);
+                                                  if (message['error'] ==
+                                                      false) {
+                                                    setState(() {
+                                                      drivers.removeAt(index);
+                                                    });
+                                                  } else {
+                                                    print("das");
+                                                  }
                                                   Navigator.of(context).pop();
                                                   SweetAlert.show(context,
                                                       style: SweetAlertStyle

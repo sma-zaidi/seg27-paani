@@ -1,21 +1,14 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:paani/screens/companysideapp/RegisterTanker.dart';
-
+import 'package:http/http.dart' as http;
 import 'EditTankerScreen.dart';
 import 'RegisterTanker.dart';
 
 bool dataloading = true;
 
-// var Tankers = [
-//   {'bowser_capacity': 2500, 'price_base': 5000, 'price_per_km': 20},
-//   {'bowser_capacity': 2800, 'price_base': 6000, 'price_per_km': 20},
-//   {'bowser_capacity': 2000, 'price_base': 4000, 'price_per_km': 20},
-//   {'bowser_capacity': 2200, 'price_base': 4750, 'price_per_km': 20},
-//   {'bowser_capacity': 3000, 'price_base': 10000, 'price_per_km': 20},
-//   {'bowser_capacity': 12500, 'price_base': 20000, 'price_per_km': 20},
-//   {'bowser_capacity': 200, 'price_base': 800, 'price_per_km': 20},
-// ];
 var Tankers;
 
 class TankerDetails extends StatefulWidget {
@@ -35,6 +28,7 @@ class TankerDetailsState extends State<TankerDetails> {
 
   Widget build(BuildContext context) {
     var data = ModalRoute.of(context).settings.arguments;
+    print(data);
     checktanker(data);
     return loadpage
         ? Scaffold(
@@ -147,10 +141,21 @@ class TankerDetailsState extends State<TankerDetails> {
                                               style: TextStyle(
                                                   color: Colors.white),
                                             ),
-                                            onPressed: () {
-                                              setState(() {
-                                                Tankers.removeAt(index);
-                                              });
+                                            onPressed: () async {
+                                              var tankerid =
+                                                  Tankers[index]['id'];
+                                              var response = await http.delete(
+                                                  'https://seg27-paani-backend.herokuapp.com/packages/$tankerid');
+                                              var message =
+                                                  json.decode(response.body);
+                                              print(message);
+                                              if (message['error'] == false) {
+                                                setState(() {
+                                                  Tankers.removeAt(index);
+                                                });
+                                              } else {
+                                                print("das");
+                                              }
                                               Navigator.of(context).pop();
                                             },
                                           ),

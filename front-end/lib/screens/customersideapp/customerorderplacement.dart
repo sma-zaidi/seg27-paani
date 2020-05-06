@@ -39,7 +39,7 @@ class _Place_Order_ScreenState extends State<Place_Order_Screen> {
   bool locationset = false;
   dynamic contact;
   dynamic address;
-
+  bool pageloading = false;
   @override
   void initState() {
     companyName = data['name'];
@@ -129,23 +129,31 @@ class _Place_Order_ScreenState extends State<Place_Order_Screen> {
             child: Card(
               color: Colors.teal,
               child: FlatButton(
-                onPressed: () async {
-                  final position = await Geolocator().getCurrentPosition(
-                      desiredAccuracy: LocationAccuracy.high);
-                  dynamic result = await Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              G_Map(position.latitude, position.longitude)));
-                  if (result != null) {
-                    setState(() {
-                      address = result.toString();
-                      ctrl1.text = '';
-                      locationset = true;
-                    });
-                  }
-                  // }
-                },
+                onPressed: pageloading
+                    ? null
+                    : () async {
+                        this.setState(() {
+                          pageloading = true;
+                        });
+                        final position = await Geolocator().getCurrentPosition(
+                            desiredAccuracy: LocationAccuracy.high);
+                        dynamic result = await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => G_Map(
+                                    position.latitude, position.longitude)));
+                        this.setState(() {
+                          pageloading = false;
+                        });
+                        if (result != null) {
+                          setState(() {
+                            address = result.toString();
+                            ctrl1.text = '';
+                            locationset = true;
+                          });
+                        }
+                        // }
+                      },
                 child: ListTile(
                   title: Center(
                     child: Text(
@@ -187,6 +195,7 @@ class _Place_Order_ScreenState extends State<Place_Order_Screen> {
                             ),
                             onPressed: () {
                               setState(() {
+                                address = null;
                                 locationset = false;
                               });
                             })
