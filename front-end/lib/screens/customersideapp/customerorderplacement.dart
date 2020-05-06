@@ -147,8 +147,8 @@ class _Place_Order_ScreenState extends State<Place_Order_Screen> {
                         });
                         if (result != null) {
                           setState(() {
-                            address = result.toString();
                             ctrl1.text = '';
+                            address = result.toString();
                             locationset = true;
                           });
                         }
@@ -171,7 +171,7 @@ class _Place_Order_ScreenState extends State<Place_Order_Screen> {
           ),
           locationset
               ? Padding(
-                  padding: const EdgeInsets.fromLTRB(15.0, 0.0, 15.0, 0.0),
+                  padding: const EdgeInsets.fromLTRB(24.0, 0.0, 24.0, 0.0),
                   child: Container(
                     color: Colors.grey[400],
                     child: Row(
@@ -179,19 +179,16 @@ class _Place_Order_ScreenState extends State<Place_Order_Screen> {
                       children: <Widget>[
                         Padding(
                           padding:
-                              const EdgeInsets.fromLTRB(20.0, 8.0, 20.0, 8.0),
+                              const EdgeInsets.fromLTRB(15.0, 8.0, 15.0, 8.0),
                           child: Text(
                             "Your location has been set",
                           ),
                         ),
-                        SizedBox(width: 10.0),
-                        RaisedButton.icon(
-                            label: Text('remove',
-                                style: TextStyle(color: Colors.white)),
-                            color: Colors.teal,
+                        SizedBox(width: 25.0),
+                        IconButton(
                             icon: Icon(
-                              Icons.remove,
-                              color: Colors.white,
+                              Icons.remove_circle,
+                              color: Colors.red,
                             ),
                             onPressed: () {
                               setState(() {
@@ -332,20 +329,23 @@ class _Place_Order_ScreenState extends State<Place_Order_Screen> {
                     color: Colors.white,
                   ),
                 ),
-                onPressed: () async {
-                  Map<String, dynamic> requestBody = {
-                    "customer_id": 1,
-                    "package_id": 1,
-                  };
-                  http.Response response = await http.post(
-                    'https://seg27-paani-backend.herokuapp.com/orders',
-                    body: jsonEncode(requestBody),
-                    headers: {
-                      "Content-Type": "application/x-www-form-urlencoded",
-                      "Content-Type": "application/json",
-                    },
-                  );
-                  Navigator.pushNamed(context, '/order_confirmation');
+                onPressed: () {
+                  print(address);
+                  print(ctrl3.text);
+                  print(contact);
+                  // Map<String, dynamic> requestBody = {
+                  //   "customer_id": 1,
+                  //   "package_id": 1,
+                  // };
+                  // http.Response response = await http.post(
+                  //   'https://seg27-paani-backend.herokuapp.com/orders',
+                  //   body: jsonEncode(requestBody),
+                  //   headers: {
+                  //     "Content-Type": "application/x-www-form-urlencoded",
+                  //     "Content-Type": "application/json",
+                  //   },
+                  // );
+                  // Navigator.pushNamed(context, '/order_confirmation');
                 },
               ),
             ),
