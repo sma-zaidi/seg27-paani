@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:paani/Screens/customersideapp/drawer.dart';
+import 'package:paani/screens/customersideapp/drawer.dart';
 
 class Dispatched extends StatefulWidget {
   @override
