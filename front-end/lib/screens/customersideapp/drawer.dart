@@ -30,7 +30,7 @@ class DrawerDetailsState extends State<DrawerDetails> {
         builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
           if (snapshot.hasData) {
             return drawer('${snapshot.data}', context);
-          } else { // something went wrong. Probably better to log the user out here
+          } else { // something went wrong. Might be better to log the user out here
             return drawer('?', context);
           }
         });
