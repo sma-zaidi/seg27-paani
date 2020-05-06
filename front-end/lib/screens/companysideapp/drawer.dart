@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+
+import 'package:paani/screens/index.dart';
 import 'package:paani/screens/companysideapp/new_requests_screen.dart';
 import 'package:paani/screens/companysideapp/in_progress.dart';
 import 'package:paani/screens/companysideapp/completedorders.dart';
@@ -29,10 +31,10 @@ class DrawerDetailsState extends State<DrawerDetails> {
         builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
           if (snapshot.hasData) {
             return drawer(snapshot.data);
-          } else if (snapshot.hasError) {
-            return drawer("User Name");
           }
-          return Container();
+          else { // something went wrong. Probably better to log the user out here
+            return drawer('?');
+          }
         });
   }
 
@@ -178,9 +180,8 @@ class DrawerDetailsState extends State<DrawerDetails> {
               ),
               onTap: () async {
                 SharedPreferences pref = await SharedPreferences.getInstance();
-                await pref.remove('email');
                 await pref.clear();
-                Navigator.pushNamedAndRemoveUntil(context, '/', (_) => false);
+                Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => IndexScreen()), (_) => false);
               },
             ),
           ],
