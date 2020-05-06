@@ -38,15 +38,15 @@ class _RegisterTankerScreenState extends State<RegisterTankerScreen> {
       this.gettingdata = true;
     });
     SharedPreferences pref = await SharedPreferences.getInstance();
-    String userid = pref.getString('username');
+    String userid = pref.getString('id');
     packageData = {
       'company_id': userid,
       'price_base': base,
       'price_per_km': priceKM,
-      'browser_capacity': size
+      'bowser_capacity': size
     };
     try {
-      var response = await http.put(
+      var response = await http.post(
         'https://seg27-paani-backend.herokuapp.com/packages/',
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
@@ -54,6 +54,7 @@ class _RegisterTankerScreenState extends State<RegisterTankerScreen> {
         },
         body: jsonEncode(packageData),
       );
+      print(jsonEncode(packageData));
       print(response.body);
       if (json.decode(response.body)['error'] == false) {
         this.setState(() {
