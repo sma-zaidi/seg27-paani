@@ -3,6 +3,7 @@ import 'package:paani/screens/signup/signupcompany/optionalScreen.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter/services.dart';
 
 class RegisterTankerScreen extends StatefulWidget {
   @override
@@ -38,7 +39,7 @@ class _RegisterTankerScreenState extends State<RegisterTankerScreen> {
       this.gettingdata = true;
     });
     SharedPreferences pref = await SharedPreferences.getInstance();
-    String userid = pref.getString('id');
+    String userid = pref.getString('userid');
     packageData = {
       'company_id': userid,
       'price_base': base,
@@ -124,15 +125,18 @@ class _RegisterTankerScreenState extends State<RegisterTankerScreen> {
                   child: Card(
                     margin: EdgeInsets.symmetric(vertical: 12),
                     child: TextField(
-                      controller: sizeController,
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        hintText: 'Litres',
-                        errorText: _sizevalidate
-                            ? "This field can not be empty"
-                            : null,
-                      ),
-                    ),
+                        controller: sizeController,
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          hintText: 'Litres',
+                          errorText: _sizevalidate
+                              ? "This field can not be empty"
+                              : null,
+                        ),
+                        keyboardType: TextInputType.number,
+                        inputFormatters: <TextInputFormatter>[
+                          WhitelistingTextInputFormatter.digitsOnly
+                        ]),
                   ),
                 ),
                 Padding(
@@ -147,15 +151,18 @@ class _RegisterTankerScreenState extends State<RegisterTankerScreen> {
                   child: Card(
                     margin: EdgeInsets.symmetric(vertical: 12),
                     child: TextField(
-                      controller: baseController,
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        hintText: 'Rs',
-                        errorText: _basepricevalidate
-                            ? "This field can not be empty"
-                            : null,
-                      ),
-                    ),
+                        controller: baseController,
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          hintText: 'Rs',
+                          errorText: _basepricevalidate
+                              ? "This field can not be empty"
+                              : null,
+                        ),
+                        keyboardType: TextInputType.number,
+                        inputFormatters: <TextInputFormatter>[
+                          WhitelistingTextInputFormatter.digitsOnly
+                        ]),
                   ),
                 ),
                 Padding(
@@ -170,15 +177,18 @@ class _RegisterTankerScreenState extends State<RegisterTankerScreen> {
                   child: Card(
                     margin: EdgeInsets.symmetric(vertical: 12),
                     child: TextField(
-                      controller: KMController,
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        hintText: 'Rs/Km',
-                        errorText: _priceperkmvalidate
-                            ? "This field can not be empty"
-                            : null,
-                      ),
-                    ),
+                        controller: KMController,
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          hintText: 'Rs/Km',
+                          errorText: _priceperkmvalidate
+                              ? "This field can not be empty"
+                              : null,
+                        ),
+                        keyboardType: TextInputType.number,
+                        inputFormatters: <TextInputFormatter>[
+                          WhitelistingTextInputFormatter.digitsOnly
+                        ]),
                   ),
                 ),
                 Padding(

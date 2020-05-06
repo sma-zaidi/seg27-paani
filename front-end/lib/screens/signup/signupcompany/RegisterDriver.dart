@@ -187,6 +187,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:paani/screens/signup/account_created.dart';
+import 'package:flutter/services.dart';
 
 class RegisterDriverScreen extends StatefulWidget {
   @override
@@ -219,15 +220,16 @@ class _ResgisterDriverScreenState extends State<RegisterDriverScreen> {
       this.gettingdata = true;
     });
     SharedPreferences pref = await SharedPreferences.getInstance();
-    String userid = pref.getString('username');
+    String userid = pref.getString('userid');
     packageData = {
       'company_id': userid,
       'name': name,
       'cnic': cnic,
-      'contact': contact,
+      'contact_number': contact,
     };
+    print(packageData);
     try {
-      var response = await http.put(
+      var response = await http.post(
         'https://seg27-paani-backend.herokuapp.com/drivers/',
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
@@ -286,12 +288,6 @@ class _ResgisterDriverScreenState extends State<RegisterDriverScreen> {
           nameController.text, cnicController.text, contactController.text)) {
         _showSnackBar('Driver Added Successfully');
         setState(() {
-          drivers.add({
-            'name': nameController.text,
-            'contact': contactController.text,
-            'CNIC': cnicController.text,
-            'Available': true
-          });
           nameController.text = "";
           cnicController.text = "";
           contactController.text = "";
@@ -312,7 +308,7 @@ class _ResgisterDriverScreenState extends State<RegisterDriverScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return this.gettingdata
+    return !this.gettingdata
         ? Scaffold(
             key: scaffoldKey,
             appBar: AppBar(
@@ -367,12 +363,15 @@ class _ResgisterDriverScreenState extends State<RegisterDriverScreen> {
                   child: Card(
                     margin: EdgeInsets.symmetric(vertical: 12),
                     child: TextField(
-                      controller: contactController,
-                      decoration: InputDecoration(
-                        hintText: '0300-1234567',
-                        border: InputBorder.none,
-                      ),
-                    ),
+                        controller: contactController,
+                        decoration: InputDecoration(
+                          hintText: '0300-1234567',
+                          border: InputBorder.none,
+                        ),
+                        keyboardType: TextInputType.number,
+                        inputFormatters: <TextInputFormatter>[
+                          WhitelistingTextInputFormatter.digitsOnly
+                        ]),
                   ),
                 ),
                 Padding(
@@ -387,12 +386,15 @@ class _ResgisterDriverScreenState extends State<RegisterDriverScreen> {
                   child: Card(
                     margin: EdgeInsets.symmetric(vertical: 12),
                     child: TextField(
-                      controller: cnicController,
-                      decoration: InputDecoration(
-                        hintText: '12345-1234567-1',
-                        border: InputBorder.none,
-                      ),
-                    ),
+                        controller: cnicController,
+                        decoration: InputDecoration(
+                          hintText: '1234512345671',
+                          border: InputBorder.none,
+                        ),
+                        keyboardType: TextInputType.number,
+                        inputFormatters: <TextInputFormatter>[
+                          WhitelistingTextInputFormatter.digitsOnly
+                        ]),
                   ),
                 ),
                 Center(
@@ -415,7 +417,10 @@ class _ResgisterDriverScreenState extends State<RegisterDriverScreen> {
                       'Next',
                       style: TextStyle(color: Colors.white),
                     ),
-                    onPressed: () {
+                    onPressed: () async {
+                      SharedPreferences pref =
+                          await SharedPreferences.getInstance();
+                      await pref.remove('userid');
                       Navigator.pushAndRemoveUntil(
                           context,
                           MaterialPageRoute(

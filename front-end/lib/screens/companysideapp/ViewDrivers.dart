@@ -6,56 +6,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 var drivers;
-// var drivers = [
-//   {
-//     "name": "Muhammad Asghar",
-//     "CNIC": "35202-1234567-8",
-//     "contact": "0300-1234567",
-//     "Available": true
-//   },
-//   {
-//     "name": "Shabir Ahmed",
-//     "CNIC": "35202-1234567-9",
-//     "contact": "0300-1234567",
-//     "Available": true
-//   },
-//   {
-//     "name": "Rizwan Nadeem",
-//     "CNIC": "35202-1234567-1",
-//     "contact": "0300-1234567",
-//     "Available": true
-//   },
-//   {
-//     "name": "Affan Butt",
-//     "CNIC": "35202-1234567-7",
-//     "contact": "0300-1234567",
-//     "Available": false
-//   },
-//   {
-//     "name": "Khalid Sheikh",
-//     "CNIC": "35202-1234567-2",
-//     "contact": "0300-1234567",
-//     "Available": false
-//   },
-//   {
-//     "name": "Fahad Latif",
-//     "CNIC": "35202-1234567-1",
-//     "contact": "0300-1234567",
-//     "Available": true
-//   },
-//   {
-//     "name": "Asad Kamraan",
-//     "CNIC": "35202-1234567-7",
-//     "contact": "0300-1234567",
-//     "Available": false
-//   },
-//   {
-//     "name": "Shehzad Rehmani",
-//     "CNIC": "35202-1234567-2",
-//     "contact": "0300-1234567",
-//     "Available": false
-//   },
-// ];
+bool datacollected = false;
 
 class DriversScreen extends StatefulWidget {
   @override
@@ -190,108 +141,94 @@ class _DriversScreenState extends State<DriversScreen> {
                                     color: Colors.grey,
                                   ),
                                   onPressed: () {
-                                    if (drivers[index]["Available"] == true) {
-                                      showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return AlertDialog(
-                                            backgroundColor: Colors.white,
-                                            title: Text(
-                                              'Delete Driver?',
-                                              style: TextStyle(
-                                                  color: Colors.teal,
-                                                  fontSize: 25.0),
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          backgroundColor: Colors.white,
+                                          title: Text(
+                                            'Delete Driver?',
+                                            style: TextStyle(
+                                                color: Colors.teal,
+                                                fontSize: 25.0),
+                                          ),
+                                          actions: <Widget>[
+                                            FlatButton(
+                                              child: Card(
+                                                child: SizedBox(
+                                                  height: 30.0,
+                                                  width: 50.0,
+                                                  child: Center(
+                                                    child: Text(
+                                                      'YES',
+                                                      style: TextStyle(
+                                                          color: Colors.white),
+                                                    ),
+                                                  ),
+                                                ),
+                                                color: Colors.teal,
+                                              ),
+                                              onPressed: datacollected
+                                                  ? null
+                                                  : () async {
+                                                      this.setState(() {
+                                                        datacollected = true;
+                                                      });
+                                                      var driverid =
+                                                          drivers[index]['id'];
+                                                      var response =
+                                                          await http.delete(
+                                                              'https://seg27-paani-backend.herokuapp.com/drivers/$driverid');
+                                                      var message = json.decode(
+                                                          response.body);
+                                                      print(message);
+                                                      if (message['error'] ==
+                                                          "false") {
+                                                        setState(() {
+                                                          drivers
+                                                              .removeAt(index);
+                                                        });
+                                                      } else {
+                                                        print("das");
+                                                      }
+                                                      Navigator.of(context)
+                                                          .pop();
+                                                      SweetAlert.show(context,
+                                                          style: SweetAlertStyle
+                                                              .success,
+                                                          confirmButtonColor:
+                                                              Colors.teal);
+                                                      this.setState(() {
+                                                        datacollected = false;
+                                                      });
+                                                    },
                                             ),
-                                            actions: <Widget>[
-                                              FlatButton(
-                                                child: Card(
-                                                  child: SizedBox(
-                                                    height: 30.0,
-                                                    width: 50.0,
-                                                    child: Center(
-                                                      child: Text(
-                                                        'YES',
-                                                        style: TextStyle(
-                                                            color:
-                                                                Colors.white),
-                                                      ),
+                                            FlatButton(
+                                              child: Card(
+                                                child: SizedBox(
+                                                  height: 30.0,
+                                                  width: 50.0,
+                                                  child: Center(
+                                                    child: Text(
+                                                      'NO',
+                                                      style: TextStyle(
+                                                          color: Colors.white),
                                                     ),
                                                   ),
-                                                  color: Colors.teal,
                                                 ),
-                                                onPressed: () async {
-                                                  var driverid =
-                                                      drivers[index]['id'];
-                                                  var response = await http.delete(
-                                                      'https://seg27-paani-backend.herokuapp.com/drivers/$driverid');
-                                                  var message = json
-                                                      .decode(response.body);
-                                                  print(message);
-                                                  if (message['error'] ==
-                                                      false) {
-                                                    setState(() {
-                                                      drivers.removeAt(index);
-                                                    });
-                                                  } else {
-                                                    print("das");
-                                                  }
-                                                  Navigator.of(context).pop();
-                                                  SweetAlert.show(context,
-                                                      style: SweetAlertStyle
-                                                          .success);
-                                                },
+                                                color: Colors.teal,
                                               ),
-                                              FlatButton(
-                                                child: Card(
-                                                  child: SizedBox(
-                                                    height: 30.0,
-                                                    width: 50.0,
-                                                    child: Center(
-                                                      child: Text(
-                                                        'NO',
-                                                        style: TextStyle(
-                                                            color:
-                                                                Colors.white),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  color: Colors.teal,
-                                                ),
-                                                onPressed: () {
-                                                  Navigator.of(context).pop();
-                                                },
-                                              ),
-                                            ],
-                                          );
-                                        },
-                                      );
-                                    } else {
-                                      showDialog(
-                                          context: context,
-                                          builder: (BuildContext context) {
-                                            return AlertDialog(
-                                              backgroundColor: Colors.white,
-                                              title: Text(
-                                                'Driver cannot be deleted because of ongoing order',
-                                                style: TextStyle(
-                                                    color: Colors.teal),
-                                              ),
-                                              actions: <Widget>[
-                                                FlatButton(
-                                                  child: Text(
-                                                    'OK',
-                                                    style: TextStyle(
-                                                        color: Colors.white),
-                                                  ),
-                                                  color: Colors.teal,
-                                                  onPressed: () {
-                                                    Navigator.of(context).pop();
-                                                  },
-                                                ),
-                                              ],
-                                            );
-                                          });
-                                    }
+                                              onPressed: datacollected
+                                                  ? null
+                                                  : () {
+                                                      Navigator.of(context)
+                                                          .pop();
+                                                    },
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    );
                                   },
                                 ),
                               ),

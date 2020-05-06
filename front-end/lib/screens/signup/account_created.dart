@@ -34,6 +34,7 @@ class Accountcreated extends StatelessWidget {
                 padding: EdgeInsets.only(bottom: 1),
                 minWidth: 300,
                 child: RaisedButton(
+                  color: Colors.teal,
                   onPressed: () {
                     Navigator.popAndPushNamed(context, '/login');
                   },
@@ -43,7 +44,6 @@ class Accountcreated extends StatelessWidget {
                       color: Colors.white,
                     ),
                   ),
-                  color: Theme.of(context).primaryColor,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(18.0),
                   ),

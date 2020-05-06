@@ -190,7 +190,7 @@ class TankerDetailsState extends State<TankerDetails> {
               backgroundColor: Colors.teal,
               centerTitle: true,
               title: Text(
-                'Drivers',
+                'Tankers',
                 style: TextStyle(color: Colors.white),
               ),
               actions: <Widget>[

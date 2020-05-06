@@ -771,6 +771,7 @@ import 'package:http/http.dart' as http;
 import 'package:email_validator/email_validator.dart';
 import 'package:paani/screens/customersideapp/googlemaps/G_Map.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class CompanySignupScreen extends StatefulWidget {
   @override
@@ -796,7 +797,11 @@ class _CompanySignupScreenState extends State<CompanySignupScreen> {
             'account_type': "COMPANY",
           });
       print(response.body);
-      if (json.decode(response.body)["error"] == false) {
+      var message = json.decode(response.body);
+      if (message["error"] == false) {
+        SharedPreferences pref = await SharedPreferences.getInstance();
+        pref.setString('userid', '${message['msg']}');
+        print(pref.getString('userid'));
         return true;
       } else {
         return false;

@@ -163,15 +163,16 @@ class _AddDriverScreenState extends State<AddDriverScreen> {
                   child: Card(
                     margin: EdgeInsets.symmetric(vertical: 12),
                     child: TextField(
-                        controller: contactController,
-                        decoration: InputDecoration(
-                          hintText: '03001234567',
-                          border: InputBorder.none,
-                        ),
-                        keyboardType: TextInputType.number,
-                        inputFormatters: <TextInputFormatter>[
-                          WhitelistingTextInputFormatter.digitsOnly
-                        ]),
+                      controller: contactController,
+                      decoration: InputDecoration(
+                        hintText: '03001234567',
+                        border: InputBorder.none,
+                      ),
+                      keyboardType: TextInputType.number,
+                      inputFormatters: <TextInputFormatter>[
+                        WhitelistingTextInputFormatter.digitsOnly
+                      ],
+                    ),
                   ),
                 ),
                 Padding(

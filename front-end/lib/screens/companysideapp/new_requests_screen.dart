@@ -9,10 +9,6 @@ import 'package:http/http.dart' as http;
 import 'package:paani/screens/companysideapp/drawer.dart';
 
 import 'CompanyHomeScreen.dart';
-import 'CompanyHomeScreen.dart';
-import 'CompanyHomeScreen.dart';
-import 'CompanyHomeScreen.dart';
-import 'CompanyHomeScreen.dart';
 
 //final List<int> ordersID = <int>[1584, 2459, 3842, 4443, 5042, 6213, 7456];
 //final List<String> address = <String>[
