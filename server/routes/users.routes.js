@@ -52,7 +52,7 @@ router.post('/register', async (req, res, next) => {
             return res.json({error: error});
         }
 
-        res.json({error: false, msg: 'Customer account creation successful, redirect to login.'});
+        res.json({error: false, msg: userid});
     }
 
     //////////////////////////////
@@ -77,7 +77,7 @@ router.post('/register', async (req, res, next) => {
             return res.json({error: error});
         }
 
-        res.json({error: false, msg: 'Company account creation successful, redirect to login.'});
+        res.json({error: false, msg: userid});
     }
 
 })

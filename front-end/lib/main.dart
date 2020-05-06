@@ -1,3 +1,8 @@
+/*
+  -> ENTRY POINT FOR THE APPLICATION
+  Checks if a valid session ID is stored on the device, and points the user to login or the relevant home screen.
+*/
+
 import 'package:flutter/material.dart';
 import 'package:paani/screens/index.dart';
 import 'package:paani/screens/login/login.dart';
@@ -24,12 +29,15 @@ import 'screens/companysideapp/Assign_Driver.dart';
 import 'screens/companysideapp/Companyeditprofile.dart';
 
 Future<void> main() async {
+
   WidgetsFlutterBinding.ensureInitialized();
   SharedPreferences prefs = await SharedPreferences.getInstance();
   var email = prefs.getString('email');
-  runApp(MaterialApp(
+
+  runApp(
+    MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Paani App',
+      title: 'Paani',
       theme: ThemeData(
         primarySwatch: Colors.teal,
       ),
