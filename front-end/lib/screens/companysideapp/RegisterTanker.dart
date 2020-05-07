@@ -24,16 +24,17 @@ class _AddTankerState extends State<AddTanker> {
     ));
   }
 
-  Map packageData;
-  var sizeController = TextEditingController();
-  var baseController = TextEditingController();
-  var KMController = TextEditingController();
-  bool _sizevalidate = false;
-  bool _basepricevalidate = false;
-  bool _priceperkmvalidate = false;
-  bool gettingdata = false;
+  Map packageData; //Package Data
+  var sizeController = TextEditingController(); //Capacity Field Controller
+  var baseController = TextEditingController(); //Base Price Field Controller
+  var KMController = TextEditingController(); //Price/Km Field Controller
+  bool _sizevalidate = false; //Validation that only number was added
+  bool _basepricevalidate = false; //Validation that only number was added
+  bool _priceperkmvalidate = false; //Validation that only number was added
+  bool gettingdata = false; //true, when recieving data
   @override
   Future<bool> _senddata(String base, priceKM, size) async {
+    //Sends Data to Server
     print(base);
     print(priceKM);
     print(size);
@@ -42,14 +43,14 @@ class _AddTankerState extends State<AddTanker> {
     });
     SharedPreferences pref = await SharedPreferences.getInstance();
     String userid = pref.getString('userid');
-    print(userid);
+    
     packageData = {
       'company_id': userid,
       'price_base': base,
       'price_per_km': priceKM,
       'bowser_capacity': size
     };
-    print(packageData);
+    
     try {
       var response = await http.post(
         'https://seg27-paani-backend.herokuapp.com/packages/',
@@ -76,6 +77,7 @@ class _AddTankerState extends State<AddTanker> {
   }
 
   Future<void> _submit() async {
+    //Submits Data
     if (sizeController.text.isEmpty) {
       this.setState(() {
         _sizevalidate = true;
@@ -95,9 +97,9 @@ class _AddTankerState extends State<AddTanker> {
       if (await _senddata(base, priceKM, size)) {
         _showSnackBar('Information added Successfully');
         this.setState(() {
-          sizeController.text = "";
-          baseController.text = "";
-          KMController.text = "";
+          sizeController.text = ""; //Reset to Empty
+          baseController.text = ""; //Reset to Empty
+          KMController.text = ""; //Reset to Empty
         });
       } else {
         _showSnackBar("Sorry, Couldnot add the informatiion");
