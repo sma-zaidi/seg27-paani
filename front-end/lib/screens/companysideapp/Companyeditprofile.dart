@@ -1,3 +1,5 @@
+//This Screen will let user edit details about their profile such as name, location, email etc.
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'dart:convert';
@@ -14,18 +16,12 @@ class _CompanyEditProfileScreenState extends State<CompanyEditProfileScreen> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final _formKey = GlobalKey<FormState>();
 
-  // final namectrl = TextEditingController();
-  // final contactctrl = TextEditingController();
-  // final ntnctrl = TextEditingController();
-  // final address = TextEditingController();
-  // final password = TextEditingController();
-  bool gettingdata = true; //true till Data is being recieved
-  bool editprofile = false; //false till editing has not started
+  bool gettingdata = true; 
+  bool editprofile = false; 
   String _name, _contact, _address;
 
   Future<bool> _UpdateInformation() async {
-    //Info gets updated
-    this.setState(() {
+        this.setState(() {
       this.gettingdata = true;
     });
     try {
@@ -72,7 +68,7 @@ class _CompanyEditProfileScreenState extends State<CompanyEditProfileScreen> {
   }
 
   void _submit() async {
-    //Submit Data to Server
+    
     final form = _formKey.currentState;
     form.save();
     if (form.validate()) {
@@ -105,7 +101,7 @@ class _CompanyEditProfileScreenState extends State<CompanyEditProfileScreen> {
 
   Future<void> getdata() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    //Return String
+    
     _name = prefs.getString('username');
     _contact = prefs.getString('contact');
     _address = prefs.getString('address');
