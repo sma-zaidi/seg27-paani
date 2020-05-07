@@ -27,7 +27,7 @@ Review = {
                                     INNER JOIN \`seg27-paani\`.packages ON \`seg27-paani\`.orders.package_id = \`seg27-paani\`.packages.id
                                     INNER JOIN \`seg27-paani\`.companies ON \`seg27-paani\`.packages.company_id = \`seg27-paani\`.companies.id
                                     WHERE companies.id = ?`, [companyid]);  
-            return result
+            return result[0]
         }
         catch (error) {throw new Error(error)}
     }
