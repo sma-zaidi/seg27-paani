@@ -1,7 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'Assign_Driver.dart';
 import 'CompanyHomeScreen.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
@@ -50,21 +48,6 @@ class InProgressState extends State<InProgress> {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          // ongoingOrders[index]['driver_id'] != null
-                          //     ? Text(
-                          //         "Driver ID: ${ongoingOrders[index]['driver_id']}",
-                          //         style: TextStyle(
-                          //           color: Colors.black45,
-                          //           fontWeight: FontWeight.bold,
-                          //         ),
-                          //       )
-                          //     : Text(
-                          //         "Driver ID: Not Assigned Yet",
-                          //         style: TextStyle(
-                          //           color: Colors.black45,
-                          //           fontWeight: FontWeight.bold,
-                          //         ),
-                          //       ),
                           Text(
                             "Address: ${ongoingOrders[index]['delivery_address']}",
                             style: TextStyle(
@@ -330,11 +313,8 @@ class InProgressState extends State<InProgress> {
                         DropdownButton<String>(
                           value: ongoingOrders[index]['status'].toString(),
                           isDense: true,
-                          items: <String>[
-                            'Confirmed',
-                            'Dispatched',
-                            'Complete'
-                          ].map((String value) {
+                          items: <String>['Confirmed', 'Dispatched', 'Complete']
+                              .map((String value) {
                             return new DropdownMenuItem<String>(
                               value: value,
                               child: new Text(value),
@@ -422,25 +402,6 @@ class InProgressState extends State<InProgress> {
                             }
                           },
                         )
-                        // ButtonTheme(
-                        //   minWidth: 0,
-                        //   materialTapTargetSize:
-                        //       MaterialTapTargetSize.shrinkWrap,
-                        //   child: RaisedButton(
-                        //     onPressed: () {},
-                        //     child: Row(
-                        //       children: <Widget>[
-                        //         Text("Status"),
-                        //         SizedBox(
-                        //           width: 10,
-                        //         ),
-                        //         Icon(Icons.arrow_forward)
-                        //       ],
-                        //     ),
-                        //     textColor: Colors.white,
-                        //     color: Colors.teal,
-                        //   ),
-                        // )
                       ],
                     ),
                   ],

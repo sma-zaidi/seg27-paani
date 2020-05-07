@@ -11,6 +11,8 @@ class FeedBack extends StatefulWidget {
   FeedBackState createState() => new FeedBackState();
 }
 
+var data;
+
 class FeedBackState extends State<FeedBack> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   var final_rating = 0.0;
@@ -18,8 +20,6 @@ class FeedBackState extends State<FeedBack> {
   var review;
   void _submit() async {
     if (final_rating != 0.0) {
-      SharedPreferences pref = await SharedPreferences.getInstance();
-      var userid = pref.getString('userid');
       try {
         var response = await http.post(
           'https://seg27-paani-backend.herokuapp.com/reviews',
@@ -28,7 +28,7 @@ class FeedBackState extends State<FeedBack> {
             "Content-Type": "application/json",
           },
           body: jsonEncode({
-            'id': userid,
+            'id': data['orderid'],
             'review': review,
             'rating': final_rating,
           }),
@@ -37,6 +37,8 @@ class FeedBackState extends State<FeedBack> {
         if (message['error'] == false) {
           _showSnackBar("Feedback Submitted Successfully");
           Navigator.pop(context);
+        } else if (message['error'] == 'Review exists!') {
+          _showSnackBar("Feedback already given! Feedback not submitted");
         } else {
           _showSnackBar("Error! Feedback not submitted");
         }
@@ -62,6 +64,7 @@ class FeedBackState extends State<FeedBack> {
   }
 
   Widget build(BuildContext context) {
+    data = ModalRoute.of(context).settings.arguments;
     return Scaffold(
         key: scaffoldKey,
         resizeToAvoidBottomPadding: false,

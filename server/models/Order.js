@@ -57,7 +57,7 @@ Order = {
 
             result = await Order.getlatestOrder(customerid);
             console.log(result[0].status);
-            if(result[0].status != "complete"){console.log("finally");return true;}
+            if(result[0].status != "Complete" && result[0].status != "Declined" && result[0].status != "Cancelled"){return true;}
             else{return false;}
 
         } catch (error) { throw new Error(error) }
