@@ -1,3 +1,5 @@
+//This Screen Shows all the drivers registered with a company and has options to add, edit or delete them
+
 import 'package:paani/screens/companysideapp/EditDriverScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:sweetalert/sweetalert.dart';
@@ -5,8 +7,8 @@ import 'AddDriver.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
-var drivers; //Driver data is placed here
-bool datacollected = false; //False till data has not been collected
+var drivers; 
+bool datacollected = false; 
 
 class DriversScreen extends StatefulWidget {
   @override
@@ -14,9 +16,9 @@ class DriversScreen extends StatefulWidget {
 }
 
 class _DriversScreenState extends State<DriversScreen> {
-  bool loadpage = true; //if true, page is loaded
+  bool loadpage = true; 
   void checkdriver(dynamic data) {
-    //Checks Driver
+    
     if (data['list'] is String) {
       loadpage = false;
     } else if (data['list'] is List) {
