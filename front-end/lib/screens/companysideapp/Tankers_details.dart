@@ -5,9 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'EditTankerScreen.dart';
 
-bool dataloading = true;
+bool dataloading = true; //True while data is being loaded
 
-var Tankers;
+var Tankers; //Package Details 
 
 class TankerDetails extends StatefulWidget {
   @override
@@ -15,8 +15,9 @@ class TankerDetails extends StatefulWidget {
 }
 
 class TankerDetailsState extends State<TankerDetails> {
-  bool loadpage = true;
+  bool loadpage = true; //If true page is loaded
   void checktanker(dynamic data) {
+    //Check Tankers
     if (data['list'] is String) {
       loadpage = false;
     } else {
