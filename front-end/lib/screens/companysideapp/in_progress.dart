@@ -333,7 +333,7 @@ class InProgressState extends State<InProgress> {
                           items: <String>[
                             'Confirmed',
                             'Dispatched',
-                            'Completed'
+                            'Complete'
                           ].map((String value) {
                             return new DropdownMenuItem<String>(
                               value: value,

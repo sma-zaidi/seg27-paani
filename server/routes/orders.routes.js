@@ -36,7 +36,7 @@ router.post('/', async (req, res, next) => { // create an order
         //can not create a new order if previous isn't completed
         else {
             result = await Order.getlatestOrder(customer_id)
-            if(result[0].status != "Complete" || result[0].status != "Declined") { // the 2 possible end states of an order
+            if(result[0].status != "Complete" || result[0].status != "Declined" || result[0].status != "Cancelled") { // the 3 possible end states of an order
                 return res.json({error: 'Another order is in progress.'});
             }
             await Order.PlaceOrder(customer_id, package_id, delivery_address, delivery_location, delivery_time, estimated_cost, cost);
