@@ -19,6 +19,7 @@ class DrawerDetails extends StatefulWidget {
 
 class DrawerDetailsState extends State<DrawerDetails> {
   Future<String> getname() async {
+    //Returns Name of User
     SharedPreferences pref = await SharedPreferences.getInstance();
     String name = pref.getString("username");
     return name;
