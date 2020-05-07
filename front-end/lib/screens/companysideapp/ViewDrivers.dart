@@ -5,8 +5,8 @@ import 'AddDriver.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
-var drivers;
-bool datacollected = false;
+var drivers; //Driver data is placed here
+bool datacollected = false; //False till data has not been collected
 
 class DriversScreen extends StatefulWidget {
   @override
@@ -14,8 +14,9 @@ class DriversScreen extends StatefulWidget {
 }
 
 class _DriversScreenState extends State<DriversScreen> {
-  bool loadpage = true;
+  bool loadpage = true; //if true, page is loaded
   void checkdriver(dynamic data) {
+    //Checks Driver
     if (data['list'] is String) {
       loadpage = false;
     } else if (data['list'] is List) {
