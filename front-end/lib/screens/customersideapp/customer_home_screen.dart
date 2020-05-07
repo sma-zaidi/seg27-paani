@@ -103,12 +103,12 @@ class HomeScreenState extends State<CustomerHomeScreen> {
 
   String getPackageCapacities(Map<String, dynamic> company) {
     // Returns all bowser capacities of packages
-    String returnString = "Services: ";
+    String returnString = "Packages: ";
     String bowsers = "";
     for (int i = 0; i < company['packages'].length; i++) {
       bowsers = bowsers +
           company['packages'][i]['bowser_capacity'].toString() +
-          " Litres, ";
+          " L, ";
     }
     returnString = returnString +
         bowsers.substring(0, bowsers.length - 2); //To remove comma at the end
@@ -121,8 +121,7 @@ class HomeScreenState extends State<CustomerHomeScreen> {
     String prices = "";
     for (int i = 0; i < company['packages'].length; i++) {
       prices = prices +
-          company['packages'][i]['price_base'].toString() +
-          " Rupees, ";
+          "Rs." + company['packages'][i]['price_base'].toString() + " ,";
     }
     returnString = returnString +
         prices.substring(0, prices.length - 2); //To remove comma at the end
@@ -135,8 +134,8 @@ class HomeScreenState extends State<CustomerHomeScreen> {
     String prices = "";
     for (int i = 0; i < company['packages'].length; i++) {
       prices = prices +
-          company['packages'][i]['price_per_km'].toString() +
-          " Rupees, ";
+          "Rs." + company['packages'][i]['price_per_km'].toString() +
+          ", ";
     }
     returnString = returnString +
         prices.substring(0, prices.length - 2); //To remove comma at the end
@@ -158,7 +157,8 @@ class HomeScreenState extends State<CustomerHomeScreen> {
         title: !isSearching
             ? Text(
                 "Paani - Home",
-                style: TextStyle(color: Colors.white),
+                style: TextStyle(color: Colors.white,
+                letterSpacing: 1.5, fontWeight: FontWeight.bold),
               )
             : TextField(
                 onChanged: (String input) {
@@ -217,7 +217,7 @@ class HomeScreenState extends State<CustomerHomeScreen> {
                     children: <Widget>[
                       //image inside container
                       new Container(
-                        height: 225,
+                        height: 210,
                         width: 150,
                         decoration: new BoxDecoration(
                           borderRadius: new BorderRadius.only(
@@ -232,9 +232,10 @@ class HomeScreenState extends State<CustomerHomeScreen> {
                           ),
                         ),
                       ),
+                      SizedBox(width: 15,),
                       new Container(
                         padding: const EdgeInsets.all(20),
-                        width: 182,
+                        width: 210,
                         child: new Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
@@ -257,6 +258,8 @@ class HomeScreenState extends State<CustomerHomeScreen> {
                                       searchCompanies[index]),
                               style: new TextStyle(
                                 fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black54,
                               ),
                             ),
                             new SizedBox(
@@ -269,6 +272,8 @@ class HomeScreenState extends State<CustomerHomeScreen> {
                                   : 'Base Price: ',
                               style: new TextStyle(
                                 fontSize: 14,
+                                color: Colors.black54,
+                                fontWeight: FontWeight.bold,
                               ),
                             ),
                             new SizedBox(
@@ -281,12 +286,16 @@ class HomeScreenState extends State<CustomerHomeScreen> {
                                   : 'Price per Km: ',
                               style: new TextStyle(
                                 fontSize: 14,
+                                color: Colors.black54,
+                                fontWeight: FontWeight.bold,
                               ),
                             ),
                             new SizedBox(
                               height: 10,
                             ),
-                            new RaisedButton(
+                            new ButtonTheme(
+                              minWidth: 166 ,
+                            child: new RaisedButton(
                               onPressed: () {
                                 if (searchCompanies[index]['packages'] !=
                                     "No Packages Found!") {
@@ -308,7 +317,7 @@ class HomeScreenState extends State<CustomerHomeScreen> {
                                                 TextStyle(color: Colors.teal),
                                           ),
                                           actions: <Widget>[
-                                            FlatButton(
+                                            RaisedButton(
                                               child: Text(
                                                 'OK',
                                                 style: TextStyle(
@@ -324,10 +333,14 @@ class HomeScreenState extends State<CustomerHomeScreen> {
                                       });
                                 }
                               },
-                              child: new Text('Order'),
-                              textColor: Colors.white,
-                              color: Colors.teal,
-                            ),
+                              child: new Text(
+                                'ORDER',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    letterSpacing: 1.5),),
+                                textColor: Colors.white,
+                                color: Colors.teal,
+                            ),),
                             new SizedBox(
                               height: 10,
                             ),

@@ -144,12 +144,9 @@ class _Place_Order_ScreenState extends State<Place_Order_Screen> {
     return Scaffold(
       key: scaffoldKey,
       appBar: AppBar(
-        leading: FlatButton(
-          child: Icon(
-            Icons.keyboard_backspace,
-            color: Colors.white,
-            size: 22.0,
-          ),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          alignment: Alignment.center,
           onPressed: () {
             Navigator.of(context).pop();
           },
@@ -158,7 +155,8 @@ class _Place_Order_ScreenState extends State<Place_Order_Screen> {
           'My Order',
           style: TextStyle(
             color: Colors.white,
-            fontSize: 22.0,
+            letterSpacing: 1.5,
+            fontSize: 18.0,
           ),
         ),
         centerTitle: true,
@@ -169,22 +167,20 @@ class _Place_Order_ScreenState extends State<Place_Order_Screen> {
         child: ListView(
           children: <Widget>[
             Padding(
-              padding: const EdgeInsets.only(left: 20, right: 20, top: 10),
+              padding: const EdgeInsets.only(left: 30, right: 30, top: 20),
               child: Text(
                 '${companyName}',
                 style: TextStyle(
-                  fontSize: 18.0,
+                  fontSize: 20.0,
+                    color: Colors. black54,
+                    fontWeight: FontWeight.bold
                 ),
               ),
             ),
+
             Padding(
-              padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
-              child: Text('Address'),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 20, right: 20),
+              padding: const EdgeInsets.only(left: 30, right: 30, top: 20),
               child: Card(
-                margin: EdgeInsets.symmetric(vertical: 12.0),
                 child: TextFormField(
                   validator: (text) {
                     if (text == null || text.isEmpty) {
@@ -194,17 +190,32 @@ class _Place_Order_ScreenState extends State<Place_Order_Screen> {
                   },
                   decoration: InputDecoration(
                     hintText: 'Address',
-                    border: InputBorder.none,
+                    labelText: 'Address' ,
+                    suffixIcon: const Icon(
+
+                      Icons.add_location,
+                      color: Colors.teal,
+                    ),
+                    border: OutlineInputBorder(
+                      borderSide: new BorderSide(color: Colors.teal),
+                    ),
                   ),
                   controller: ctrl1,
                 ),
               ),
             ),
             Center(
-              child: Text('or'),
+              child: Text(
+                  'OR',
+                style: TextStyle(
+                    color: Colors. black54,
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: 1.5
+                ),
+              ),
             ),
             Padding(
-              padding: const EdgeInsets.only(left: 20, right: 20, top: 10),
+              padding: const EdgeInsets.only(left: 30, right: 30, top: 8),
               child: Card(
                 color: Colors.teal,
                 child: FlatButton(
@@ -238,37 +249,43 @@ class _Place_Order_ScreenState extends State<Place_Order_Screen> {
                   child: ListTile(
                     title: Center(
                       child: Text(
-                        'Current Location',
-                        style: TextStyle(color: Colors.white),
+                        'CURRENT LOCATION',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            letterSpacing: 1.5,
+                            fontSize: 16
+                        ),
                       ),
                     ),
-                    trailing: Icon(
-                      Icons.location_on,
-                      color: Colors.white,
-                    ),
+                    trailing: Align (
+                      widthFactor: 0,
+                      child: Icon(
+                        Icons.location_on,
+                        color: Colors.white,
+                      ),),
                   ),
                 ),
               ),
             ),
             locationset
                 ? Padding(
-                    padding: const EdgeInsets.fromLTRB(24.0, 0.0, 24.0, 0.0),
-                    child: Container(
-                      color: Colors.grey[400],
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
                         children: <Widget>[
                           Padding(
-                            padding:
-                                const EdgeInsets.fromLTRB(15.0, 8.0, 15.0, 8.0),
+                            padding:const EdgeInsets.only(left:30.0, bottom:0, right:30.0, ),
                             child: Text(
                               "Your location has been set",
+                              style: TextStyle(
+                                color: Colors.green,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
-                          SizedBox(width: 25.0),
+                          SizedBox(width: 47.0),
                           IconButton(
                               icon: Icon(
-                                Icons.remove_circle,
+                                Icons.cancel,
                                 color: Colors.red,
                               ),
                               onPressed: () {
@@ -279,17 +296,11 @@ class _Place_Order_ScreenState extends State<Place_Order_Screen> {
                               })
                         ],
                       ),
-                    ),
                   )
                 : SizedBox(height: 0.0),
             Padding(
-              padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
-              child: Text('Contact Number'),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 20, right: 20),
+              padding: const EdgeInsets.only(left: 30, right: 30,top: 20),
               child: Card(
-                margin: EdgeInsets.symmetric(vertical: 12.0),
                 child: TextFormField(
                   validator: (text) {
                     if (text == null || text.isEmpty) {
@@ -299,7 +310,14 @@ class _Place_Order_ScreenState extends State<Place_Order_Screen> {
                   },
                   decoration: InputDecoration(
                     hintText: '03001234567',
-                    border: InputBorder.none,
+                    labelText: 'Contact Number' ,
+                    suffixIcon: const Icon(
+                      Icons.call,
+                      color: Colors.teal,
+                    ),
+                    border: OutlineInputBorder(
+                        borderSide: new BorderSide(color: Colors.teal)
+                    ),
                   ),
                   keyboardType: TextInputType.number,
                   inputFormatters: <TextInputFormatter>[
@@ -309,53 +327,58 @@ class _Place_Order_ScreenState extends State<Place_Order_Screen> {
                 ),
               ),
             ),
+
             Padding(
-              padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
-              child: Text('Delivery Date'),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 20, right: 20),
+              padding: const EdgeInsets.only(left: 30, right: 30,top: 20),
               child: Card(
-                margin: EdgeInsets.symmetric(vertical: 12.0),
-                child: ListTile(
-                  title: TextField(
+
+                  child: TextField(
                     decoration: InputDecoration(
                       hintText: 'DD-MM-YYYY',
-                      border: InputBorder.none,
+                      border: OutlineInputBorder(
+                          borderSide: new BorderSide(color: Colors.teal)
+                      ),
+
+                      labelText: 'Delivery Date' ,
+                      suffixIcon:
+                      ButtonTheme(
+                        minWidth: 0,
+                        child: FlatButton (
+
+                          child: const Icon(
+                            Icons.calendar_today,
+                            color: Colors.teal,
+                          ),
+                          onPressed: () {
+                            showDatePicker(
+                                context: context,
+                                initialDate: DateTime.now(),
+                                firstDate: DateTime(2020),
+                                lastDate: DateTime(2021))
+                                .then((date) {
+                              if (date != null) {
+                                String dateString = date.toString().substring(0, 10);
+                                String day = dateString.substring(8, 10);
+                                String month = dateString.substring(5, 7);
+                                String year = dateString.substring(0, 4);
+                                delDate = day + "-" + month + "-" + year;
+                                print(delDate);
+                                setState(() {
+                                  ctrl3.text = delDate;
+                                });
+                              }
+                            });
+                          },
+                        ),
+                      ),
                     ),
                     controller: ctrl3,
                   ),
-                  trailing: FlatButton(
-                    child: Icon(
-                      Icons.calendar_today,
-                      color: Colors.teal,
-                    ),
-                    onPressed: () {
-                      showDatePicker(
-                              context: context,
-                              initialDate: DateTime.now(),
-                              firstDate: DateTime(2020),
-                              lastDate: DateTime(2021))
-                          .then((date) {
-                        if (date != null) {
-                          String dateString = date.toString().substring(0, 10);
-                          String day = dateString.substring(8, 10);
-                          String month = dateString.substring(5, 7);
-                          String year = dateString.substring(0, 4);
-                          delDate = day + "-" + month + "-" + year;
-                          print(delDate);
-                          setState(() {
-                            ctrl3.text = delDate;
-                          });
-                        }
-                      });
-                    },
-                  ),
-                ),
+
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
+              padding: const EdgeInsets.only(left: 40, right: 30, top: 10),
               child: Center(
                 child: DropdownButton<String>(
                   items: pkgIDs.map((String pkg) {
@@ -366,13 +389,24 @@ class _Place_Order_ScreenState extends State<Place_Order_Screen> {
                       ),
                     );
                   }).toList(),
-                  hint: Text('Select Package'),
+                  hint: Text('Select Package',
+                    style: TextStyle(
+                        color: Colors.black54,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 1.5
+                    ),),
                   onChanged: (String val) {
                     setState(() {
                       selected = val;
                       showDetails = true;
                     });
-                    print(selected);
+                    return Text(selected,
+                      style: TextStyle(
+                          color: Colors.black54,
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: 1.5
+                      ),
+                    );
                   },
                   value: selected,
                 ),
@@ -380,7 +414,7 @@ class _Place_Order_ScreenState extends State<Place_Order_Screen> {
             ),
             showDetails == true
                 ? Padding(
-                    padding: const EdgeInsets.only(top: 20),
+                    padding: const EdgeInsets.only(top: 5),
                     child: Center(
                       child: Container(
                         width: 200,
@@ -388,11 +422,18 @@ class _Place_Order_ScreenState extends State<Place_Order_Screen> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
                             Text(
-                                'Capacity: ${menuItems[getPkgDetails(int.parse(selected))]['bowser_capacity']} litres'),
+                                'Capacity: ${menuItems[getPkgDetails(int.parse(selected))]['bowser_capacity']} litres',
+                              style: TextStyle(color: Colors.black54, fontWeight: FontWeight.bold,),
+                            ),
+
                             Text(
-                                'Base Price: ${menuItems[getPkgDetails(int.parse(selected))]['price_base']} Rupees'),
+                                'Base Price: ${menuItems[getPkgDetails(int.parse(selected))]['price_base']} Rupees',
+                              style: TextStyle(color: Colors.black54, fontWeight: FontWeight.bold,),
+                            ),
                             Text(''
-                                'Price per Km: ${menuItems[getPkgDetails(int.parse(selected))]['price_per_km']} Rupees'),
+                                'Price per Km: ${menuItems[getPkgDetails(int.parse(selected))]['price_per_km']} Rupees',
+                              style: TextStyle(color: Colors.black54, fontWeight: FontWeight.bold,),
+                            ),
                           ],
                         ),
                       ),
@@ -401,19 +442,25 @@ class _Place_Order_ScreenState extends State<Place_Order_Screen> {
                 : Padding(
                     padding: EdgeInsets.only(top: 20),
                     child: Center(
-                      child: Text('Please Select a Package to Proceed'),
+                      child: Text(
+                        'Please Select a Package to Proceed',
+                         style: TextStyle(color: Colors.black54, fontWeight: FontWeight.bold, fontSize: 16),
+
+                      ),
                     ),
                   ),
             Padding(
-              padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
+              padding: const EdgeInsets.only(left: 30, right: 30, top: 10),
               child: Card(
                 color: Colors.teal,
-                margin: EdgeInsets.symmetric(vertical: 12.0),
                 child: FlatButton(
                   child: Text(
-                    'Place Order',
+                    'PLACE ORDER',
                     style: TextStyle(
-                      color: Colors.white,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 1.5,
+                        fontSize: 16
                     ),
                   ),
                   onPressed: _submit,
