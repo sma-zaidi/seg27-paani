@@ -232,10 +232,10 @@ class HomeScreenState extends State<CustomerHomeScreen> {
                           ),
                         ),
                       ),
-                      SizedBox(width: 15,),
+                      SizedBox(width: 10,),
                       new Container(
                         padding: const EdgeInsets.all(20),
-                        width: 210,
+                        width: 192,
                         child: new Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
