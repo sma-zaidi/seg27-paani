@@ -1,3 +1,5 @@
+//This Screen will Display Orders Completed by Company
+
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
@@ -12,10 +14,10 @@ class CompletedOrders extends StatefulWidget {
 }
 
 class CompletedOrdersState extends State<CompletedOrders> {
-  var completedOrders = []; //Completed Orders Stored here
-  var loadScreen = true; //If true, screen is loaded
+  var completedOrders = [];
+  var loadScreen = true; 
   Future<void> getCompletedOrders() async {
-    //gets completed orders from DB via Server and populates completedOrders
+    
     SharedPreferences pref = await SharedPreferences.getInstance();
     var responseCompleted = await http.get(
         'https://seg27-paani-backend.herokuapp.com/orders/${pref.getString('userid')}/Complete');
