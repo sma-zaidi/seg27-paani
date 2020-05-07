@@ -12,9 +12,10 @@ class CompletedOrders extends StatefulWidget {
 }
 
 class CompletedOrdersState extends State<CompletedOrders> {
-  var completedOrders = [];
-  var loadScreen = true;
+  var completedOrders = []; //Completed Orders Stored here
+  var loadScreen = true; //If true, screen is loaded
   Future<void> getCompletedOrders() async {
+    //gets completed orders from DB via Server and populates completedOrders
     SharedPreferences pref = await SharedPreferences.getInstance();
     var responseCompleted = await http.get(
         'https://seg27-paani-backend.herokuapp.com/orders/${pref.getString('userid')}/Complete');
@@ -24,7 +25,6 @@ class CompletedOrdersState extends State<CompletedOrders> {
         var responseRating = await http.get(
             'https://seg27-paani-backend.herokuapp.com/orders/rating/${dataBody['msg'][i]['orderid'].toString()}');
         var dataRating = jsonDecode(responseRating.body);
-        print(dataRating);
         if (dataRating['msg'] == "No completed order!") {
           dataBody['msg'][i]['rating'] = null;
         } else {
