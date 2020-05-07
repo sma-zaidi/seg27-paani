@@ -1,3 +1,5 @@
+//Company Home Screen. This will lead to New Orders or In Progress Orders
+
 import 'package:flutter/material.dart';
 import 'package:badges/badges.dart';
 import 'package:paani/screens/companysideapp/in_progress.dart';
@@ -7,10 +9,10 @@ import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
 import 'package:paani/screens/companysideapp/drawer.dart';
 
-var newOrders = []; //All orders yet to be accepted or confirmed
-var ongoingOrders = []; //Orders accepted by company
-int inPro = 0; //Number of In progress orders
-int newReq = 0; //Number of New Orders
+var newOrders = []; 
+var ongoingOrders = [];
+int inPro = 0; 
+int newReq = 0;
 
 Badge getBadge(int a, int b) {
   // a is number that badge will show
@@ -74,14 +76,14 @@ class CompanyHomeScreen extends StatefulWidget {
 }
 
 class _CompanyHomeScreenState extends State<CompanyHomeScreen> {
-  var errorPending; //Returns error if New Orders could not be loaded
-  var errorOngoing; //Returns error if in progress errors could not be loaded
+  var errorPending; 
+  var errorOngoing; 
 
   Future<void> getOrders() async {
-    //gets Orders from Server and adds them to specific variables
+    
     SharedPreferences pref = await SharedPreferences.getInstance();
     print(pref.getString('userid'));
-    //Getting New Orders
+    
     var responsePending = await http.get(
         'https://seg27-paani-backend.herokuapp.com/orders/${pref.getString('userid')}/Pending');
     var dataPending = convert.jsonDecode(responsePending.body);
@@ -99,7 +101,7 @@ class _CompanyHomeScreenState extends State<CompanyHomeScreen> {
         newReq = 0;
       });
     }
-    //Getting In Progress Orders
+    
     var responseOngoing = await http.get(
         'https://seg27-paani-backend.herokuapp.com/orders/${pref.getString('userid')}/Confirmed');
     var dataOngoingConfirmed = convert.jsonDecode(responseOngoing.body);
