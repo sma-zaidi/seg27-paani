@@ -1,11 +1,13 @@
+//This Screen will assign an Order to a driver that is available for delivering. Orders and Drivers will be specific to companies
+
 import 'package:flutter/material.dart';
 import 'package:sweetalert/sweetalert.dart';
 
-var drivers; //All drivers registered with a particular company
-var orderid; //Order ID
+var drivers; 
+var orderid; 
 
 Icon getIconOfAvailability(int index) {
-  //Returns Icon differently depending on availability of Driver
+
   if (drivers[index]['Available'] == true) {
     return Icon(
       Icons.check_circle,
@@ -26,9 +28,9 @@ class AssignDriverScreen extends StatefulWidget {
 }
 
 class _AssignDriverScreenState extends State<AssignDriverScreen> {
-  bool loadpage = true; //if true, page is loaded  
+  bool loadpage = true;   
   void checkdriver(dynamic data) {
-    //Gets data of drivers
+    
     if (data['list'] is String) {
       loadpage = false;
     } else {
