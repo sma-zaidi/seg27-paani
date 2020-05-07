@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:sweetalert/sweetalert.dart';
 
-var drivers;
-var orderid;
+var drivers; //All drivers registered with a particular company
+var orderid; //Order ID
 
 Icon getIconOfAvailability(int index) {
+  //Returns Icon differently depending on availability of Driver
   if (drivers[index]['Available'] == true) {
     return Icon(
       Icons.check_circle,
@@ -25,8 +26,9 @@ class AssignDriverScreen extends StatefulWidget {
 }
 
 class _AssignDriverScreenState extends State<AssignDriverScreen> {
-  bool loadpage = true;
+  bool loadpage = true; //if true, page is loaded  
   void checkdriver(dynamic data) {
+    //Gets data of drivers
     if (data['list'] is String) {
       loadpage = false;
     } else {
