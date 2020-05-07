@@ -1,3 +1,5 @@
+//New Orders will be displayed here. Can be Accepted and Rejected through this screen
+
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/cupertino.dart';
@@ -13,8 +15,8 @@ class NewReqs extends StatefulWidget {
 }
 
 class _NewReqsState extends State<NewReqs> {
-  var errorPending = false; //Error in recieving new orders
-  var errorOngoing = false; //Error in recieving ongoing orders
+  var errorPending = false; 
+  var errorOngoing = false; 
   @override
   Widget build(BuildContext context) {
     return errorOngoing == true || errorPending == true
