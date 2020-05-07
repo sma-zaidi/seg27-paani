@@ -9,10 +9,10 @@ class Driver_Tanker_Loading extends StatefulWidget {
 }
 
 class _Driver_Tanker_LoadingState extends State<Driver_Tanker_Loading> {
-  Map data; //Data Stored here
-  dynamic driversTankersData; //Gets Drivers and Tankers data
+  Map data; 
+  dynamic driversTankersData; 
   Future<void> getorders() async {
-    //Returns orders
+    
     try {
       SharedPreferences pref = await SharedPreferences.getInstance();
       String id = pref.getString("userid");
@@ -93,7 +93,6 @@ class _Driver_Tanker_LoadingState extends State<Driver_Tanker_Loading> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     getorders();
   }
