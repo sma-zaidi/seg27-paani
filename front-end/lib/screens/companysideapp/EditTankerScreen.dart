@@ -1,3 +1,5 @@
+//This Screen helps in editing Package Details of Packages associated with the Company.
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -7,23 +9,23 @@ import 'Tankers_details.dart';
 import 'package:sweetalert/sweetalert.dart';
 
 class EditTankerScreen extends StatefulWidget {
-  var data; //Data recieved from previous screen
-  EditTankerScreen({this.data}); //Data Initiated
+  var data; 
+  EditTankerScreen({this.data}); 
   @override
-  _EditTankerScreenState createState() => _EditTankerScreenState(data: data); //Data sent to next state
+  _EditTankerScreenState createState() => _EditTankerScreenState(data: data); 
 }
 
 class _EditTankerScreenState extends State<EditTankerScreen> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
-  var data; //Data Recieved
-  _EditTankerScreenState({this.data}); //Data Initiated
-  var capController = TextEditingController(); //Capacity Field Controller
-  var baseController = TextEditingController(); //Base Price Field Controller
-  var KMController = TextEditingController(); //Price/KM Field Controller
+  var data; 
+  _EditTankerScreenState({this.data}); 
+  var capController = TextEditingController(); 
+  var baseController = TextEditingController(); 
+  var KMController = TextEditingController(); 
 
   Future<http.Response> updatePackage(id, priceBase, pricePerKm, bowserCapacity) async {
-    //Updates Package in DB via Server
+    
     try {
       var response = await http.put(
         'https://seg27-paani-backend.herokuapp.com/packages',
@@ -49,7 +51,7 @@ class _EditTankerScreenState extends State<EditTankerScreen> {
   }
 
   Future<bool> _submit() async {
-    //Submits data 
+     
     try {
 
       var response = await updatePackage(
@@ -59,7 +61,7 @@ class _EditTankerScreenState extends State<EditTankerScreen> {
         Tankers[data]['bowser_capacity'],
       );
 
-      if (response == null) return false; // edit failed
+      if (response == null) return false; 
       return true;
 
     } catch (error) {
@@ -83,9 +85,9 @@ class _EditTankerScreenState extends State<EditTankerScreen> {
 
   @override
   void initState() {
-    capController.text = Tankers[data]['bowser_capacity'].toString(); //Capacity Field shows capacity already stored initially
-    baseController.text = Tankers[data]['price_base'].toString(); //Base Price Field shows capacity already stored initially
-    KMController.text = Tankers[data]['price_per_km'].toString();//Price/KM Field shows capacity already stored initially
+    capController.text = Tankers[data]['bowser_capacity'].toString(); 
+    baseController.text = Tankers[data]['price_base'].toString(); 
+    KMController.text = Tankers[data]['price_per_km'].toString();
   }
 
   @override
