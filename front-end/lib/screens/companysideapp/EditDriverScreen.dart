@@ -1,3 +1,5 @@
+//This Screen will help user in editing driver details of drivers associated with their company.
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -5,23 +7,23 @@ import 'dart:convert';
 import 'package:paani/screens/companysideapp/ViewDrivers.dart';
 
 class EditScreen extends StatefulWidget {
-  var data; //Data from Previous screen is recieved here
-  EditScreen({this.data}); //Data initiated
+  var data; 
+  EditScreen({this.data}); 
   @override
-  _EditScreenState createState() => _EditScreenState(data: data); //Data is passed to next state
+  _EditScreenState createState() => _EditScreenState(data: data); 
 }
 
 class _EditScreenState extends State<EditScreen> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
-  var data;//Data recieved
-  _EditScreenState({this.data});//Data initiated
-  var nameController = TextEditingController(); //Name Field Controller
-  var cnicController = TextEditingController(); //CNIC Field Controller
-  var contactController = TextEditingController(); //Contact Field Controller
+  var data;
+  _EditScreenState({this.data});
+  var nameController = TextEditingController(); 
+  var cnicController = TextEditingController(); 
+  var contactController = TextEditingController();
 
   Future<http.Response> updateDriver(id, name, cnic, contactNumber) async {
-    //Updates Driver Data in DB via Server
+    
     try {
       var response =
           await http.put('https://seg27-paani-backend.herokuapp.com/drivers',
@@ -34,10 +36,10 @@ class _EditScreenState extends State<EditScreen> {
                 'name': name,
                 'cnic': cnic,
                 'contact_number': contactNumber,
-              })); //Data Sent to Server
+              })); 
 
-      var message = jsonDecode(response.body); //Response from Server
-      if (message['error'] == true) //Erroor in updating data
+      var message = jsonDecode(response.body); 
+      if (message['error'] == true) 
         return null;
       else // No Error
         return response;
@@ -47,7 +49,7 @@ class _EditScreenState extends State<EditScreen> {
   }
 
   Future<bool> _submit() async {
-    //Submit Data
+    
     try {
       SharedPreferences pref = await SharedPreferences.getInstance();
 
