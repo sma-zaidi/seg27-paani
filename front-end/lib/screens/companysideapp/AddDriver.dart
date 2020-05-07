@@ -26,12 +26,13 @@ class _AddDriverScreenState extends State<AddDriverScreen> {
   }
 
   Map packageData;
-  var nameController = TextEditingController();
-  var cnicController = TextEditingController();
-  var contactController = TextEditingController();
-  bool gettingdata = false;
+  var nameController = TextEditingController(); //Name Field Editing Controller
+  var cnicController = TextEditingController(); //CNIC Field Editing Controller
+  var contactController = TextEditingController(); //Contact Number Field Editing Controller
+  bool gettingdata = false; //If true: displays loading icon, else: shows data
 
   Future<bool> _senddata(String name, cnic, contact) async {
+    //Send Data to Server
     this.setState(() {
       this.gettingdata = true;
     });
@@ -70,6 +71,7 @@ class _AddDriverScreenState extends State<AddDriverScreen> {
   }
 
   Future<void> _submit() async {
+    //Submitting Data
     if (contactController.text == "" ||
         nameController.text == "" ||
         cnicController.text == "") {
@@ -99,6 +101,7 @@ class _AddDriverScreenState extends State<AddDriverScreen> {
       if (await _senddata(
           nameController.text, cnicController.text, contactController.text)) {
         setState(() {
+          //After Data is Sent, fields are reset to empty
           nameController.text = "";
           cnicController.text = "";
           contactController.text = "";
