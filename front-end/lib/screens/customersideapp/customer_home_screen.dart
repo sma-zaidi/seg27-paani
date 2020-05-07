@@ -4,7 +4,7 @@ import 'package:paani/screens/customersideapp/drawer.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter_star_rating/flutter_star_rating.dart';
-import 'package:paani/screens/customersideapp/customerorderplacement.dart';
+import 'package:paani/screens/customersideapp/customer_order_placement.dart';
 
 class CustomerHomeScreen extends StatefulWidget {
   @override
