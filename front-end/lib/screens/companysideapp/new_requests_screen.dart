@@ -7,35 +7,6 @@ import 'package:paani/screens/companysideapp/CompanyHomeScreen.dart';
 import 'package:http/http.dart' as http;
 import 'CompanyHomeScreen.dart';
 
-//final List<int> ordersID = <int>[1584, 2459, 3842, 4443, 5042, 6213, 7456];
-//final List<String> address = <String>[
-//  "123 A block",
-//  "456 B block",
-//  "789 C Block",
-//  "586 K Block",
-//  "360-C D Block",
-//  "45 Ali Housing Colony",
-//  "33 Huma Block, Allama Iqbal Town"
-//]; //Address of Customers
-//final List<int> tankerSize = <int>[
-//  10,
-//  25,
-//  20,
-//  50,
-//  60,
-//  25,
-//  30
-//]; //Tanker size in Litres
-//final List<String> delDates = <String>[
-//  "26-4-2020",
-//  "26-4-2020",
-//  "28-4-2020",
-//  "29-4-2020",
-//  "30-4-2020",
-//  "2-5-2020",
-//  "2-5-2020"
-//]
-
 class NewReqs extends StatefulWidget {
   @override
   _NewReqsState createState() => _NewReqsState();

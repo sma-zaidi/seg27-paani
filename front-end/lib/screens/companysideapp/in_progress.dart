@@ -11,6 +11,7 @@ class InProgress extends StatefulWidget {
 }
 
 class InProgressState extends State<InProgress> {
+  var orders = ongoingOrders;
   bool loadingIcon = false;
   Widget build(BuildContext context) {
     return loadingIcon == false
@@ -42,6 +43,14 @@ class InProgressState extends State<InProgress> {
                           ),
                           Text(
                             "Order id: ${ongoingOrders[index]['orderid']}",
+                            style: TextStyle(
+                              color: Colors.black45,
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Text(
+                            "status: ${ongoingOrders[index]['status']}",
                             style: TextStyle(
                               color: Colors.black45,
                               fontSize: 15,
@@ -259,19 +268,54 @@ class InProgressState extends State<InProgress> {
                                                       .getInstance();
                                               var responseOngoing = await http.get(
                                                   'https://seg27-paani-backend.herokuapp.com/orders/${pref.getString('userid')}/Confirmed');
-                                              var dataOngoing =
+                                              var dataOngoingConfirmed =
                                                   convert.jsonDecode(
                                                       responseOngoing.body);
-                                              if (dataOngoing['error'] ==
-                                                  false) {
+                                              var responseDispatched =
+                                                  await http.get(
+                                                      'https://seg27-paani-backend.herokuapp.com/orders/${pref.getString('userid')}/Dispatched');
+                                              var dataOngoingDispatched =
+                                                  convert.jsonDecode(
+                                                      responseDispatched.body);
+                                              if (dataOngoingConfirmed[
+                                                          'error'] ==
+                                                      false ||
+                                                  dataOngoingDispatched[
+                                                          'error'] ==
+                                                      false) {
                                                 setState(() {
-                                                  ongoingOrders =
-                                                      dataOngoing['msg'];
+                                                  if (dataOngoingConfirmed[
+                                                              'msg'] !=
+                                                          null &&
+                                                      dataOngoingDispatched[
+                                                              'msg'] !=
+                                                          null) {
+                                                    ongoingOrders = []
+                                                      ..addAll(
+                                                          dataOngoingConfirmed[
+                                                              'msg'])
+                                                      ..addAll(
+                                                          dataOngoingDispatched[
+                                                              'msg']);
+                                                  } else if (dataOngoingConfirmed[
+                                                          'msg'] ==
+                                                      null) {
+                                                    ongoingOrders =
+                                                        dataOngoingDispatched[
+                                                            'msg'];
+                                                  } else if (dataOngoingDispatched[
+                                                          'msg'] ==
+                                                      null) {
+                                                    ongoingOrders =
+                                                        dataOngoingConfirmed[
+                                                            'msg'];
+                                                  }
                                                   loadingIcon = false;
                                                   inPro = ongoingOrders.length;
                                                 });
                                               } else {
                                                 setState(() {
+                                                  ongoingOrders.clear();
                                                   loadingIcon = false;
                                                   inPro = 0;
                                                 });
@@ -366,19 +410,52 @@ class InProgressState extends State<InProgress> {
                                                     .getInstance();
                                             var responseOngoing = await http.get(
                                                 'https://seg27-paani-backend.herokuapp.com/orders/${pref.getString('userid')}/Confirmed');
-                                            var dataOngoing =
+                                            var dataOngoingConfirmed =
                                                 convert.jsonDecode(
                                                     responseOngoing.body);
-                                            print(dataOngoing);
-                                            if (dataOngoing['error'] == false) {
+                                            var responseDispatched = await http.get(
+                                                'https://seg27-paani-backend.herokuapp.com/orders/${pref.getString('userid')}/Dispatched');
+                                            var dataOngoingDispatched =
+                                                convert.jsonDecode(
+                                                    responseDispatched.body);
+                                            if (dataOngoingConfirmed['error'] ==
+                                                    false ||
+                                                dataOngoingDispatched[
+                                                        'error'] ==
+                                                    false) {
                                               setState(() {
-                                                ongoingOrders =
-                                                    dataOngoing['msg'];
+                                                if (dataOngoingConfirmed[
+                                                            'msg'] !=
+                                                        null &&
+                                                    dataOngoingDispatched[
+                                                            'msg'] !=
+                                                        null) {
+                                                  ongoingOrders = []
+                                                    ..addAll(
+                                                        dataOngoingConfirmed[
+                                                            'msg'])
+                                                    ..addAll(
+                                                        dataOngoingDispatched[
+                                                            'msg']);
+                                                } else if (dataOngoingConfirmed[
+                                                        'msg'] ==
+                                                    null) {
+                                                  ongoingOrders =
+                                                      dataOngoingDispatched[
+                                                          'msg'];
+                                                } else if (dataOngoingDispatched[
+                                                        'msg'] ==
+                                                    null) {
+                                                  ongoingOrders =
+                                                      dataOngoingConfirmed[
+                                                          'msg'];
+                                                }
                                                 loadingIcon = false;
                                                 inPro = ongoingOrders.length;
                                               });
                                             } else {
                                               setState(() {
+                                                ongoingOrders.clear();
                                                 loadingIcon = false;
                                                 inPro = 0;
                                               });

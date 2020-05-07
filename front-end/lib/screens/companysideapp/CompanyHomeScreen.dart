@@ -99,16 +99,30 @@ class _CompanyHomeScreenState extends State<CompanyHomeScreen> {
     }
     var responseOngoing = await http.get(
         'https://seg27-paani-backend.herokuapp.com/orders/${pref.getString('userid')}/Confirmed');
-    var dataOngoing = convert.jsonDecode(responseOngoing.body);
-    if (dataOngoing['error'] == false) {
+    var dataOngoingConfirmed = convert.jsonDecode(responseOngoing.body);
+    var responseDispatched = await http.get(
+        'https://seg27-paani-backend.herokuapp.com/orders/${pref.getString('userid')}/Dispatched');
+    var dataOngoingDispatched = convert.jsonDecode(responseDispatched.body);
+    if (dataOngoingConfirmed['error'] == false ||
+        dataOngoingDispatched['error'] == false) {
       setState(() {
-        ongoingOrders = dataOngoing['msg'];
+        if (dataOngoingConfirmed['msg'] != null &&
+            dataOngoingDispatched['msg'] != null) {
+          ongoingOrders = []
+            ..addAll(dataOngoingConfirmed['msg'])
+            ..addAll(dataOngoingDispatched['msg']);
+        } else if (dataOngoingConfirmed['msg'] == null) {
+          ongoingOrders = dataOngoingDispatched['msg'];
+        } else if (dataOngoingDispatched['msg'] == null) {
+          ongoingOrders = dataOngoingConfirmed['msg'];
+        }
         errorOngoing = false;
         inPro = ongoingOrders.length;
       });
     } else {
       setState(() {
-        errorOngoing = dataOngoing['error'];
+        errorOngoing = dataOngoingConfirmed['error'];
+
         inPro = 0;
       });
     }
