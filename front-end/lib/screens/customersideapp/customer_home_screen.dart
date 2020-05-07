@@ -1,3 +1,5 @@
+//This screen loads Customer Home Page which will display all the companies registered with our app, and will provide ability to order
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:paani/screens/customersideapp/drawer.dart';
