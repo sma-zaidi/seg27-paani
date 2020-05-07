@@ -22,12 +22,12 @@ Review = {
     
     getAvgCompanyRating: async (companyid) => {
         try{
-            result = await query(`SELECT AVG(rating) FROM \`seg27-paani\`.reviews 
+            result = await query(`SELECT AVG(rating) as rating FROM \`seg27-paani\`.reviews 
                                     INNER JOIN \`seg27-paani\`.orders ON \`seg27-paani\`.reviews.id = \`seg27-paani\`.orders.id
                                     INNER JOIN \`seg27-paani\`.packages ON \`seg27-paani\`.orders.package_id = \`seg27-paani\`.packages.id
                                     INNER JOIN \`seg27-paani\`.companies ON \`seg27-paani\`.packages.company_id = \`seg27-paani\`.companies.id
                                     WHERE companies.id = ?`, [companyid]);  
-            return result
+            return result[0].rating;
         }
         catch (error) {throw new Error(error)}
     }
