@@ -1,3 +1,5 @@
+//This Screen will show all details entered by user and ask for confirmation before placing order
+
 import 'package:flutter/material.dart';
 import 'package:paani/screens/customersideapp/order_receipt.dart';
 import 'package:http/http.dart' as http;
