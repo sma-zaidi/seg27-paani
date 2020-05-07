@@ -136,7 +136,7 @@ class _CustomerEditProfileScreenState extends State<CustomerEditProfileScreen> {
                 "Edit",
                 style: TextStyle(
                   letterSpacing: 0.7,
-                  color: Colors.red[300],
+                  color: Colors.red,
                   fontSize: 15.0,
                   decoration: TextDecoration.underline,
                 ),
@@ -176,7 +176,7 @@ class _CustomerEditProfileScreenState extends State<CustomerEditProfileScreen> {
           decoration: InputDecoration(
             labelText: 'Contact',
             hintText: 'Contact Number',
-            prefixIcon: Icon(Icons.contact_phone),
+            prefixIcon: Icon(Icons.phone),
             suffixIcon: Icon(Icons.edit),
           ),
         ),
@@ -248,16 +248,19 @@ class _CustomerEditProfileScreenState extends State<CustomerEditProfileScreen> {
                         child: Column(
                           children: <Widget>[
                             DetailsForm,
-                            SizedBox(height: 20.0),
+                            SizedBox(height: 40.0),
                             ButtonTheme(
-                              minWidth: 170.0,
+                              minWidth: 110.0,
+                              height: 40,
                               child: RaisedButton(
                                 color: Colors.teal,
                                 onPressed: editprofile ? _submit : null,
                                 child: Text(
-                                  'Save',
+                                  'SAVE',
                                   style: TextStyle(
                                     color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    letterSpacing: 1.5
                                   ),
                                 ),
                               ),

@@ -193,7 +193,7 @@ class _Place_Order_ScreenState extends State<Place_Order_Screen> {
                     labelText: 'Address' ,
                     suffixIcon: const Icon(
 
-                      Icons.add_location,
+                      Icons.view_compact,
                       color: Colors.teal,
                     ),
                     border: OutlineInputBorder(

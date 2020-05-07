@@ -7,7 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:paani/screens/index.dart';
 import 'package:paani/screens/customersideapp/customer_home_screen.dart';
-import 'package:paani/screens/customersideapp/customereditprofile.dart';
+import 'package:paani/screens/customersideapp/customer_edit_profile.dart';
 import 'package:paani/screens/customersideapp/order_history_customer_loading.dart';
 import 'package:paani/screens/customersideapp/order_status_loading.dart';
 
