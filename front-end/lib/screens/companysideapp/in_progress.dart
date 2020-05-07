@@ -1,3 +1,5 @@
+//Displays In Progress Orders that can be cancelled within 2 days of accepting. Drivers Can Also be assigned via this screen to orders 
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'CompanyHomeScreen.dart';
@@ -11,8 +13,8 @@ class InProgress extends StatefulWidget {
 }
 
 class InProgressState extends State<InProgress> {
-  var orders = ongoingOrders; //Orders has only in progress orders. ongoingOrders populated in previous screen
-  bool loadingIcon = false; //if true, loading icon is shown
+  var orders = ongoingOrders; 
+  bool loadingIcon = false; 
   Widget build(BuildContext context) {
     return loadingIcon == false
         ? Scaffold(
