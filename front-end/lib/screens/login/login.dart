@@ -1,3 +1,5 @@
+//Log in screen that helps a user log in to their account
+
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
