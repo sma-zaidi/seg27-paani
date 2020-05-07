@@ -20,22 +20,28 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
   }
 
   Widget noorderhistory() {
-    return Center(
-      child: Column(children: <Widget>[
-        Icon(
-          Icons.error,
-          size: 50.0,
+    return Scaffold(
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Icon(
+              Icons.error,
+              size: 50.0,
+            ),
+            SizedBox(height: 20.0),
+            Text(
+              "No Order History Found",
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Colors.teal,
+                fontSize: 30.0,
+              ),
+            ),
+          ],
         ),
-        SizedBox(height: 30.0),
-        Text(
-          "No Order History Found",
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
-            fontSize: 40.0,
-          ),
-        )
-      ]),
+      ),
     );
   }
 
