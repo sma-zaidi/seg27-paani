@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:paani/screens/customersideapp/drawer.dart';
-import 'package:paani/screens/customersideapp/feedback_customer.dart';
 
 class OrderHistoryScreen extends StatefulWidget {
   @override
@@ -73,6 +72,7 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
                   delivery_time: pastorders[index]["delivery_time"].toString(),
                   estimated_cost:
                       pastorders[index]["estimated_cost"].toString(),
+                  orderid: pastorders[index]["id"].toString(),
                 );
               },
             ),
@@ -82,19 +82,21 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
 }
 
 class OrderHistoryListElement extends StatelessWidget {
-  OrderHistoryListElement(
-      {@required this.packageID,
-      @required this.date,
-      @required this.companyName,
-      @required this.status,
-      @required this.tankerSize,
-      @required this.cost,
-      @required this.rating,
-      @required this.customer_id,
-      @required this.delivery_address,
-      @required this.delivery_location,
-      @required this.delivery_time,
-      @required this.estimated_cost});
+  OrderHistoryListElement({
+    @required this.packageID,
+    @required this.date,
+    @required this.companyName,
+    @required this.status,
+    @required this.tankerSize,
+    @required this.cost,
+    @required this.rating,
+    @required this.customer_id,
+    @required this.delivery_address,
+    @required this.delivery_location,
+    @required this.delivery_time,
+    @required this.estimated_cost,
+    @required this.orderid,
+  });
 
   final String packageID;
   final String date;
@@ -108,9 +110,10 @@ class OrderHistoryListElement extends StatelessWidget {
   final String delivery_location;
   final String delivery_time;
   final String estimated_cost;
+  final String orderid;
 
-  bool checkifstatusnotcompleted() {
-    if (status == 'Completed') {
+  bool checkifstatusnotfinalised() {
+    if (status == 'Complete' || status == 'Declined' || status == "Cancelled") {
       return false;
     }
     return true;
@@ -198,13 +201,12 @@ class OrderHistoryListElement extends StatelessWidget {
                       'Give Feedback',
                       style: TextStyle(color: Colors.white),
                     ),
-                    onPressed: checkifstatusnotcompleted()
+                    onPressed: checkifstatusnotfinalised()
                         ? null
-                        : () => Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => FeedBack()),
-                            ),
+                        : () => Navigator.pushNamed(context, '/feedback',
+                                arguments: {
+                                  "orderid": this.orderid,
+                                }),
                   ),
                 ),
 
@@ -217,7 +219,7 @@ class OrderHistoryListElement extends StatelessWidget {
                       'Reorder',
                       style: TextStyle(color: Colors.white),
                     ),
-                    onPressed: checkifstatusnotcompleted()
+                    onPressed: checkifstatusnotfinalised()
                         ? null
                         : () => Navigator.pushNamed(
                             context, '/order_confirmation',

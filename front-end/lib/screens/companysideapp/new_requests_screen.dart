@@ -3,11 +3,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:sweetalert/sweetalert.dart';
 import 'package:paani/screens/companysideapp/CompanyHomeScreen.dart';
 import 'package:http/http.dart' as http;
-import 'package:paani/screens/companysideapp/drawer.dart';
-
 import 'CompanyHomeScreen.dart';
 
 //final List<int> ordersID = <int>[1584, 2459, 3842, 4443, 5042, 6213, 7456];
@@ -180,8 +177,8 @@ class _NewReqsState extends State<NewReqs> {
 //                                    var dataPending = jsonDecode(responsePending.body);
 //                                  });
 
-                                      //   SweetAlert.show(context,
-                                            // style: SweetAlertStyle.success);
+                                        //   SweetAlert.show(context,
+                                        // style: SweetAlertStyle.success);
                                       },
                                     ),
                                     FlatButton(

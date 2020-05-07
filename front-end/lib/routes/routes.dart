@@ -25,6 +25,7 @@ import 'package:paani/screens/customersideapp/order_confirmation.dart';
 import '../screens/companysideapp/CompanyHomeScreen.dart';
 import '../screens/customersideapp/customer_home_screen.dart';
 import '../screens/index.dart';
+import 'package:paani/screens/customersideapp/feedback_customer.dart';
 
 var routes = {
   '/login': (BuildContext context) => LoginScreen(),
@@ -50,6 +51,7 @@ var routes = {
   '/addtankers': (BuildContext context) => AddTanker(),
   '/adddrivers': (BuildContext context) => AddDriverScreen(),
   '/order_confirmation': (BuildContext context) => Order_Confirmation(),
+  '/feedback': (BuildContext context) => FeedBack(),
 };
 
 var index = IndexScreen();

@@ -24,7 +24,7 @@ class _OrderStatusLoadingState extends State<OrderStatusLoading> {
       });
     } else {
       status = message['msg'];
-      if (status['status'] == 'Completed') {
+      if (status['status'] == 'Complete') {
         Navigator.popAndPushNamed(context, '/ordercompleted');
       } else if (status['status'] == 'Dispatched') {
         Navigator.popAndPushNamed(context, '/orderdispatched');
@@ -37,9 +37,6 @@ class _OrderStatusLoadingState extends State<OrderStatusLoading> {
       } else {
         Navigator.pop(context);
       }
-      // for (int i; i < message['msg'].length; i++) {
-      //   pastorders.add(message['msg'].length);
-      // }
     }
   }
 
