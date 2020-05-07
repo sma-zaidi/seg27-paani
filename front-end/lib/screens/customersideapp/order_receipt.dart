@@ -1,3 +1,5 @@
+//Shows Details and estimated Cost of an order
+
 import 'package:flutter/material.dart';
 
 class Order_Receipt extends StatelessWidget {
