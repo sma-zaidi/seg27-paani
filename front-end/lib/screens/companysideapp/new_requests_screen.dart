@@ -13,8 +13,8 @@ class NewReqs extends StatefulWidget {
 }
 
 class _NewReqsState extends State<NewReqs> {
-  var errorPending = false;
-  var errorOngoing = false;
+  var errorPending = false; //Error in recieving new orders
+  var errorOngoing = false; //Error in recieving ongoing orders
   @override
   Widget build(BuildContext context) {
     return errorOngoing == true || errorPending == true
