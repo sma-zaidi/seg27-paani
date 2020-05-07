@@ -1,3 +1,13 @@
+/*
+    SERVER ENTRY POINT
+    
+    * Routes and controllers are defined in /routes
+
+    * Responses look like this
+        {error: <error msg>} or 
+        {error: false, msg: <response>} so always check for the error first.
+*/
+
 const express = require('express');
 const morgan = require('morgan'); // logging
 const bodyparser = require('body-parser');
@@ -9,7 +19,6 @@ app.use(bodyparser.urlencoded({ extended: true }))
 
 // setting up routes
 app.use('/users', require('./routes/users.routes'));
-
 app.use('/companies', require('./routes/companies.routes'));
 app.use('/drivers', require('./routes/drivers.routes'));
 app.use('/packages', require('./routes/packages.routes'));

@@ -180,8 +180,8 @@ class _NewReqsState extends State<NewReqs> {
 //                                    var dataPending = jsonDecode(responsePending.body);
 //                                  });
 
-                                        SweetAlert.show(context,
-                                            style: SweetAlertStyle.success);
+                                      //   SweetAlert.show(context,
+                                            // style: SweetAlertStyle.success);
                                       },
                                     ),
                                     FlatButton(
@@ -299,8 +299,8 @@ class _NewReqsState extends State<NewReqs> {
                                           }
                                         }
                                         print(jsonDecode(query.body));
-                                        SweetAlert.show(context,
-                                            style: SweetAlertStyle.error);
+                                        // SweetAlert.show(context,
+                                        //     style: SweetAlertStyle.error);
                                       },
                                     ),
                                     FlatButton(

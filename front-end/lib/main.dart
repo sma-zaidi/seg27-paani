@@ -5,9 +5,9 @@
 */
 
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shared_preferences/shared_preferences.dart'; // local store
 
-import 'package:paani/routes/routes.dart'; // defines the routes variable
+import 'package:paani/routes/routes.dart'; // defines the routes, customerHome, and companyHome variables
 
 Future<void> main() async {
 
