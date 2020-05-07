@@ -187,12 +187,8 @@ class _Place_Order_ScreenState extends State<Place_Order_Screen> {
                     hintText: 'Address',
                     labelText: 'Address',
                     suffixIcon: const Icon(
-<<<<<<< HEAD:front-end/lib/screens/customersideapp/customerorderplacement.dart
-                      Icons.add_location,
-=======
 
                       Icons.view_compact,
->>>>>>> 76e8bdac2a132cb0d965461c3c1afaac40cbe2f9:front-end/lib/screens/customersideapp/customer_order_placement.dart
                       color: Colors.teal,
                     ),
                     border: OutlineInputBorder(
