@@ -149,6 +149,7 @@ class _CompanyHomeScreenState extends State<CompanyHomeScreen> {
             appBar: AppBar(
               backgroundColor: Colors.teal,
               actions: <Widget>[
+                //Refresh Button to reload the screen to check for new orders
                 FlatButton(
                   child: Icon(
                     Icons.refresh,
