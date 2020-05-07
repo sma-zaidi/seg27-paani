@@ -27,9 +27,11 @@ router.get('/avg/:companyid', async (req, res, next) => {
 
     try{
         rating = await Review.getAvgCompanyRating(company_id);
+        console.log(rating);
         return res.json({error:'false', msg:rating})
 
     }catch (error){
+        console.log(error);
         return res.json({error:error})
     }
 })
