@@ -1,3 +1,5 @@
+//Side Bar Menu that Takes user to the desired screen
+
 import 'package:flutter/material.dart';
 
 import 'package:paani/screens/index.dart';
@@ -9,8 +11,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'Tankers_details.dart';
 
-// import 'package:paani/screens/home_screen.dart';
-// import 'package:http/http.dart' as http;
+
 
 class DrawerDetails extends StatefulWidget {
   @override
@@ -19,7 +20,7 @@ class DrawerDetails extends StatefulWidget {
 
 class DrawerDetailsState extends State<DrawerDetails> {
   Future<String> getname() async {
-    //Returns Name of User
+  
     SharedPreferences pref = await SharedPreferences.getInstance();
     String name = pref.getString("username");
     return name;
