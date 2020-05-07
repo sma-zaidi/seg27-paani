@@ -1,3 +1,5 @@
+//This screen will show Package Details of Packages Associeated with the company
+
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
@@ -5,9 +7,9 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'EditTankerScreen.dart';
 
-bool dataloading = true; //True while data is being loaded
+bool dataloading = true; 
 
-var Tankers; //Package Details 
+var Tankers;  
 
 class TankerDetails extends StatefulWidget {
   @override
@@ -15,9 +17,9 @@ class TankerDetails extends StatefulWidget {
 }
 
 class TankerDetailsState extends State<TankerDetails> {
-  bool loadpage = true; //If true page is loaded
+  bool loadpage = true; 
   void checktanker(dynamic data) {
-    //Check Tankers
+    
     if (data['list'] is String) {
       loadpage = false;
     } else {
