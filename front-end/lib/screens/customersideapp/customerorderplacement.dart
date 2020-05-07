@@ -83,7 +83,7 @@ class _Place_Order_ScreenState extends State<Place_Order_Screen> {
               .toString(),
           "customer_id": userid,
           "package_id": selected,
-          "delivery_address": address,
+          "delivery_address": ctrl1.text,
           "delivery_location": _location,
           "delivery_time": ctrl3.text,
           "estimated_cost": _location == null
@@ -125,13 +125,7 @@ class _Place_Order_ScreenState extends State<Place_Order_Screen> {
     print(data);
     // TODO: implement initState
     super.initState();
-    // you can have different listner functions if you wish
-    ctrl1.addListener(() {
-      address = ctrl1.text;
-    });
-    ctrl2.addListener(() {
-      contact = ctrl2.text;
-    });
+    // you can have different listner functions if you wishs
     ctrl3.addListener(onChange);
   }
 

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
-import 'package:sweetalert/sweetalert.dart';
 import 'package:paani/screens/companysideapp/ViewDrivers.dart';
 
 class EditScreen extends StatefulWidget {
@@ -23,32 +22,32 @@ class _EditScreenState extends State<EditScreen> {
 
   Future<http.Response> updateDriver(id, name, cnic, contactNumber) async {
     try {
-      var response = await http.put(
-        'https://seg27-paani-backend.herokuapp.com/drivers',
-        headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-            "Content-Type": "application/json",
-        },
-        body: jsonEncode({
-          'driver_id': id,
-          'name': name,
-          'cnic': cnic,
-          'contact_number': contactNumber,
-        })
-      );
+      var response =
+          await http.put('https://seg27-paani-backend.herokuapp.com/drivers',
+              headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+                "Content-Type": "application/json",
+              },
+              body: jsonEncode({
+                'driver_id': id,
+                'name': name,
+                'cnic': cnic,
+                'contact_number': contactNumber,
+              }));
 
       var message = jsonDecode(response.body);
-      if(message['error'] == true) return null;
-      else return response;
+      if (message['error'] == true)
+        return null;
+      else
+        return response;
     } catch (error) {
       return null;
     }
-
   }
 
   Future<bool> _submit() async {
     try {
-      SharedPreferences pref = await SharedPreferences.getInstance(); 
+      SharedPreferences pref = await SharedPreferences.getInstance();
 
       var response = await updateDriver(
         drivers[data]['id'],
@@ -59,7 +58,6 @@ class _EditScreenState extends State<EditScreen> {
 
       if (response == null) return false; // edit failed
       return true;
-
     } catch (error) {
       print(error);
       return false;

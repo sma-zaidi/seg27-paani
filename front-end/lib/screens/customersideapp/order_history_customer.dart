@@ -164,7 +164,7 @@ class OrderHistoryListElement extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(
-                  "Company Name: $_companyName",
+                  _companyName,
                   style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.bold),
                 ),
                 SizedBox(
