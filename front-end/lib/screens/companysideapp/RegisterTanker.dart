@@ -3,14 +3,13 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/services.dart';
-import 'package:paani/screens/companysideapp/Tankers_details.dart';
 
-class RegisterTankerScreen extends StatefulWidget {
+class AddTanker extends StatefulWidget {
   @override
-  _RegisterTankerScreenState createState() => _RegisterTankerScreenState();
+  _AddTankerState createState() => _AddTankerState();
 }
 
-class _RegisterTankerScreenState extends State<RegisterTankerScreen> {
+class _AddTankerState extends State<AddTanker> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   void _showSnackBar(String text) {
     scaffoldKey.currentState.hideCurrentSnackBar();
@@ -241,10 +240,8 @@ class _RegisterTankerScreenState extends State<RegisterTankerScreen> {
                         ),
                       ),
                       onPressed: () {
-                        Navigator.pushNamedAndRemoveUntil(
-                            context,
-                            '/viewdriverstankerloading',
-                            ModalRoute.withName('/companyeditprofile'),
+                        Navigator.popAndPushNamed(
+                            context, '/viewdriverstankerloading',
                             arguments: {'required': 'tankers'});
                       },
                     ),

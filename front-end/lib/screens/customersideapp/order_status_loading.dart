@@ -15,7 +15,7 @@ class _OrderStatusLoadingState extends State<OrderStatusLoading> {
     SharedPreferences pref = await SharedPreferences.getInstance();
     String id = pref.getString("userid");
     var response =
-        await http.get('https://seg27-paani-backend.herokuapp.com/orders/22');
+        await http.get('https://seg27-paani-backend.herokuapp.com/orders/$id');
     var message = json.decode(response.body);
     print(message);
     if (!message.containsKey('msg')) {
@@ -24,15 +24,15 @@ class _OrderStatusLoadingState extends State<OrderStatusLoading> {
       });
     } else {
       status = message['msg'];
-      if (status['status'] == 'Complete') {
+      if (status['status'] == 'Completed') {
         Navigator.popAndPushNamed(context, '/ordercompleted');
-      } else if (status['status'] == 'dispatched') {
+      } else if (status['status'] == 'Dispatched') {
         Navigator.popAndPushNamed(context, '/orderdispatched');
-      } else if (status['status'] == 'confirmed') {
+      } else if (status['status'] == 'Confirmed') {
         Navigator.popAndPushNamed(context, '/orderconfirmed');
-      } else if (status['status'] == 'declined') {
+      } else if (status['status'] == 'Cancelled') {
         Navigator.popAndPushNamed(context, '/orderdeclined');
-      } else if (status['status'] == 'pending') {
+      } else if (status['status'] == 'Pending') {
         Navigator.popAndPushNamed(context, '/orderpending');
       } else {
         Navigator.pop(context);

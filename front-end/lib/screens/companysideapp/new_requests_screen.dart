@@ -50,8 +50,10 @@ class _NewReqsState extends State<NewReqs> {
   @override
   Widget build(BuildContext context) {
     return errorOngoing == true || errorPending == true
-        ? Center(
-            child: CircularProgressIndicator(),
+        ? Scaffold(
+            body: Center(
+              child: CircularProgressIndicator(),
+            ),
           )
         : Scaffold(
             appBar: AppBar(

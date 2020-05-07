@@ -50,21 +50,21 @@ class InProgressState extends State<InProgress> {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          ongoingOrders[index]['driver_id'] != null
-                              ? Text(
-                                  "Driver ID: ${ongoingOrders[index]['driver_id']}",
-                                  style: TextStyle(
-                                    color: Colors.black45,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                )
-                              : Text(
-                                  "Driver ID: Not Assigned Yet",
-                                  style: TextStyle(
-                                    color: Colors.black45,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
+                          // ongoingOrders[index]['driver_id'] != null
+                          //     ? Text(
+                          //         "Driver ID: ${ongoingOrders[index]['driver_id']}",
+                          //         style: TextStyle(
+                          //           color: Colors.black45,
+                          //           fontWeight: FontWeight.bold,
+                          //         ),
+                          //       )
+                          //     : Text(
+                          //         "Driver ID: Not Assigned Yet",
+                          //         style: TextStyle(
+                          //           color: Colors.black45,
+                          //           fontWeight: FontWeight.bold,
+                          //         ),
+                          //       ),
                           Text(
                             "Address: ${ongoingOrders[index]['delivery_address']}",
                             style: TextStyle(
@@ -95,10 +95,22 @@ class InProgressState extends State<InProgress> {
                     SizedBox(
                       width: 5,
                     ),
-                    IconButton(
-                      icon: Image.asset('assets/confirmed.png'),
-                      iconSize: 50,
-                      onPressed: () {},
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: <Widget>[
+                        IconButton(
+                          icon: Image.asset('assets/confirmed.png'),
+                          iconSize: 50,
+                          onPressed: () {},
+                        ),
+                        SizedBox(
+                          height: 25,
+                        ),
+                        Text(
+                          'status:',
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                      ],
                     ),
                     SizedBox(
                       width: 5,
@@ -114,9 +126,12 @@ class InProgressState extends State<InProgress> {
                           child: RaisedButton(
                             onPressed: () {
                               if (ongoingOrders[index]['driver_id'] == null) {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) =>
-                                        AssignDriverScreen()));
+                                Navigator.pushNamed(
+                                    context, "/viewdriverstankerloading",
+                                    arguments: {
+                                      'required': 'assigndrivers',
+                                      "orderid": ongoingOrders[index]['orderid']
+                                    });
                               } else {
                                 showDialog(
                                     context: context,
@@ -309,6 +324,113 @@ class InProgressState extends State<InProgress> {
                             color: Colors.teal,
                           ),
                         ),
+                        SizedBox(
+                          height: 10.0,
+                        ),
+                        DropdownButton<String>(
+                          value: ongoingOrders[index]['status'].toString(),
+                          isDense: true,
+                          items: <String>['Dispatched', 'Completed']
+                              .map((String value) {
+                            return new DropdownMenuItem<String>(
+                              value: value,
+                              child: new Text(value),
+                            );
+                          }).toList(),
+                          onChanged: (value) {
+                            showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: Text(
+                                      'Change Order status to $value?',
+                                      style: TextStyle(color: Colors.teal),
+                                    ),
+                                    actions: <Widget>[
+                                      FlatButton(
+                                        child: Text(
+                                          'YES',
+                                          style: TextStyle(color: Colors.white),
+                                        ),
+                                        color: Colors.teal,
+                                        onPressed: () async {
+                                          Navigator.of(context).pop();
+                                          setState(() {
+                                            loadingIcon = true;
+                                          });
+                                          var queryBody = {
+                                            "order_id": ongoingOrders[index]
+                                                ["orderid"],
+                                            "status": value
+                                          };
+                                          var query = await http.put(
+                                            'https://seg27-paani-backend.herokuapp.com/orders',
+                                            body: convert.jsonEncode(queryBody),
+                                            headers: {
+                                              "Content-Type":
+                                                  "application/x-www-form-urlencoded",
+                                              "Content-Type":
+                                                  "application/json",
+                                            },
+                                          );
+                                          print(convert.jsonDecode(query.body));
+                                          SharedPreferences pref =
+                                              await SharedPreferences
+                                                  .getInstance();
+                                          var responseOngoing = await http.get(
+                                              'https://seg27-paani-backend.herokuapp.com/orders/${pref.getString('userid')}/Confirmed');
+                                          var dataOngoing = convert
+                                              .jsonDecode(responseOngoing.body);
+                                          print(dataOngoing);
+                                          if (dataOngoing['error'] == false) {
+                                            setState(() {
+                                              ongoingOrders =
+                                                  dataOngoing['msg'];
+                                              loadingIcon = false;
+                                              inPro = ongoingOrders.length;
+                                            });
+                                          } else {
+                                            setState(() {
+                                              loadingIcon = false;
+                                              inPro = 0;
+                                            });
+                                          }
+                                        },
+                                      ),
+                                      FlatButton(
+                                        color: Colors.teal,
+                                        child: Text(
+                                          'NO',
+                                          style: TextStyle(color: Colors.white),
+                                        ),
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                      )
+                                    ],
+                                  );
+                                });
+                          },
+                        )
+                        // ButtonTheme(
+                        //   minWidth: 0,
+                        //   materialTapTargetSize:
+                        //       MaterialTapTargetSize.shrinkWrap,
+                        //   child: RaisedButton(
+                        //     onPressed: () {},
+                        //     child: Row(
+                        //       children: <Widget>[
+                        //         Text("Status"),
+                        //         SizedBox(
+                        //           width: 10,
+                        //         ),
+                        //         Icon(Icons.arrow_forward)
+                        //       ],
+                        //     ),
+                        //     textColor: Colors.white,
+                        //     color: Colors.teal,
+                        //   ),
+                        // )
                       ],
                     ),
                   ],

@@ -27,7 +27,7 @@ class DispatchedState extends State<Dispatched> {
             },
           ),
           // Title
-          title: Text("Order Dispatched"),
+          title: Text("Order Status"),
           centerTitle: true,
         ),
         drawer: DrawerDetails(),
@@ -40,7 +40,7 @@ class DispatchedState extends State<Dispatched> {
               Container(
                 margin: EdgeInsets.only(bottom: 130.0),
                 child: Text(
-                  "Order Confirmed.",
+                  "Order Dispatched.",
                   style: TextStyle(
                     fontSize: 25.0,
                     fontWeight: FontWeight.bold,

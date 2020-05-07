@@ -14,7 +14,7 @@ class _LoadingState extends State<Loading> {
     SharedPreferences pref = await SharedPreferences.getInstance();
     String id = pref.getString("userid");
     var response = await http
-        .get('https://seg27-paani-backend.herokuapp.com/orders/history/22');
+        .get('https://seg27-paani-backend.herokuapp.com/orders/history/$id');
     var message = json.decode(response.body);
     if (message['msg'] is String) {
       pastorders = "No";

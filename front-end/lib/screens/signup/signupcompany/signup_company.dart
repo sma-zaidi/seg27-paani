@@ -782,20 +782,34 @@ class _CompanySignupScreenState extends State<CompanySignupScreen> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final _formKey = GlobalKey<FormState>();
 
+  String _email, _password;
+  String _cpassword;
+  String _name, _contact, _address, _ntnnumber;
+  Map _location;
+
+  bool _obscurePassword = true;
+  bool pageloading = false;
+  bool locationset = false;
+
   Future<bool> _verifyEmail() async {
     try {
       var response = await http.post(
-          'https://seg27-paani-backend.herokuapp.com/users/register/',
-          body: {
-            'email': _email,
-            'password': _password,
-            'name': _name,
-            'contact_number': _contact,
-            'address': _address,
-            'ntn': _ntnnumber,
-            'location': _location,
-            'account_type': "COMPANY",
-          });
+        'https://seg27-paani-backend.herokuapp.com/users/register/',
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+          "Content-Type": "application/json",
+        },
+        body: json.encode({
+          'email': _email,
+          'password': _password,
+          'name': _name,
+          'contact_number': _contact,
+          'address': _address,
+          'ntn': _ntnnumber,
+          'location': jsonEncode(_location),
+          'account_type': "COMPANY",
+        }),
+      );
       print(response.body);
       var message = json.decode(response.body);
       if (message["error"] == false) {
@@ -828,18 +842,7 @@ class _CompanySignupScreenState extends State<CompanySignupScreen> {
         _showSnackBar("Please Set your current location");
       }
     }
-    // } else {
-    //   _showSnackBar("Sorry Cound't store your information");
-    // }
   }
-
-  String _email, _password;
-  String _cpassword;
-  String _name, _contact, _address, _ntnnumber, _location;
-
-  bool _obscurePassword = true;
-  bool pageloading = false;
-  bool locationset = false;
 
   void _showSnackBar(String text) {
     scaffoldKey.currentState.hideCurrentSnackBar();
@@ -945,7 +948,7 @@ class _CompanySignupScreenState extends State<CompanySignupScreen> {
                 r'^(?=.*[0-9]+.*)(?=.*[a-zA-Z]+.*)[0-9a-zA-Z]{6,}$';
             RegExp regex = new RegExp(pattern);
             if (!regex.hasMatch(text))
-              return 'Invalid password. Password must has atleast 1 letter,\n 1 number and must be 6 characters long';
+              return 'Invalid password. Password must contain atleast 1 letter,\n 1 number and must be 6 characters long';
             else
               return null;
           },
@@ -1007,137 +1010,137 @@ class _CompanySignupScreenState extends State<CompanySignupScreen> {
       body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.only(left: 20.0, right: 20.0, top: 20.0),
-          child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.only(top: 20),
-                  child: Text(
-                    'Welcome',
-                    style: TextStyle(
-                        color: Color(0xFF002626),
-                        fontSize: 30.0,
-                        fontWeight: FontWeight.bold),
-                  ),
-                ),
-                SizedBox(
-                  height: 20.0,
-                ),
-                Text(
-                  'Please enter the required details:',
-                  style: TextStyle(
+          child:
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: <
+                  Widget>[
+            Padding(
+              padding: EdgeInsets.only(top: 20),
+              child: Text(
+                'Welcome',
+                style: TextStyle(
                     color: Color(0xFF002626),
-                    fontSize: 14.0,
-                  ),
-                ),
-                SizedBox(
-                  height: 20.0,
-                ),
-                Center(
-                  child: Column(
-                    children: <Widget>[
-                      DetailsForm,
-                      Padding(
-                        padding:
-                            const EdgeInsets.only(left: 20, right: 20, top: 10),
-                        child: Card(
-                          color: Colors.teal,
-                          child: FlatButton(
-                            onPressed: pageloading
-                                ? null
-                                : () async {
-                                    this.setState(() {
-                                      pageloading = true;
-                                    });
-                                    final position = await Geolocator()
-                                        .getCurrentPosition(
-                                            desiredAccuracy:
-                                                LocationAccuracy.high);
-                                    dynamic result = await Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => G_Map(
-                                                position.latitude,
-                                                position.longitude)));
-                                    this.setState(() {
-                                      pageloading = false;
-                                    });
-                                    if (result != null) {
-                                      setState(() {
-                                        _location = result.toString();
-                                        locationset = true;
-                                      });
-                                    }
-                                    // }
-                                  },
-                            child: ListTile(
-                              title: Center(
-                                child: Text(
-                                  'Current Location',
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                              ),
-                              trailing: Icon(
-                                Icons.location_on,
-                                color: Colors.white,
-                              ),
+                    fontSize: 30.0,
+                    fontWeight: FontWeight.bold),
+              ),
+            ),
+            SizedBox(
+              height: 20.0,
+            ),
+            Text(
+              'Please enter the required details:',
+              style: TextStyle(
+                color: Color(0xFF002626),
+                fontSize: 14.0,
+              ),
+            ),
+            SizedBox(
+              height: 20.0,
+            ),
+            Center(
+              child: Column(
+                children: <Widget>[
+                  DetailsForm,
+                  Padding(
+                    padding:
+                        const EdgeInsets.only(left: 20, right: 20, top: 10),
+                    child: Card(
+                      color: Colors.teal,
+                      child: FlatButton(
+                        onPressed: pageloading
+                            ? null
+                            : () async {
+                                this.setState(() {
+                                  pageloading = true;
+                                });
+                                final position = await Geolocator()
+                                    .getCurrentPosition(
+                                        desiredAccuracy: LocationAccuracy.high);
+                                dynamic result = await Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => G_Map(
+                                        position.latitude, position.longitude),
+                                  ),
+                                );
+                                this.setState(() {
+                                  pageloading = false;
+                                });
+                                if (result != null) {
+                                  setState(() {
+                                    _location = result;
+                                    locationset = true;
+                                  });
+                                }
+                                // }
+                              },
+                        child: ListTile(
+                          title: Center(
+                            child: Text(
+                              'Current Location',
+                              style: TextStyle(color: Colors.white),
                             ),
+                          ),
+                          trailing: Icon(
+                            Icons.location_on,
+                            color: Colors.white,
                           ),
                         ),
                       ),
-                      locationset
-                          ? Padding(
-                              padding: const EdgeInsets.fromLTRB(
-                                  24.0, 0.0, 24.0, 0.0),
-                              child: Container(
-                                color: Colors.grey[400],
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: <Widget>[
-                                    Padding(
-                                      padding: const EdgeInsets.fromLTRB(
-                                          15.0, 8.0, 15.0, 8.0),
-                                      child: Text(
-                                        "Your location has been set",
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold),
-                                      ),
+                    ),
+                  ),
+                  locationset
+                      ? Padding(
+                          padding:
+                              const EdgeInsets.fromLTRB(24.0, 0.0, 24.0, 0.0),
+                          child: Container(
+                            color: Colors.grey[400],
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: <Widget>[
+                                Padding(
+                                  padding: const EdgeInsets.fromLTRB(
+                                      15.0, 8.0, 15.0, 8.0),
+                                  child: Text(
+                                    "Your location has been set",
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                                SizedBox(width: 10.0),
+                                IconButton(
+                                    icon: Icon(
+                                      Icons.remove_circle,
+                                      color: Colors.red,
                                     ),
-                                    SizedBox(width: 10.0),
-                                    IconButton(
-                                        icon: Icon(
-                                          Icons.remove_circle,
-                                          color: Colors.red,
-                                        ),
-                                        onPressed: () {
-                                          setState(() {
-                                            _location = null;
-                                            locationset = false;
-                                          });
-                                        })
-                                  ],
-                                ),
-                              ),
-                            )
-                          : SizedBox(height: 0.0),
-                      SizedBox(height: 20.0),
-                      ButtonTheme(
-                        minWidth: 170.0,
-                        child: RaisedButton(
-                          color: Colors.teal,
-                          onPressed: _submit,
-                          child: Text(
-                            'Sign Up',
-                            style: TextStyle(
-                              color: Colors.white,
+                                    onPressed: () {
+                                      setState(() {
+                                        _location = null;
+                                        locationset = false;
+                                      });
+                                    })
+                              ],
                             ),
                           ),
+                        )
+                      : SizedBox(height: 0.0),
+                  SizedBox(height: 20.0),
+                  ButtonTheme(
+                    minWidth: 170.0,
+                    child: RaisedButton(
+                      color: Colors.teal,
+                      onPressed: _submit,
+                      child: Text(
+                        'Sign Up',
+                        style: TextStyle(
+                          color: Colors.white,
                         ),
                       ),
-                    ],
+                    ),
                   ),
-                ),
-              ]),
+                ],
+              ),
+            ),
+          ]),
         ),
       ),
     );

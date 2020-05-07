@@ -2,10 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:paani/screens/companysideapp/RegisterTanker.dart';
 import 'package:http/http.dart' as http;
 import 'EditTankerScreen.dart';
-import 'RegisterTanker.dart';
 
 bool dataloading = true;
 
@@ -51,8 +49,7 @@ class TankerDetailsState extends State<TankerDetails> {
                       size: 20.0,
                     ),
                     onPressed: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => RegisterTankerScreen()));
+                      Navigator.popAndPushNamed(context, '/addtankers');
                     })
               ],
             ),
@@ -200,8 +197,7 @@ class TankerDetailsState extends State<TankerDetails> {
                     color: Colors.white,
                   ),
                   onPressed: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => RegisterTankerScreen()));
+                    Navigator.popAndPushNamed(context, '/addtankers');
                   },
                 )
               ],

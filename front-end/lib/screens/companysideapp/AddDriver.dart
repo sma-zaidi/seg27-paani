@@ -241,10 +241,8 @@ class _AddDriverScreenState extends State<AddDriverScreen> {
                         ),
                       ),
                       onPressed: () {
-                        Navigator.pushNamedAndRemoveUntil(
-                            context,
-                            '/viewdriverstankerloading',
-                            ModalRoute.withName('/companyeditprofile'),
+                        Navigator.popAndPushNamed(
+                            context, '/viewdriverstankerloading',
                             arguments: {'required': 'editdrivers'});
                       },
                     ),

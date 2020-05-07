@@ -29,11 +29,8 @@ class _CustomerEditProfileScreenState extends State<CustomerEditProfileScreen> {
       this.gettingdata = true;
     });
     try {
-      print("adas");
       SharedPreferences pref = await SharedPreferences.getInstance();
-      print("d");
       String userid = pref.getString('userid');
-      print('s');
       var response = await http.put(
         'https://seg27-paani-backend.herokuapp.com/customers/',
         headers: {

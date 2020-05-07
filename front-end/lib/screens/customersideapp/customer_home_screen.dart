@@ -12,8 +12,8 @@ class CustomerHomeScreen extends StatefulWidget {
 }
 
 class HomeScreenState extends State<CustomerHomeScreen> {
-
-  bool failedToLoad = false; // gets set to true if loading homescreen data from the server fails
+  bool failedToLoad =
+      false; // gets set to true if loading homescreen data from the server fails
 
   bool isSearching = false;
   var companies = [];
@@ -26,9 +26,11 @@ class HomeScreenState extends State<CustomerHomeScreen> {
           "https://seg27-paani-backend.herokuapp.com/companies",
           headers: {"Accept": "application/json"});
     } catch (error) {
-      setState((){failedToLoad = true;});
+      setState(() {
+        failedToLoad = true;
+      });
       print(error);
-      return null;      
+      return null;
     }
   }
 
@@ -38,33 +40,54 @@ class HomeScreenState extends State<CustomerHomeScreen> {
           "https://seg27-paani-backend.herokuapp.com/packages/${company['id']}",
           headers: {"Accept": "application/json"});
     } catch (error) {
-      setState((){failedToLoad = true;});
+      setState(() {
+        failedToLoad = true;
+      });
       print(error);
-      return null;      
+      return null;
+    }
+  }
+
+  Future<http.Response> getRatings(company) async {
+    try {
+      return await http.get(
+          "https://seg27-paani-backend.herokuapp.com/reviews/avg/${company['id']}",
+          headers: {"Accept": "application/json"});
+    } catch (error) {
+      setState(() {
+        failedToLoad = true;
+      });
+      print(error);
+      return null;
     }
   }
 
   Future<void> getData() async {
+    var responseCompanies = await getCompanies();
+    if (responseCompanies == null) return; // error occured
+    var mapCompanies = jsonDecode(responseCompanies.body);
+    companies = mapCompanies['msg'];
 
-      var responseCompanies = await getCompanies();
-      if (responseCompanies == null) return; // error occured
-      var mapCompanies = jsonDecode(responseCompanies.body);
-      companies = mapCompanies['msg'];
-
-      for (int i = 0; i < companies.length; i++) { // get each company's packages. Takes a bit, persistent http might help.
-        var responsePackages = await getPackages(companies[i]);
-        if (responsePackages == null) { // error occured
-          companies = [];
-          return;
-        }
-        var mapPackages = jsonDecode(responsePackages.body);
-        companies[i]['packages'] = mapPackages['msg'];
+    for (int i = 0; i < companies.length; i++) {
+      // get each company's packages and ratings. Takes a bit, persistent http might help.
+      var responsePackages = await getPackages(companies[i]);
+      var responseRatings = await getRatings(companies[i]);
+      if (responsePackages == null || responseRatings == null) {
+        // error occured
+        companies = [];
+        return;
       }
+      var mapPackages = jsonDecode(responsePackages.body);
+      var mapRatings = jsonDecode(responseRatings.body);
+      companies[i]['packages'] = mapPackages['msg'];
+      if (mapRatings['error'] == false) {
+        if (mapRatings.containsKey('mgs')) {}
+      }
+    }
 
-      setState(() {
-        searchCompanies = companies;
-      });
-
+    setState(() {
+      searchCompanies = companies;
+    });
   }
 
   void searchCompany(String input) {
@@ -123,8 +146,8 @@ class HomeScreenState extends State<CustomerHomeScreen> {
   @override
   //this functions is called before anything gets rendered to the screen
   // ignore: must_call_super
-  void initState () {
-      getData();
+  void initState() {
+    getData();
   }
 
   @override
@@ -324,29 +347,35 @@ class HomeScreenState extends State<CustomerHomeScreen> {
                 );
               })
           : Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20.0),
-                child: Center(
-                child: failedToLoad ? Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    Text('Failed to reach Paani\'s servers.\nPlease check your internet connection and try again.',
-                      textAlign: TextAlign.center,
-                    ),
-                    SizedBox(height: 6.0,),
-                    RaisedButton(
-                      onPressed: () {
-                        Navigator.pushAndRemoveUntil(
-                        context,
-                        MaterialPageRoute(builder: (context) => CustomerHomeScreen()),
-                        (_) => false);
-                      },
-                      child: Text('Refresh'),
-                    )
-                  ],
-                ) : CircularProgressIndicator()
-              ),
-          ),
+              padding: EdgeInsets.symmetric(horizontal: 20.0),
+              child: Center(
+                  child: failedToLoad
+                      ? Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            Text(
+                              'Failed to reach Paani\'s servers.\nPlease check your internet connection and try again.',
+                              textAlign: TextAlign.center,
+                            ),
+                            SizedBox(
+                              height: 6.0,
+                            ),
+                            RaisedButton(
+                              onPressed: () {
+                                Navigator.pushAndRemoveUntil(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            CustomerHomeScreen()),
+                                    (_) => false);
+                              },
+                              child: Text('Refresh'),
+                            )
+                          ],
+                        )
+                      : CircularProgressIndicator()),
+            ),
     );
   }
 }

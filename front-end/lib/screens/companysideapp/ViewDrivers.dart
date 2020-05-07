@@ -45,8 +45,7 @@ class _DriversScreenState extends State<DriversScreen> {
                     color: Colors.white,
                   ),
                   onPressed: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => AddDriverScreen()));
+                    Navigator.popAndPushNamed(context, '/adddrivers');
                   },
                 )
               ],
@@ -258,8 +257,7 @@ class _DriversScreenState extends State<DriversScreen> {
                     color: Colors.white,
                   ),
                   onPressed: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => AddDriverScreen()));
+                    Navigator.popAndPushNamed(context, '/adddrivers');
                   },
                 )
               ],

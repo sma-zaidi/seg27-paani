@@ -26,7 +26,7 @@ class CompletedState extends State<Completed> {
           },
         ),
         // Title
-        title: Text("Order Dispatched"),
+        title: Text("Order Status"),
         centerTitle: true,
       ),
       drawer: DrawerDetails(),

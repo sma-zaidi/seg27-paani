@@ -53,6 +53,7 @@ class _Driver_Tanker_LoadingState extends State<Driver_Tanker_Loading> {
           driversTankersData = message['msg'];
           Navigator.popAndPushNamed(context, '/assigndriver', arguments: {
             'list': driversTankersData,
+            'orderid': data['orderid']
           });
         } else {
           Navigator.popAndPushNamed(context, '/assigndriver', arguments: {
@@ -75,7 +76,7 @@ class _Driver_Tanker_LoadingState extends State<Driver_Tanker_Loading> {
                 FlatButton(
                   color: Colors.teal,
                   child: Text(
-                    'YES',
+                    'OK',
                     style: TextStyle(color: Colors.white),
                   ),
                   onPressed: () {
