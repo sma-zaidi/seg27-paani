@@ -19,6 +19,7 @@ class HomeScreenState extends State<CustomerHomeScreen> {
   var companies = [];
   var searchCompanies = [];
   var allCompanyPackages;
+  var ratings = [];
 
   Future<http.Response> getCompanies() async {
     try {
@@ -78,10 +79,11 @@ class HomeScreenState extends State<CustomerHomeScreen> {
         return;
       }
       var mapPackages = jsonDecode(responsePackages.body);
-      var mapRatings = jsonDecode(responseRatings.body);
+      var mapRatings = json.decode(responseRatings.body);
       companies[i]['packages'] = mapPackages['msg'];
-      if (mapRatings['error'] == false) {
-        if (mapRatings.containsKey('mgs')) {}
+      if (mapRatings['error'] == 'false') {
+        var mess = mapRatings['msg'];
+        ratings.add(mess);
       }
     }
 
@@ -121,7 +123,9 @@ class HomeScreenState extends State<CustomerHomeScreen> {
     String prices = "";
     for (int i = 0; i < company['packages'].length; i++) {
       prices = prices +
-          "Rs." + company['packages'][i]['price_base'].toString() + " ,";
+          "Rs." +
+          company['packages'][i]['price_base'].toString() +
+          " ,";
     }
     returnString = returnString +
         prices.substring(0, prices.length - 2); //To remove comma at the end
@@ -134,7 +138,8 @@ class HomeScreenState extends State<CustomerHomeScreen> {
     String prices = "";
     for (int i = 0; i < company['packages'].length; i++) {
       prices = prices +
-          "Rs." + company['packages'][i]['price_per_km'].toString() +
+          "Rs." +
+          company['packages'][i]['price_per_km'].toString() +
           ", ";
     }
     returnString = returnString +
@@ -157,8 +162,10 @@ class HomeScreenState extends State<CustomerHomeScreen> {
         title: !isSearching
             ? Text(
                 "Paani - Home",
-                style: TextStyle(color: Colors.white,
-                letterSpacing: 1.5, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                    color: Colors.white,
+                    letterSpacing: 1.5,
+                    fontWeight: FontWeight.bold),
               )
             : TextField(
                 onChanged: (String input) {
@@ -232,7 +239,9 @@ class HomeScreenState extends State<CustomerHomeScreen> {
                           ),
                         ),
                       ),
-                      SizedBox(width: 10,),
+                      SizedBox(
+                        width: 10,
+                      ),
                       new Container(
                         padding: const EdgeInsets.all(20),
                         width: 192,
@@ -294,58 +303,62 @@ class HomeScreenState extends State<CustomerHomeScreen> {
                               height: 10,
                             ),
                             new ButtonTheme(
-                              minWidth: 166 ,
-                            child: new RaisedButton(
-                              onPressed: () {
-                                if (searchCompanies[index]['packages'] !=
-                                    "No Packages Found!") {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              Place_Order_Screen(
-                                                data: searchCompanies[index],
-                                              )));
-                                } else {
-                                  showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          title: Text(
-                                            'Company has no packages available right now.',
-                                            style:
-                                                TextStyle(color: Colors.teal),
-                                          ),
-                                          actions: <Widget>[
-                                            RaisedButton(
-                                              child: Text(
-                                                'OK',
-                                                style: TextStyle(
-                                                    color: Colors.white),
-                                              ),
-                                              color: Colors.teal,
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                              },
+                              minWidth: 166,
+                              child: new RaisedButton(
+                                onPressed: () {
+                                  if (searchCompanies[index]['packages'] !=
+                                      "No Packages Found!") {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                Place_Order_Screen(
+                                                  data: searchCompanies[index],
+                                                )));
+                                  } else {
+                                    showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog(
+                                            title: Text(
+                                              'Company has no packages available right now.',
+                                              style:
+                                                  TextStyle(color: Colors.teal),
                                             ),
-                                          ],
-                                        );
-                                      });
-                                }
-                              },
-                              child: new Text(
-                                'ORDER',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    letterSpacing: 1.5),),
+                                            actions: <Widget>[
+                                              RaisedButton(
+                                                child: Text(
+                                                  'OK',
+                                                  style: TextStyle(
+                                                      color: Colors.white),
+                                                ),
+                                                color: Colors.teal,
+                                                onPressed: () {
+                                                  Navigator.of(context).pop();
+                                                },
+                                              ),
+                                            ],
+                                          );
+                                        });
+                                  }
+                                },
+                                child: new Text(
+                                  'ORDER',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      letterSpacing: 1.5),
+                                ),
                                 textColor: Colors.white,
                                 color: Colors.teal,
-                            ),),
+                              ),
+                            ),
                             new SizedBox(
                               height: 10,
                             ),
                             new StarRating(
-                              rating: 3.45,
+                              rating: ratings[index] == null
+                                  ? 0
+                                  : ratings[index].toDouble(),
                               starConfig: new StarConfig(
                                 fillColor: Colors.teal,
                                 strokeColor: Colors.teal,
