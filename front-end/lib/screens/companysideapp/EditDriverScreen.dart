@@ -5,22 +5,23 @@ import 'dart:convert';
 import 'package:paani/screens/companysideapp/ViewDrivers.dart';
 
 class EditScreen extends StatefulWidget {
-  var data;
-  EditScreen({this.data});
+  var data; //Data from Previous screen is recieved here
+  EditScreen({this.data}); //Data initiated
   @override
-  _EditScreenState createState() => _EditScreenState(data: data);
+  _EditScreenState createState() => _EditScreenState(data: data); //Data is passed to next state
 }
 
 class _EditScreenState extends State<EditScreen> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
-  var data;
-  _EditScreenState({this.data});
-  var nameController = TextEditingController();
-  var cnicController = TextEditingController();
-  var contactController = TextEditingController();
+  var data;//Data recieved
+  _EditScreenState({this.data});//Data initiated
+  var nameController = TextEditingController(); //Name Field Controller
+  var cnicController = TextEditingController(); //CNIC Field Controller
+  var contactController = TextEditingController(); //Contact Field Controller
 
   Future<http.Response> updateDriver(id, name, cnic, contactNumber) async {
+    //Updates Driver Data in DB via Server
     try {
       var response =
           await http.put('https://seg27-paani-backend.herokuapp.com/drivers',
@@ -33,12 +34,12 @@ class _EditScreenState extends State<EditScreen> {
                 'name': name,
                 'cnic': cnic,
                 'contact_number': contactNumber,
-              }));
+              })); //Data Sent to Server
 
-      var message = jsonDecode(response.body);
-      if (message['error'] == true)
+      var message = jsonDecode(response.body); //Response from Server
+      if (message['error'] == true) //Erroor in updating data
         return null;
-      else
+      else // No Error
         return response;
     } catch (error) {
       return null;
@@ -46,6 +47,7 @@ class _EditScreenState extends State<EditScreen> {
   }
 
   Future<bool> _submit() async {
+    //Submit Data
     try {
       SharedPreferences pref = await SharedPreferences.getInstance();
 
@@ -79,9 +81,9 @@ class _EditScreenState extends State<EditScreen> {
 
   @override
   void initState() {
-    nameController.text = drivers[data]['name'];
-    cnicController.text = drivers[data]['CNIC'];
-    contactController.text = drivers[data]['contact'];
+    nameController.text = drivers[data]['name']; //Name Field will show name that was already Stored
+    cnicController.text = drivers[data]['CNIC']; //CNIC Field will show cnic that was already Stored
+    contactController.text = drivers[data]['contact']; //Contact Field will show contact that was already Stored
     super.initState();
   }
 
