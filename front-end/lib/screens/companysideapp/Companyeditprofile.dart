@@ -19,20 +19,20 @@ class _CompanyEditProfileScreenState extends State<CompanyEditProfileScreen> {
   // final ntnctrl = TextEditingController();
   // final address = TextEditingController();
   // final password = TextEditingController();
-  bool gettingdata = true;
-  bool editprofile = false;
+  bool gettingdata = true; //true till Data is being recieved
+  bool editprofile = false; //false till editing has not started
   String _name, _contact, _address;
 
   Future<bool> _UpdateInformation() async {
+    //Info gets updated
     this.setState(() {
       this.gettingdata = true;
     });
     try {
-      print("adas");
       SharedPreferences pref = await SharedPreferences.getInstance();
-      print("d");
+      
       String userid = pref.getString('userid');
-      print('s');
+      
       var response = await http.put(
         'https://seg27-paani-backend.herokuapp.com/customers/',
         headers: {
@@ -47,7 +47,7 @@ class _CompanyEditProfileScreenState extends State<CompanyEditProfileScreen> {
           'location': '',
         }),
       );
-      print(response.body);
+      
       if (json.decode(response.body)["error"] == false) {
         this.setState(() {
           pref.setString('username', _name);
@@ -72,6 +72,7 @@ class _CompanyEditProfileScreenState extends State<CompanyEditProfileScreen> {
   }
 
   void _submit() async {
+    //Submit Data to Server
     final form = _formKey.currentState;
     form.save();
     if (form.validate()) {
