@@ -21,10 +21,11 @@ class _CustomerEditProfileScreenState extends State<CustomerEditProfileScreen> {
   // final password = TextEditingController();
 
   String _name, _contact, _address;
-  bool gettingdata = true;
-  bool editprofile = false;
+  bool gettingdata = true; //True if getting data from server
+  bool editprofile = false; //True if profile being edited
 
   Future<bool> _UpdateInformation() async {
+    //Updates Information
     this.setState(() {
       this.gettingdata = true;
     });
@@ -70,6 +71,7 @@ class _CustomerEditProfileScreenState extends State<CustomerEditProfileScreen> {
   }
 
   void _submit() async {
+    //Submits Information
     final form = _formKey.currentState;
 
     form.save();
@@ -102,6 +104,7 @@ class _CustomerEditProfileScreenState extends State<CustomerEditProfileScreen> {
   }
 
   Future<void> getdata() async {
+    //Data is recieved here
     SharedPreferences prefs = await SharedPreferences.getInstance();
     //Return String
     _name = prefs.getString('username');
