@@ -1,3 +1,5 @@
+//Customer will be able to edit details such as name, address, email, password from this screen
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'dart:convert';
@@ -14,18 +16,14 @@ class _CustomerEditProfileScreenState extends State<CustomerEditProfileScreen> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final _formKey = GlobalKey<FormState>();
 
-  // final namectrl = TextEditingController();
-  // final contactctrl = TextEditingController();
-  // final ntnctrl = TextEditingController();
-  // final address = TextEditingController();
-  // final password = TextEditingController();
+  
 
   String _name, _contact, _address;
-  bool gettingdata = true; //True if getting data from server
-  bool editprofile = false; //True if profile being edited
+  bool gettingdata = true; 
+  bool editprofile = false; 
 
   Future<bool> _UpdateInformation() async {
-    //Updates Information
+    
     this.setState(() {
       this.gettingdata = true;
     });
@@ -104,9 +102,9 @@ class _CustomerEditProfileScreenState extends State<CustomerEditProfileScreen> {
   }
 
   Future<void> getdata() async {
-    //Data is recieved here
+    
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    //Return String
+    
     _name = prefs.getString('username');
     _contact = prefs.getString('contact') ?? '';
     _address = prefs.getString('address') ?? '';
