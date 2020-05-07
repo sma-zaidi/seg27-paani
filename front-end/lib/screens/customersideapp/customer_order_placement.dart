@@ -1,3 +1,5 @@
+//This Screen helps a customer in placing order to a company they selected on home screen
+
 import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
