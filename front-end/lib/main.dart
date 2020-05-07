@@ -23,17 +23,17 @@ Future<void> main() async {
       home: prefs.getString('email') == null
           ? index
           : (prefs.getString("accounttype") == 'COMPANY'
-              ? companyHome
-              : customerHome)
+              ? companyHome // Loads Company HomeScreen if account type is COMPANY
+              : customerHome) // Loads Customer HomeScreen else
     )
   );
   
 }
 
-Future<bool> checkloggedin() async {
-  //
+Future<bool> checkloggedin() async { 
+  // Checks if User is already logged in
   SharedPreferences pref = await SharedPreferences.getInstance();
-  String email = pref.getString('email') ?? '';
+  String email = pref.getString('email') ?? ''; 
   if (email == '')
     return false;
   else
