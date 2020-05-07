@@ -938,7 +938,7 @@ class _CompanySignupScreenState extends State<CompanySignupScreen> {
           // obscureText: _obscurePassword,
           decoration: InputDecoration(
             labelText: 'Address',
-            hintText: 'Adress',
+            hintText: 'Address',
             prefixIcon: Icon(Icons.view_compact),
           ),
         ),
