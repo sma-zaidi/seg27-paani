@@ -30,7 +30,8 @@ class _OrderStatusLoadingState extends State<OrderStatusLoading> {
         Navigator.popAndPushNamed(context, '/orderdispatched');
       } else if (status['status'] == 'Confirmed') {
         Navigator.popAndPushNamed(context, '/orderconfirmed');
-      } else if (status['status'] == 'Cancelled') {
+      } else if (status['status'] == 'Cancelled' ||
+          status['status'] == "Declined") {
         Navigator.popAndPushNamed(context, '/orderdeclined');
       } else if (status['status'] == 'Pending') {
         Navigator.popAndPushNamed(context, '/orderpending');
