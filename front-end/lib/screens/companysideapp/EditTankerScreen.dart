@@ -7,22 +7,23 @@ import 'Tankers_details.dart';
 import 'package:sweetalert/sweetalert.dart';
 
 class EditTankerScreen extends StatefulWidget {
-  var data;
-  EditTankerScreen({this.data});
+  var data; //Data recieved from previous screen
+  EditTankerScreen({this.data}); //Data Initiated
   @override
-  _EditTankerScreenState createState() => _EditTankerScreenState(data: data);
+  _EditTankerScreenState createState() => _EditTankerScreenState(data: data); //Data sent to next state
 }
 
 class _EditTankerScreenState extends State<EditTankerScreen> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
-  var data;
-  _EditTankerScreenState({this.data});
-  var capController = TextEditingController();
-  var baseController = TextEditingController();
-  var KMController = TextEditingController();
+  var data; //Data Recieved
+  _EditTankerScreenState({this.data}); //Data Initiated
+  var capController = TextEditingController(); //Capacity Field Controller
+  var baseController = TextEditingController(); //Base Price Field Controller
+  var KMController = TextEditingController(); //Price/KM Field Controller
 
   Future<http.Response> updatePackage(id, priceBase, pricePerKm, bowserCapacity) async {
+    //Updates Package in DB via Server
     try {
       var response = await http.put(
         'https://seg27-paani-backend.herokuapp.com/packages',
@@ -48,6 +49,7 @@ class _EditTankerScreenState extends State<EditTankerScreen> {
   }
 
   Future<bool> _submit() async {
+    //Submits data 
     try {
 
       var response = await updatePackage(
@@ -81,9 +83,9 @@ class _EditTankerScreenState extends State<EditTankerScreen> {
 
   @override
   void initState() {
-    capController.text = Tankers[data]['bowser_capacity'].toString();
-    baseController.text = Tankers[data]['price_base'].toString();
-    KMController.text = Tankers[data]['price_per_km'].toString();
+    capController.text = Tankers[data]['bowser_capacity'].toString(); //Capacity Field shows capacity already stored initially
+    baseController.text = Tankers[data]['price_base'].toString(); //Base Price Field shows capacity already stored initially
+    KMController.text = Tankers[data]['price_per_km'].toString();//Price/KM Field shows capacity already stored initially
   }
 
   @override
