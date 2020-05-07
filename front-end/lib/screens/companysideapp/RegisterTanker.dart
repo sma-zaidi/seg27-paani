@@ -1,3 +1,5 @@
+//This Screen adds new Packages and registers the created packages to the Company that added them
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -25,16 +27,16 @@ class _AddTankerState extends State<AddTanker> {
   }
 
   Map packageData; //Package Data
-  var sizeController = TextEditingController(); //Capacity Field Controller
-  var baseController = TextEditingController(); //Base Price Field Controller
-  var KMController = TextEditingController(); //Price/Km Field Controller
-  bool _sizevalidate = false; //Validation that only number was added
-  bool _basepricevalidate = false; //Validation that only number was added
-  bool _priceperkmvalidate = false; //Validation that only number was added
-  bool gettingdata = false; //true, when recieving data
+  var sizeController = TextEditingController(); 
+  var baseController = TextEditingController(); 
+  var KMController = TextEditingController(); 
+  bool _sizevalidate = false; 
+  bool _basepricevalidate = false; 
+  bool _priceperkmvalidate = false; 
+  bool gettingdata = false; 
   @override
   Future<bool> _senddata(String base, priceKM, size) async {
-    //Sends Data to Server
+    
     print(base);
     print(priceKM);
     print(size);
@@ -77,7 +79,7 @@ class _AddTankerState extends State<AddTanker> {
   }
 
   Future<void> _submit() async {
-    //Submits Data
+    
     if (sizeController.text.isEmpty) {
       this.setState(() {
         _sizevalidate = true;
